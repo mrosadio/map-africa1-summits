@@ -60,12 +60,12 @@ export function renderCountryPanel(country, summitsCountry) {
     let titleContent = summit.title ? `${summit.title}` : `${summit.summitNo} Summit`;
     let dateContent = summit.date ? `
         <div class="summit-meta">
-            <img src="/src/img/calendar.svg" class="summit-meta__icon" alt="">
+            <img src="./src/img/calendar.svg" class="summit-meta__icon" alt="">
             <p class="mobile-font-size mb-0">${summit.date}</p>
         </div>` : '';
     let placeContent = summit.place ? `
         <div class="summit-meta">
-            <img src="/src/img/map-pin.svg" class="summit-meta__icon" alt="">
+            <img src="./src/img/map-pin.svg" class="summit-meta__icon" alt="">
             <p class="mobile-font-size mb-0">${summit.place}</p>
         </div>` : '';
 
@@ -136,14 +136,14 @@ export function displaySummitsYear(yearData) {
     let dateContent = summit.date
       ? `
         <div class="d-flex justify-content-start align-items-center mb-0">
-            <img src="/src/img/calendar.svg" class="img-fluid calendar me-2 pe-sm-2 pe-lg-2 pe-xl-2">
+            <img src="./src/img/calendar.svg" class="img-fluid calendar me-2 pe-sm-2 pe-lg-2 pe-xl-2">
             <p class="mobile-font-size mb-0">${summit.date}</p>
         </div>`
       : "";
     let placeContent = summit.place
       ? `
         <div class="d-flex justify-content-start align-items-center mb-0">
-            <img src="/src/img/map-pin.svg" class="img-fluid location me-2 pe-sm-2 pe-lg-2 pe-xl-2">
+            <img src="./src/img/map-pin.svg" class="img-fluid location me-2 pe-sm-2 pe-lg-2 pe-xl-2">
             <p class="mobile-font-size mb-0">${summit.place}</p>
         </div>`
       : "";
