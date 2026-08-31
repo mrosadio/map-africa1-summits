@@ -2,7 +2,7 @@
  
 An interactive data visualization exploring the evolution of "Africa+1" diplomatic summits — bilateral and multilateral forums between African states and non-African partner countries from 1973 to 2024.
  
-**Live demo:** https://mrosadio.github.io/map-africa1-summits/
+**[View live demo](https://mrosadio.github.io/map-africa1-summits/)**
  
 ## About
  
