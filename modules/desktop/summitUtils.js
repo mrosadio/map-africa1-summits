@@ -22,7 +22,7 @@ export function renderCountryPanel(country, summitsCountry) {
   const countryIcon = document.getElementById("country-icon");
   const countryName = document.getElementById("country-name");
   if (countryIcon) {
-    countryIcon.src = `/src/img/country-flags-main/png100px/${flagCountry}`;
+    countryIcon.src = `./src/img/country-flags-main/png100px/${flagCountry}`;
   } else {
     console.warn("renderCountryPanel: #country-icon not found in DOM");
   }
@@ -128,7 +128,7 @@ export function displaySummitsYear(yearData) {
     let countryListed = country
       ? `
         <div class="d-flex justify-content-start align-items-center mt-4 mb-2">
-            <img src="/src/img/country-flags-main/png100px/${flagCountry}" class="img-fluid country-flag border-dark rounded me-2" alt="Flag">
+            <img src="./src/img/country-flags-main/png100px/${flagCountry}" class="img-fluid country-flag border-dark rounded me-2" alt="Flag">
             <p class="mb-0 ms-1 fw-bold">${country}</p>
         </div>`
       : "";
