@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Shifting Geography of Africa+1 Summits</title>
+    <!-- D3 -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <!-- Custom css -->
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="d-flex flex-column vh-100 overflow-hidden">
+    <!-- Modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header py-2">
+            <h5 class="modal-title fs-6 fw-bold" id="aboutModalLabel">About</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body pt-2 px-md-5">
+            <div class="col-12">
+              <h1 class="fs-1 lh-1 fw-bold my-3 d-flex flex-column">The Shifting Geography of Africa+1 Summits</h1>
+            </div>
+            <div class="col-12">
+              <p>
+                In the context where African states are seeking to diversify their global partnerships, this interactive map offers insights into the deepening diplomatic ties between African countries and their traditional and emerging partners. It shows, from 1973 to 2024, the growing number of countries that have hosted Africa+1 summits, also called as forums or international conferences. The term “Africa+1” refers to partnerships between African and non-African countries, bringing together presidents, ministers or high-level officials at summits to discuss different areas of cooperation,
+                including trade, security, and development.
+              </p>
+              <p>
+                Diplomatic focus on Africa from global powers has shifted significantly since the 1970s. Initially, France was the sole country hosting Africa+1 summits, reflecting its close post-independence relationships with African countries from the 1970s to the end of the 1990s. From the early 2000s, countries in Asia, particularly China and Japan, began to invest more heavily in diplomatic and economic partnerships with African nations. By the 2010s, the landscape had diversified further, with Turkey, the United States, and Russia becoming prominent partners in Africa’s expanding
+                international relations. More recently, Saudi Arabia and South Korea have begun to play an increasingly prominent role in this regard.
+              </p>
+              <p>APRI conducted an extensive online search across multiple search engines to compile information and create a database on political summits where African presidents, ministers, or high-level officials met with their foreign counterparts. Although this search identified a significant number of summits, our publicly available database is not exhaustive. For instance, at this stage, the mapping exercise does not include the so-called ‘Africa business summits’. The map will be regularly updated with new information as it becomes available.</p>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <p class="text-uppercase small mb-1" style="letter-spacing: 0.08em">Publication</p>
+                <p class="small">Collected by APRI's Geopolitics and Geoeconomics Program team.</p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-uppercase small mb-1" style="letter-spacing: 0.08em">Code</p>
+                <a href="https://github.com/mrosadio/map-climate-diplomacy" target="_blank" class="small"> github.com/mrosadio/map-climate-diplomacy </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Nav -->
+    <nav class="vis-nav d-flex align-items-center justify-content-between px-4 py-2 flex-shrink-0">
+      <span class="vis-nav__title">The Shifting Geography of Africa+1 Summits</span>
+      <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#aboutModal">About</button>
+    </nav>
+    <!-- User instruction hint: exploration modus ------>
+    <div class="vis-hint d-flex align-items-center gap-4 px-4 py-2 flex-shrink-0">
+      <span class="vis-hint__label">Explore by</span>
+      <span class="vis-hint__item">
+        <i class="bi bi-arrow-down-up"></i>
+        scroll the timeline to watch partnerships build up over time
+      </span>
+      <span class="vis-hint__divider">|</span>
+      <span class="vis-hint__item">
+        <i class="bi bi-geo-alt"></i>
+        click a country for its full history
+      </span>
+    </div>
+    <!-- ── Main: map + detail panel ── -->
+    <main class="vis-main flex-grow-1 position-relative overflow-hidden">
+      <!-- Live runing counter -->
+      <div id="cumulative-counter" class="vis-map-counter"></div>
+      <!-- World map -->
+      <div id="map" class="w-100 h-100"></div>
+
+      <!-- Detail panel — slides in from right on country click -->
+      <aside id="detail-panel" class="vis-panel d-none position-absolute top-0 end-0 h-100">
+        <div id="summitListContainer" class="p-4 h-100 overflow-y-auto">
+          <div class="vis-panel__header">
+            <h2 id="summitCountry" class="vis-panel__title mb-0">
+              <img src="" id="country-icon" class="vis-panel__flag me-2" />
+              <span id="country-name"></span>
+            </h2>
+            <button id="close-panel" class="btn-close" aria-label="Close"></button>
+          </div>
+          <p id="total-summit" class="text-secondary small mb-0"></p>
+          <p id="intro-list-summit" class="text-secondary small mb-3"></p>
+          <ul id="summitList" class="list-unstyled"></ul>
+        </div>
+      </aside>
+
+      <!-- Floating summit card — shown on timeline dot click -->
+      <div id="summit-card" class="vis-summit-card d-none">
+        <div id="summit-card-content" class="p-2"></div>
+      </div>
+    </main>
+
+    <!-- ── Horizontal timeline ── -->
+    <footer class="vis-timeline flex-shrink-0 px-4 py-2">
+      <div class="vis-legend d-flex align-items-center gap-3 mb-1 flex-wrap">
+        <span class="vis-legend__title">Legend</span>
+        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: #2f5c99"></span>France</span>
+        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: #d97a22"></span>Asia</span>
+        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: #3f7a4d"></span>Turkey / Gulf</span>
+        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: #a64545"></span>United States</span>
+        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: #1d6e7d"></span>Russia</span>
+        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: #7452a0"></span>Italy / UK</span>
+        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: #8c8272"></span>Other</span>
+      </div>
+      <div id="desktop-timeline" class="w-100 flex-grow-1"></div>
+    </footer>
+
+    <!-- ── Mobile picker (hidden on desktop) ── -->
+    <div class="d-sm-none">
+      <div id="map-mobile" class="map"></div>
+      <div class="container">
+        <div class="picker d-none" id="picker">
+          <div class="picker-panel">
+            <div class="picker-choose">
+              <span class="cancel" id="cancelButton">Close</span>
+              <span class="confirm" id="confirmButton">Select</span>
+              <h1 class="picker-title"></h1>
+            </div>
+            <div class="picker-content">
+              <div class="wheel-wrapper">
+                <div class="wheel-scrollbar"></div>
+                <div class="wheel" id="wheelWrapper">
+                  <ul class="wheel-scroll" id="wheelList"></ul>
+                </div>
+              </div>
+            </div>
+            <div class="picker-footer"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden state spans used by JS -->
+    <div class="visually-hidden">
+      <span id="selectedText">African</span>
+      <span id="africanCountry">open</span>
+      <span id="blockNameNowTemp">open</span>
+      <span id="blockNameTemp">open</span>
+    </div>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

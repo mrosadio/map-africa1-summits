@@ -1,0 +1,429 @@
+/* ============================================================
+   Africa+1 Summits — style.css
+   Bootstrap handles most of the layout. 
+   This file handles only what
+   Bootstrap cannot: custom components, D3 targets, animations, etc
+   ============================================================ */
+
+:root {
+  --color-accent:       #C1440E;
+  --color-border:       #E8E4DF;
+  --color-bg:           #FFFFFF;
+  --color-bg-subtle:    #FAFAF8;
+  --color-text-primary: #1C1C1A;
+  --color-text-muted:   #4A4A47;
+
+  /* Partner region colors — used on timeline dots and map */
+  --color-france:       #4A6FA5;  /* blue - France */
+  --color-asia:         #C17B2A;  /* amber - China, Japan, South Korea */
+  --color-mideast:      #6B8F71;  /* sage - Turkey, Saudi Arabia, UAE */
+  --color-west:         #7B5EA7;  /* purple - US, Russia */
+  --color-other:        #B4B2A9;  /* grey - others */
+
+  /* Timeline dimensions */
+  --timeline-height:    140px; 
+  --nav-height:         48px;
+}
+
+/* ── Layout ── */
+body {
+  background: var(--color-bg-subtle);
+  font-family: 'Arimo', system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--color-text-primary);
+}
+
+/* Nav */
+.vis-nav {
+  height: var(--nav-height);
+  background: var(--color-bg);
+  border-bottom: 0.5px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.vis-nav__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+.vis-hint {
+  font-size: 13px;
+  color: var(--color-text-secondary, #5F5E5A);
+  background: var(--color-bg, #fff);
+  border-bottom: 0.5px solid var(--color-border, #E8E4DF);
+}
+.vis-hint__label {
+  font-weight: 500;
+}
+.vis-hint__item i {
+  margin-right: 6px;
+}
+.vis-hint__divider {
+  color: var(--color-border, #E8E4DF);
+}
+.vis-map-counter {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 15;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 6px 12px;
+  border-radius: 6px;
+  pointer-events: none; /* so it never blocks map clicks underneath */
+}
+/* Map container */
+#map {
+  background: var(--color-bg-subtle);
+}
+
+/* Map dimmed when detail panel or card is open */
+#map.dimmed svg {
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+}
+
+#map svg {
+  transition: opacity 0.3s ease;
+}
+
+/* Timeline footer */
+.vis-timeline {
+  height: var(--timeline-height);
+  background: var(--color-bg);
+  border-top: 0.5px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+/* Legend */
+/* :root {
+  --timeline-height: 108px;
+} */
+
+.vis-timeline {
+  height: var(--timeline-height);
+  background: var(--color-bg);
+  border-top: 0.5px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.vis-legend {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.vis-legend__title {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.vis-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.vis-legend__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.vis-legend__counter {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+/* -- Detail panel (country click) -- */
+.vis-panel {
+  width: 380px;
+  background: var(--color-bg);
+  border-left: 0.5px solid var(--color-border);
+  box-shadow: -4px 0 16px rgba(0,0,0,0.06);
+  z-index: 20;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.vis-panel.open {
+  transform: translateX(0);
+  display: flex !important;
+  flex-direction: column;
+}
+.vis-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--color-accent);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+.vis-panel__title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+}
+.vis-panel__flag {
+  height: 24px;
+  border-radius: 2px;
+}
+
+/* Summit list items */
+#summitList li {
+  padding: 10px 0;
+  border-bottom: 0.5px solid var(--color-border);
+  font-size: 0.85rem;
+}
+
+#summitList li:last-child {
+  border-bottom: none;
+}
+
+#summitList .summit-title {
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
+#summitList .summit-city {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* - Floating summit card (timeline dot click) - */
+.vis-summit-card {
+  position: fixed;
+  min-width: 260px;
+  max-width: 340px;
+  background: var(--color-bg);
+  border: 0.5px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  z-index: 30;
+}
+
+.vis-summit-card.open {
+  display: block !important;
+}
+.summit-card__year {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+.summit-card__country {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+.summit-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-accent);
+}
+.summit-card__title {
+  font-size: 0.85rem;
+  color: var(--color-text-primary);
+  margin-bottom: 3px;
+}
+.summit-card__place {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+.vis-summit-card .btn-close {
+  font-size: 0.65rem;
+}
+
+/* -------------- Timeline SVG elements --------------  */
+/* these are d3 rendered so bootstrap can't reach them */
+
+.timeline-axis line {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.timeline-axis text {
+  font-size: 10px;
+  fill: var(--color-text-muted);
+  font-family: system-ui, sans-serif;
+}
+
+.timeline-dot {
+  cursor: pointer;
+  transition: r 0.15s ease;
+}
+
+.timeline-dot:hover {
+  r: 7;
+}
+
+.timeline-dot.active {
+  stroke: var(--color-text-primary);
+  stroke-width: 2;
+}
+
+.timeline-label {
+  font-size: 12px;
+  font-family: system-ui, sans-serif;
+  fill: var(--color-text-muted);
+  pointer-events: none;
+}
+
+/* ── Map SVG elements ── */
+.country-path {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.country-path:hover {
+  opacity: 0.8;
+}
+
+.country-label {
+  font-size: 9px;
+  font-family: system-ui, sans-serif;
+  fill: var(--color-text-primary);
+  pointer-events: none;
+}
+
+/* Summit count badge on map */
+.summit-badge {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: system-ui, sans-serif;
+  fill: var(--color-bg);
+  pointer-events: none;
+}
+
+/* -- Modal -- */
+.modal-header::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  /* background: var(--color-accent); */
+  margin-top: 10px;
+}
+
+.modal-body p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--color-text-primary);
+}
+
+/* -- Scrollbar -- */
+#summitListContainer::-webkit-scrollbar {
+  width: 3px;
+  text-align: justify;
+}
+#summitListContainer::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+#summitList .calendar,
+#summitList .location {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.summit-content {
+  flex: 1 1 auto;
+  min-width: 0; /* allows long titles to wrap instead of overflowing the panel */
+}
+
+.summit-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.summit-meta__icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+/* --------------- Tablet (768-1194px, both orientations) ---------------
+   Covers iPad portrait (ca. 768-834px) through iPad landscape (ca. 1024-1194px).
+   Note: some large phones in landscape (eg. ca.926px) will also fall in this
+   range - change as needed after deadline */
+
+/* Portrait: country panel becomes a bottom sheet, same pattern as mobile */
+@media (min-width: 768px) and (max-width: 1194px) and (orientation: portrait) {
+  .vis-panel {
+    width: 100%;
+    height: 30vh !important;
+    top: auto !important;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    transform: translateY(100%);
+    border-left: none;
+    border-top: 0.5px solid var(--color-border);
+  }
+  .vis-panel.open {
+    transform: translateY(0);
+  }
+  .vis-hint {
+    flex-wrap: wrap;
+  }
+}
+
+/* Landscape: country panel becomes an in-flow side column, not an overlay */
+@media (min-width: 768px) and (max-width: 1194px) and (orientation: landscape) {
+  .vis-main {
+    display: flex;
+  }
+  #map {
+    width: auto !important;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  #map.w-100 {
+    width: auto !important; /* #map.w-100 beats Bootstrap's .w-100 on specificity */
+    flex: 1 1 0%;
+    min-width: 0;
+  }
+  .vis-panel {
+    position: static;
+    width: 0;
+    height: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+    transform: none !important;
+    box-shadow: none;
+    transition: width 0.3s ease;
+  }
+  .vis-panel.open {
+    width: 220px;
+    overflow-y: auto;
+  }
+}
+/* ----------- Mobile ----------- */
+@media (max-width: 575px) {
+  .vis-nav__title {
+    font-size: 0.8rem;
+  }
+  .vis-panel {
+    width: 100%;
+    height: 50vh;
+    top: auto !important;
+    bottom: 0;
+    right: 0;
+    transform: translateY(100%);
+    border-left: none;
+    border-top: 0.5px solid var(--color-border);
+  }
+  .vis-panel.open {
+    transform: translateY(0);
+  }
+  .vis-timeline {
+    height: 60px;
+  }
+}
+

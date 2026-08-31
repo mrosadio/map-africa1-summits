@@ -1,0 +1,711 @@
+[
+    {
+        "year": 1973,
+        "summits": [
+            {
+                "country": "France",
+                "date": "13 November 1973",
+                "place": "Paris",
+                "summitNo": "1st",
+                "title": "Un Nouveau Cadre de Dialogue",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1975,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1975",
+                "place": "Bangui",
+                "summitNo": "2nd",
+                "title": "Le Nouvel Ordre Économique Mondial",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1976,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1976",
+                "place": "Paris",
+                "summitNo": "3rd",
+                "title": "Priorité au Développement",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1977,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1977",
+                "place": "Dakar",
+                "summitNo": "4th",
+                "title": "La Montée des Périls en Afrique",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1978,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1978",
+                "place": "Paris",
+                "summitNo": "5th",
+                "title": "Sécurité et Développement",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1979,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1979",
+                "place": "Kigali",
+                "summitNo": "6th",
+                "title": "Les Relations Euro-Africaines",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1980,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1980",
+                "place": "Nice",
+                "summitNo": "7th",
+                "title": "Le Trilogue à L’honneur",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1981,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1981",
+                "place": "Paris",
+                "summitNo": "8th",
+                "title": "Solidarité et Développement",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1982,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1982",
+                "place": "Kinshasa",
+                "summitNo": "9th",
+                "title": "Le Dialogue Nord-Sud Face à La Crise Mondiale",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1983,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1983",
+                "place": "Vittel",
+                "summitNo": "10th",
+                "title": "L’Intégrité du Tchad",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1984,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1984",
+                "place": "Bujumbura",
+                "summitNo": "11th",
+                "title": "Autosuffisance Alimentaire et Développement Coordonné",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1985,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1985",
+                "place": "Paris",
+                "summitNo": "12th",
+                "title": "L’Endettement Croissant de L’Afrique",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1986,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1986",
+                "place": "Lomé",
+                "summitNo": "13th",
+                "title": "Un «Plan Marshall pour L’Afrique»",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1987,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1987",
+                "place": "Antibes",
+                "summitNo": "14th",
+                "title": "La Dette et Les Matières Premières",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1988,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1988",
+                "place": "Casablanca",
+                "summitNo": "15th",
+                "title": "Vers La Résolution des Conflits Régionaux",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1990,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1990",
+                "place": "La Baule",
+                "summitNo": "16th",
+                "title": "Prime à La Démocratisation",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1992,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1992",
+                "place": "Liberville",
+                "summitNo": "17th",
+                "title": "La Rigueur Économique",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1993,
+        "summits": [
+            {
+                "country": "Japan",
+                "date": "5-6 October 1993",
+                "place": "Tokyo",
+                "summitNo": "1st",
+                "title": "Towards the 21st Century",
+                "img-src": "jp.png"
+            }
+        ]
+    },
+    {
+        "year": 1994,
+        "summits": [
+            {
+                "country": "France",
+                "date": "8-9 November 1994",
+                "place": "Biarritz",
+                "summitNo": "18th",
+                "title": "Sécurité et Interventions Militaires",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1996,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1996",
+                "place": "Ougadougou",
+                "summitNo": "19th",
+                "title": "Bonne Gouvernance et Développement",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 1998,
+        "summits": [
+            {
+                "country": "France",
+                "date": "1998",
+                "place": "Paris",
+                "summitNo": "20th",
+                "title": "La Sécurité en Afrique",
+                "img-src": "fr.png"
+            },
+            {
+                "country": "Japan",
+                "date": "19-20 October 1998",
+                "place": "Tokyo",
+                "summitNo": "2nd",
+                "title": "",
+                "img-src": "jp.png"
+            }
+        ]
+    },
+    {
+        "year": 2000,
+        "summits": [
+            {
+                "country": "China",
+                "date": "10-12 October 2000",
+                "place": "Beijing",
+                "summitNo": "1st",
+                "title": "",
+                "img-src": "cn.png"
+            }
+        ]
+    },
+    {
+        "year": 2001,
+        "summits": [
+            {
+                "country": "France",
+                "date": "2001",
+                "place": "Yaoundé",
+                "summitNo": "21st",
+                "title": "L’Afrique Face aux Défis de la Mondialisation",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 2003,
+        "summits": [
+            {
+                "country": "China",
+                "date": "2003",
+                "place": "Addis Ababa",
+                "summitNo": "2nd",
+                "title": "Pragmatic and Action-Oriented Cooperation",
+                "img-src": "cn.png"
+            },
+            {
+                "country": "France",
+                "date": "2003",
+                "place": "Paris",
+                "summitNo": "22nd",
+                "title": "L’Afrique et La France, Ensemble, Dans Le Nouveau Partenariat",
+                "img-src": "fr.png"
+            },
+            {
+                "country": "Japan",
+                "date": "29 September-1 October 2003",
+                "place": "Tokyo",
+                "summitNo": "3rd",
+                "title": "",
+                "img-src": "jp.png"
+            }
+        ]
+    },
+    {
+        "year": 2005,
+        "summits": [
+            {
+                "country": "France",
+                "date": "2005",
+                "place": "Bamako",
+                "summitNo": "23rd",
+                "title": "",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 2006,
+        "summits": [
+            {
+                "country": "China",
+                "date": "4-5 November 2006",
+                "place": "Beijing",
+                "summitNo": "3rd",
+                "title": "Friendship, Peace, Cooperation and Development",
+                "img-src": "cn.png"
+            }
+        ]
+    },
+    {
+        "year": 2007,
+        "summits": [
+            {
+                "country": "France",
+                "date": "2007",
+                "place": "Cannes",
+                "summitNo": "24th",
+                "title": "",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 2008,
+        "summits": [
+            {
+                "country": "Turkey",
+                "date": "18-21 August 2008",
+                "place": "Istambul",
+                "summitNo": "1st",
+                "title": "Solidarity and Partnership for a Common Future",
+                "img-src": "tr.png"
+            },
+            {
+                "country": "India",
+                "date": "9th April 2008",
+                "place": "New Delhi",
+                "summitNo": "1st",
+                "title": "",
+                "img-src": "in.png"
+            },
+            {
+                "country": "Japan",
+                "date": "28-30 May 2008",
+                "place": "Yokohama",
+                "summitNo": "4th",
+                "title": "Towards a Vibrant Africa",
+                "img-src": "jp.png"
+            }
+        ]
+    },
+    {
+        "year": 2009,
+        "summits": [
+            {
+                "country": "China",
+                "date": "2009",
+                "place": "Sharm el Sheikh",
+                "summitNo": "4th",
+                "title": "Deepening the New Type of China-Africa Strategic Partnership for Sustainable Development",
+                "img-src": "cn.png"
+            }
+        ]
+    },
+    {
+        "year": 2010,
+        "summits": [
+            {
+                "country": "France",
+                "date": "2010",
+                "place": "Nice",
+                "summitNo": "25th",
+                "title": "",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 2011,
+        "summits": [
+            {
+                "country": "India",
+                "date": "21 May 2011",
+                "place": "Addis Ababa",
+                "summitNo": "2nd",
+                "title": "Enhancing Partnership: Shared Vision",
+                "img-src": "in.png"
+            }
+        ]
+    },
+    {
+        "year": 2012,
+        "summits": [
+            {
+                "country": "China",
+                "date": "19-20 July 2012",
+                "place": "Beijing",
+                "summitNo": "5th",
+                "title": "Build on Past Achievements and Open Up New Prospects For The New Type of China-Africa Strategic Partnership",
+                "img-src": "cn.png"
+            }
+        ]
+    },
+    {
+        "year": 2013,
+        "summits": [
+            {
+                "country": "France",
+                "date": "2013",
+                "place": "Paris",
+                "summitNo": "26th",
+                "title": "Summit for Peace and Security in Africa",
+                "img-src": "fr.png"
+            },
+            {
+                "country": "Japan",
+                "date": "1-3 June 2013",
+                "place": "Yokohama",
+                "summitNo": "5th",
+                "title": "Hand in Hand with a More Dynamic Africa",
+                "img-src": "jp.png"
+            }
+        ]
+    },
+    {
+        "year": 2014,
+        "summits": [
+            {
+                "country": "Turkey",
+                "date": "19-21 November 2014",
+                "place": "Malabo",
+                "summitNo": "2nd",
+                "title": "A New Model of Partnership to Enhance a Sustainable Development and Integration",
+                "img-src": "tr.png"
+            },
+            {
+                "country": "USA",
+                "date": "4-6 August 2014",
+                "place": "Washington DC",
+                "summitNo": "1st",
+                "title": "Investing in the Next Generation",
+                "img-src": "us.png"
+            }
+        ]
+    },
+    {
+        "year": 2015,
+        "summits": [
+            {
+                "country": "China",
+                "date": "4-5 December 2015",
+                "place": "Johannesburg",
+                "summitNo": "6th",
+                "title": "China-Africa Progressing Together: Win-Win Cooperation for Common Development",
+                "img-src": "cn.png"
+            },
+            {
+                "country": "India",
+                "date": "26-29 October 2015",
+                "place": "New Delhi",
+                "summitNo": "3rd",
+                "title": "Partners in Progress: Towards a Dynamic and Transformative Development Agenda",
+                "img-src": "in.png"
+            }
+        ]
+    },
+    {
+        "year": 2016,
+        "summits": [
+            {
+                "country": "Japan",
+                "date": "27-28 August 2016",
+                "place": "Nairobi",
+                "summitNo": "6th",
+                "title": "Hand in Hand with a More Dynamic Africa",
+                "img-src": "jp.png"
+            }
+        ]
+    },
+    {
+        "year": 2017,
+        "summits": [
+            {
+                "country": "France",
+                "date": "2017",
+                "place": "Ougadougou",
+                "summitNo": "27th",
+                "title": "",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 2018,
+        "summits": [
+            {
+                "country": "China",
+                "date": "2018",
+                "place": "Beijing",
+                "summitNo": "7th",
+                "title": "China and Africa: Toward an Even Stronger Community with a Shared Future through Win-Win Cooperation",
+                "img-src": "cn.png"
+            },
+            {
+                "country": "Indonesia",
+                "date": "10-11 April 2018",
+                "place": "Nusa Dua, Bali",
+                "summitNo": "1st",
+                "title": "Developing Sustainable Economic and Investment Cooperation",
+                "img-src": "id.png"
+            }
+        ]
+    },
+    {
+        "year": 2019,
+        "summits": [
+            {
+                "country": "Russia",
+                "date": "23-24 October 2019",
+                "place": "Sochi",
+                "summitNo": "1st",
+                "title": "For Peace, Security and Development",
+                "img-src": "ru.png"
+            },
+            {
+                "country": "Japan",
+                "date": "28-30 August 2019",
+                "place": "Yokohama",
+                "summitNo": "7th",
+                "title": "Advancing Africa’s Development through People, Technology and Innovation",
+                "img-src": "jp.png"
+            }
+        ]
+    },
+    {
+        "year": 2020,
+        "summits": [
+            {
+                "country": "England",
+                "date": "20 January 2020",
+                "place": "London",
+                "summitNo": "1st",
+                "title": "",
+                "img-src": "gb-eng.png"
+            }
+        ]
+    },
+    {
+        "year": 2021,
+        "summits": [
+            {
+                "country": "Turkey",
+                "date": "16-18 December 2021",
+                "place": "Istanbul",
+                "summitNo": "3rd",
+                "title": "Enhanced Partnership for Common Development and Prosperity",
+                "img-src": "tr.png"
+            },
+            {
+                "country": "China",
+                "date": "29-30 November 2021",
+                "place": "Dakar",
+                "summitNo": "8th",
+                "title": "Deepen China-Africa Partnership and Promote Sustainable Development to Build a China-Africa Community with a Shared Future in the New Era",
+                "img-src": "cn.png"
+            },
+            {
+                "country": "France",
+                "date": "08 October 2021",
+                "place": "Montpellier",
+                "summitNo": "28th",
+                "title": "",
+                "img-src": "fr.png"
+            }
+        ]
+    },
+    {
+        "year": 2022,
+        "summits": [
+            {
+                "country": "USA",
+                "date": "13-15 December 2022",
+                "place": "",
+                "summitNo": "2nd",
+                "title": "Strengthening Partnerships to Meet Shared Priorities",
+                "img-src": "us.png"
+                
+            },
+            {
+                "country": "Japan",
+                "date": "27-28 August 2022",
+                "place": "Tunis",
+                "summitNo": "8th",
+                "title": "Achieving Sustainable and Inclusive Growth with Reduced Economic Inequalities",
+                "img-src": "jp.png"
+            }
+        ]
+    },
+    {
+        "year": 2023,
+        "summits": [
+            {
+                "country": "Russia",
+                "date": "27-28 July 2023",
+                "place": "St Petersburg",
+                "summitNo": "2nd",
+                "title": "New Level of Mutually Beneficial Partnership",
+                "img-src": "ru.png"
+            },
+            {
+                "country": "Saudi Arabia",
+                "date": "10 November 2023",
+                "place": "Riyadh",
+                "summitNo": "1st",
+                "title": "",
+                "img-src": "sa.png"
+            }
+        ]
+    },
+    {
+        "year": 2024,
+        "summits": [
+            {
+                "country": "South Korea",
+                "date": "04 - 05 June 2024",
+                "place": "",
+                "summitNo": "1st",
+                "title": "The Future We Make Together: Shared Growth, Sustainability and Solidarity",
+                "img-src": "kp.png"
+            },
+            {
+                "country": "China",
+                "date": "4-6 September 2024",
+                "place": "",
+                "summitNo": "9th",
+                "title": "Joining Hands to Advance Modernization and Build a High-Level China-Africa Community with a Shared Future",
+                "img-src": "cn.png"
+            },
+            {
+                "country": "Italy",
+                "date": "29 January 2024",
+                "place": "Rome",
+                "summitNo": "1st",
+                "title": "Italia-Africa. A bridge for common growth",
+                "img-src": "it.png"
+            },
+            {
+                "country": "Indonesia",
+                "date": "31 August-2 September 2024",
+                "place": "Nusa Dua, Bali",
+                "summitNo": "2nd",
+                "title": "Forging Indonesia - Africa Parliamentary Partnership for Development",
+                "img-src": "id.png"
+            }
+        ]
+    }
+]
