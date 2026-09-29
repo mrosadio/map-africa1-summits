@@ -1,8 +1,6 @@
 import { flagSrc } from "../common/globals.js";
 
 export function getSummitsByCountry(summitsByCountryMap, country) {
-  console.log("Country in getsummit function", country);
-  console.log("JSON data in getsummit function", summitsByCountryMap);
   let summitsCountry;
   if (summitsByCountryMap.has(country)) {
     let summitDetails = summitsByCountryMap.get(country);
@@ -16,7 +14,6 @@ export function renderCountryPanel(country, summitsCountry) {
     country = "United Kingdom";
   }
   const filterFlag = flagSrc.filter((item) => item.country === country);
-  console.log("filterFlag", filterFlag[0]?.img?.["img-src"]);
   const flagCountry = filterFlag[0].img["img-src"];
   // Target the icon + name individually instead of overwriting the whole <h2>
   const countryIcon = document.getElementById("country-icon");

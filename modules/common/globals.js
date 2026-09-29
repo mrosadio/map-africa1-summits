@@ -1,6 +1,6 @@
 // Databases
 const jsonPath = './db/summits-by-year.json';
-const geojsonUrl = "https://raw.githubusercontent.com/Afripoli/D3-graph-gallery/refs/heads/master/DATA/world.geojson";
+const geojsonUrl = "./db/world.geojson";
 export const appData = {
   geojsonData: null,
   summitData: null,

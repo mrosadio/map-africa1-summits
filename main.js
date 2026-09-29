@@ -3,39 +3,44 @@ import { jsonPath, geojsonUrl, appData } from "./modules/common/globals.js";
 import { initMobileTimeline } from "./modules/mobile/initMobile.js";
 import { initDesktopTimeline } from "./modules/desktop/initDesktop.js";
 
+function showLoadError() {
+  document.getElementById("load-error")?.classList.remove("d-none");
+  document.getElementById("map")?.classList.add("d-none");
+  document.querySelector(".vis-timeline")?.classList.add("d-none");
+  document.querySelector(".vis-hint")?.classList.add("d-none");
+}
+
+
 async function initHorizontalTimeline() {
-    try {
-        const { geojsonData, summitMap, jsonData, summitsByCountryMap, countriesWithSummits, cumulativeSummits } = await loadAndMergeData(geojsonUrl, jsonPath);
-                // Populate the shared store once, right after load
-        appData.geojsonData = geojsonData;
-        appData.summitData = jsonData;
-        appData.summitMap = summitMap;
-        appData.summitsByCountryMap = summitsByCountryMap;
-        appData.countriesWithSummits = countriesWithSummits;
-        appData.cumulativeSummits = cumulativeSummits;
-        console.log("Window inner width:", window.innerWidth);
-        // Detect screen size and initialize appropriate timeline
-        if (window.innerWidth >= 768) {
-            console.log("Initializing desktop timeline");
-            // Desktop version
-            initDesktopTimeline(geojsonData, jsonData, summitMap, summitsByCountryMap, countriesWithSummits, cumulativeSummits);
-        } else {
-            console.log("Initializing mobile timeline");
-            initMobileTimeline(geojsonData, jsonData, cumulativeSummits, summitsByCountryMap);
-        }
-    } catch (error) {
-        console.error("Error initializing app:", error);
-    }
+  const result = await loadAndMergeData(geojsonUrl, jsonPath);
+
+  if (!result) {
+    showLoadError();
+    return;
+  }
+
+  const { geojsonData, summitMap, jsonData, summitsByCountryMap, countriesWithSummits, cumulativeSummits } = result;
+
+  appData.geojsonData = geojsonData;
+  appData.summitData = jsonData;
+  appData.summitMap = summitMap;
+  appData.summitsByCountryMap = summitsByCountryMap;
+  appData.countriesWithSummits = countriesWithSummits;
+  appData.cumulativeSummits = cumulativeSummits;
+
+  if (window.innerWidth >= 768) {
+    initDesktopTimeline(geojsonData, jsonData, summitMap, summitsByCountryMap, countriesWithSummits, cumulativeSummits);
+  } else {
+    initMobileTimeline(geojsonData, jsonData, cumulativeSummits, summitsByCountryMap);
+  }
 }
 
 async function main() {
+  await initHorizontalTimeline();
+  window.addEventListener("resize", async () => {
     await initHorizontalTimeline();
-    window.addEventListener('resize', async () => {
-        console.log("Window resized, new width:", window.innerWidth);
-        await initHorizontalTimeline();
-    });    
+  });
 }
 
 main();
-
 

@@ -230,7 +230,6 @@ function onDotClick(event, yearData) {
 function showYearCard(yearData) {
   const card = document.getElementById("summit-card");
   const content = document.getElementById("summit-card-content");
-  console.log("showYearCard called for year:", yearData.year, "card found:", !!card, "content found:", !!content);
 
   if (!card || !content) return;
 

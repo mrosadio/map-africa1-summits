@@ -78,6 +78,25 @@ body {
 #map {
   background: var(--color-bg-subtle);
 }
+.vis-load-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  max-width: 320px;
+}
+.vis-load-error__title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+.vis-load-error__body {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
 
 /* Map dimmed when detail panel or card is open */
 #map.dimmed svg {

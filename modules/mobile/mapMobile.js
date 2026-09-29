@@ -2,8 +2,6 @@ import { mapStyle } from "../common/globals.js";
 
 let mapMobileHeight = 305;
 let mapMobileWidth = window.innerWidth;
-console.log('Mobile dynamic width', window.innerWidth)
-console.log('Map mobile height', mapMobileHeight)
 
 let projection = d3.geoNaturalEarth1().center([50, 0]).scale(205).translate([mapMobileWidth / 3.5, mapMobileHeight / 1.5]); // do not move coord unless svg size is changed!
 let path = d3.geoPath().projection(projection);
