@@ -98,12 +98,6 @@ body {
   margin-bottom: 12px;
 }
 
-/* Map dimmed when detail panel or card is open */
-#map.dimmed svg {
-  opacity: 0.35;
-  transition: opacity 0.3s ease;
-}
-
 #map svg {
   transition: opacity 0.3s ease;
 }
@@ -261,24 +255,9 @@ body {
 /* -------------- Timeline SVG elements --------------  */
 /* these are d3 rendered so bootstrap can't reach them */
 
-.timeline-axis line {
-  stroke: var(--color-border);
-  stroke-width: 1;
-}
-
-.timeline-axis text {
-  font-size: 10px;
-  fill: var(--color-text-muted);
-  font-family: system-ui, sans-serif;
-}
-
 .timeline-dot {
   cursor: pointer;
   transition: r 0.15s ease;
-}
-
-.timeline-dot:hover {
-  r: 7;
 }
 
 .timeline-dot.active {
@@ -294,28 +273,10 @@ body {
 }
 
 /* ── Map SVG elements ── */
-.country-path {
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.country-path:hover {
-  opacity: 0.8;
-}
-
 .country-label {
   font-size: 9px;
   font-family: system-ui, sans-serif;
   fill: var(--color-text-primary);
-  pointer-events: none;
-}
-
-/* Summit count badge on map */
-.summit-badge {
-  font-size: 10px;
-  font-weight: 600;
-  font-family: system-ui, sans-serif;
-  fill: var(--color-bg);
   pointer-events: none;
 }
 
