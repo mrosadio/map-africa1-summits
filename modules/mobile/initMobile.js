@@ -3,8 +3,6 @@ import { initializeMobileMap, updateMapByCountry, updateMapByYear } from "./mapM
 import { showPickerCountrySummit, showPickerYearSummit, confirmPicker, cancel, getSelectedText } from "./pickerMobile.js";
 
 export function initMobileTimeline(geojsonData, jsonData, cumulativeSummits, summitsByCountryMap /*, summitCounter*/) {
-    //console.log('JSON data in mobile timeline', jsonData);
-    //console.log('Summits by country map', summitsByCountryMap)
     initializeMobileMap(geojsonData);
     const confirmButton = document.getElementById("confirmButton");
     // Open year picker 

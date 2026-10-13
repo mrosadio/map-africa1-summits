@@ -420,7 +420,7 @@ body {
   }
 }
 /* ----------- Mobile ----------- */
-@media (max-width: 575px) {
+@media (max-width: 767.98px) {
   .vis-nav__title {
     font-size: var(--fs-xs);
   }

@@ -1,8 +1,6 @@
 // Draw horizonntal timeline. Dot rendering and click interactions
 // Public functions:
-//   initHorizontalTimeline(summitData, geojsonData, cumulativeSummits, summitsByCountryMap)
 //   highlightYearDots(year)   — called from mapUtils when country clicked
-//   resetYearDots()           — called when detail panel closes
 
 import { renderCumulativeMap, clearCountrySelection } from "./mapUtils.js";
 import { getColorForCountry } from "../common/partnerColors.js";
@@ -11,22 +9,25 @@ import { appData } from "../common/globals.js";
 // -- Module states -------------------------------------------------------
 let svg; // timeline SVG selection
 let xScale; // D3 scale - year -> x position
-let allSummitData; // full dataset reference for click handlers
 let focusIndex = 0;
 let scrubListenersAttached = false;
 let settleTimer = null;
 let scrubAnimId = null;
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const SETTLE_DELAY = 300; // ms of no scrolling before we consider the user is "settled"
 const DOT_R = 6;
 
+export function restoreScrub() {
+  tick(focusIndex);
+}
+
 // -- Public: current scrub position
 export function getFocusIndex() {
-  return focusIndex;
+  tick(focusIndex);
 }
 // -- Public: init
 export function renderTimeline() {
-  const { summitData, geojsonData, cumulativeSummits, summitsByCountryMap } = appData;
-  allSummitData = appData;
+  const { summitData } = appData;
 
   const container = document.getElementById("desktop-timeline");
   if (!container) {
@@ -161,7 +162,10 @@ export function scrubToIndex(targetIndex) {
     settle(appData.summitData[focusIndex]);
     return;
   }
-
+  if (reduceMotion.matches) {
+    settle(tick(targetIndex)); // jump straight to the year, no step animation
+    return;
+  }
   scrubAnimId = setInterval(() => {
     const next = focusIndex + step;
     tick(next);
@@ -217,13 +221,6 @@ function closeCountryPanelIfOpen() {
     setTimeout(() => panel.classList.add("d-none"), 300);
   }
 }
-// -- Private: dot click handler -----------------------------------------------------
-function onDotClick(event, yearData) {
-  highlightYearDots(yearData.year);
-  updateMapByYear(yearData);
-  showYearCard(event, yearData);
-  dimMapExceptHost(yearData.summits.map((s) => s.country));
-}
 
 // -- Private: floating summit card ---------------------------------------------------
 // now activates from the dom (previously it positioned itself from a mouse event)
@@ -245,7 +242,7 @@ function showYearCard(yearData) {
         summit.place
           ? `
         <div class="summit-meta">
-          <img src="./src/img/map-pin.svg" class="summit-meta__icon" alt="">
+          <img src="/src/img/map-pin.svg" class="summit-meta__icon" alt="">
           <p class="summit-card__place mb-0">${summit.place}</p>
         </div>`
           : ""
@@ -291,40 +288,6 @@ function showYearCard(yearData) {
 
   document.getElementById("close-card")?.addEventListener("click", closeYearCard, { once: true });
 }
-
-// -- Private: legend --------------------------------------------------------------
-// function drawLegend(g, innerW, innerH) {
-//   const items = [
-//     { label: "France", color: "#4A6FA5" },
-//     { label: "Asia", color: "#C17B2A" },
-//     { label: "Turkey / Gulf", color: "#6B8F71" },
-//     { label: "US / Russia", color: "#7B5EA7" },
-//     { label: "Other", color: "#B4B2A9" },
-//   ];
-//   const LEGEND_LIFT = 18;
-//   const legendG = g.append("g").attr("transform", `translate(0, ${innerH + LEGEND_LIFT})`);
-
-//   let xOffset = 0;
-//   items.forEach((item) => {
-//     legendG
-//       .append("circle")
-//       .attr("cx", xOffset + 6)
-//       .attr("cy", -innerH - LEGEND_LIFT + 4)
-//       .attr("r", 6)
-//       .attr("fill", item.color);
-
-//     legendG
-//       .append("text")
-//       .attr("class", "legend-label")
-//       .attr("x", xOffset + 16)
-//       .attr("y", -innerH - LEGEND_LIFT + 8)
-//       .attr("dominant-baseline", "middle")
-//       .attr("font-size", "12px")
-//       .text(item.label);
-
-//     xOffset += item.label.length * 6.5 + 20;
-//   });
-// }
 
 function tick(index) {
   focusIndex = index;
