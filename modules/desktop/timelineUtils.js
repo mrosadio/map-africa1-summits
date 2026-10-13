@@ -242,7 +242,7 @@ function showYearCard(yearData) {
         summit.place
           ? `
         <div class="summit-meta">
-          <img src="/src/img/map-pin.svg" class="summit-meta__icon" alt="">
+          <img src="./src/img/map-pin.svg" class="summit-meta__icon" alt="">
           <p class="summit-card__place mb-0">${summit.place}</p>
         </div>`
           : ""
