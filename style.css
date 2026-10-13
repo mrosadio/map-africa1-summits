@@ -85,19 +85,19 @@ body {
 }
 
 .vis-nav__title {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
   color: var(--color-text-primary);
   letter-spacing: -0.01em;
 }
 .vis-hint {
-  font-size: 13px;
+  font-size: var(--fs-sm);
   color: var(--color-text-muted);
   background: var(--color-bg, #fff);
   border-bottom: 0.5px solid var(--color-border, #e8e4df);
 }
 .vis-hint__label {
-  font-weight: 500;
+  font-weight: var(--fw-semibold);
 }
 .vis-hint__item i {
   margin-right: 6px;
@@ -109,13 +109,13 @@ body {
   position: absolute;
   top: 16px;
   left: 16px;
-  z-index: 15;
-  font-size: 1.1rem;
-  font-weight: 700;
+  z-index: var(--z-counter);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
   color: var(--color-text-primary);
   background: rgba(255, 255, 255, 0.85);
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   pointer-events: none; /* so it never blocks map clicks underneath */
 }
 /* Map container */
@@ -131,19 +131,19 @@ body {
   max-width: 320px;
 }
 .vis-load-error__title {
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-lg);
   color: var(--color-text-primary);
   margin-bottom: 4px;
 }
 .vis-load-error__body {
   color: var(--color-text-muted);
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
   margin-bottom: 12px;
 }
 
 #map svg {
-  transition: opacity 0.3s ease;
+  transition: opacity var(--dur-base) var(--ease);
 }
 
 /* Timeline footer */
@@ -156,11 +156,11 @@ body {
 }
 .vis-legend {
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--color-text-muted);
 }
 .vis-legend__title {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--color-text-primary);
 }
 .vis-legend__item {
@@ -175,16 +175,16 @@ body {
   display: inline-block;
 }
 .vis-legend__counter {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--color-text-primary);
 }
 /* -- Detail panel (country click) -- */
 .vis-panel {
-  width: 380px;
+  width: var(--panel-width);
   background: var(--color-bg);
   border-left: 0.5px solid var(--color-border);
-  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.06);
-  z-index: 20;
+  box-shadow: var(--shadow-panel);
+  z-index: var(--z-panel);
   transform: translateX(100%);
   transition: transform 0.3s ease;
 }
@@ -203,22 +203,22 @@ body {
   margin-bottom: 12px;
 }
 .vis-panel__title {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
   color: var(--color-text-primary);
   display: flex;
   align-items: center;
 }
 .vis-panel__flag {
   height: 24px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
 }
 
 /* Summit list items */
 #summitList li {
   padding: 10px 0;
   border-bottom: 0.5px solid var(--color-border);
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
 }
 
 #summitList li:last-child {
@@ -226,13 +226,13 @@ body {
 }
 
 #summitList .summit-title {
-  font-weight: 500;
+  font-weight: var(--fw-semibold);
   color: var(--color-text-primary);
   margin-bottom: 2px;
 }
 
 #summitList .summit-city {
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   color: var(--color-text-muted);
 }
 
@@ -244,21 +244,21 @@ body {
   background: var(--color-bg);
   border: 0.5px solid var(--color-border);
   border-radius: 6px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-  z-index: 30;
+  box-shadow: var(--shadow-panel);
+  z-index: var(--z-card);
 }
 
 .vis-summit-card.open {
   display: block !important;
 }
 .summit-card__year {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
   color: var(--color-text-primary);
 }
 .summit-card__country {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
   color: var(--color-text-primary);
   margin-bottom: 4px;
 }
@@ -271,12 +271,12 @@ body {
   border-bottom: 2px solid var(--color-accent);
 }
 .summit-card__title {
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   color: var(--color-text-primary);
   margin-bottom: 3px;
 }
 .summit-card__place {
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   color: var(--color-text-muted);
 }
 .vis-summit-card .btn-close {
@@ -288,7 +288,7 @@ body {
 
 .timeline-dot {
   cursor: pointer;
-  transition: r 0.15s ease;
+  transition: r var(--dur-fast) var(--ease);
 }
 
 .timeline-dot.active {
@@ -297,7 +297,7 @@ body {
 }
 
 .timeline-label {
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-family: inherit;
   fill: var(--color-text-muted);
   pointer-events: none;
@@ -314,7 +314,7 @@ body {
 }
 
 .modal-body p {
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
   line-height: 1.7;
   color: var(--color-text-primary);
 }
@@ -394,7 +394,7 @@ body {
     flex-shrink: 0;
     transform: none !important;
     box-shadow: none;
-    transition: width 0.3s ease;
+    transition: width var(--dur-base) var(--ease);
   }
   .vis-panel.open {
     width: 220px;
@@ -404,7 +404,7 @@ body {
 /* ----------- Mobile ----------- */
 @media (max-width: 575px) {
   .vis-nav__title {
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
   }
   .vis-panel {
     width: 100%;
