@@ -6,29 +6,86 @@
    ============================================================ */
 
 :root {
-  --color-accent:       #C1440E;
-  --color-border:       #E8E4DF;
-  --color-bg:           #FFFFFF;
-  --color-bg-subtle:    #FAFAF8;
-  --color-text-primary: #1C1C1A;
-  --color-text-muted:   #4A4A47;
+  /* Neutrals & accent (category colours are injected from partnerColors.js) */
+  --color-accent: #c1440e;
+  --color-border: #e8e4df;
+  --color-bg: #ffffff;
+  --color-bg-subtle: #fafaf8;
+  --color-text-primary: #1c1c1a;
+  --color-text-muted: #4a4a47;
+  --bs-secondary-rgb: 74, 74, 71; /* same as --color-text-muted */
 
-  /* Partner region colors — used on timeline dots and map */
-  --color-france:       #4A6FA5;  /* blue - France */
-  --color-asia:         #C17B2A;  /* amber - China, Japan, South Korea */
-  --color-mideast:      #6B8F71;  /* sage - Turkey, Saudi Arabia, UAE */
-  --color-west:         #7B5EA7;  /* purple - US, Russia */
-  --color-other:        #B4B2A9;  /* grey - others */
+  /* Type scale (rem so it respects the user's browser font size) */
+  --fs-xs: 0.75rem; /* 12px */
+  --fs-sm: 0.875rem; /* 14px */
+  --fs-md: 1rem; /* 16px */
+  --fs-lg: 1.25rem; /* 20px */
+  --fs-xl: 1.75rem; /* 28px */
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --lh-tight: 1.2;
+  --lh-body: 1.5;
 
-  /* Timeline dimensions */
-  --timeline-height:    140px; 
-  --nav-height:         48px;
+  /* Spacing */
+  --space-1: 0.25rem; /* 4  */
+  --space-2: 0.5rem; /* 8  */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-5: 1.5rem; /* 24 */
+  --space-6: 2rem; /* 32 */
+
+  /* Radii & shadows */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-panel: -4px 0 16px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.12);
+
+  /* Motion */
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --ease: ease;
+
+  /* Stacking */
+  --z-counter: 15;
+  --z-panel: 20;
+  --z-card: 30;
+
+  /* Layout */
+  --timeline-height: 140px;
+  --nav-height: 48px;
+  --panel-width: 380px;
+
+  /* Type extras */
+  --lh-relaxed: 1.7; /* long-form reading text (About modal) */
+  --ls-tight: -0.01em;
+  --ls-label: 0.08em; /* uppercase labels */
+
+  /* Borders */
+  --border-w: 0.5px;
+  --border-w-accent: 2px;
+
+  /* Colour */
+  --color-bg-overlay: rgba(255, 255, 255, 0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+  }
 }
 
 /* ── Layout ── */
 body {
   background: var(--color-bg-subtle);
-  font-family: 'Arimo', system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family:
+    "Arimo",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
   color: var(--color-text-primary);
 }
 
@@ -36,47 +93,52 @@ body {
 .vis-nav {
   height: var(--nav-height);
   background: var(--color-bg);
-  border-bottom: 0.5px solid var(--color-border);
+  border-bottom: var(--border-w) solid var(--color-border);
   flex-shrink: 0;
 }
 
 .vis-nav__title {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
   color: var(--color-text-primary);
-  letter-spacing: -0.01em;
+  letter-spacing: var(--ls-tight);
 }
 .vis-hint {
-  font-size: 13px;
-  color: var(--color-text-secondary, #5F5E5A);
-  background: var(--color-bg, #fff);
-  border-bottom: 0.5px solid var(--color-border, #E8E4DF);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border-bottom: var(--border-w) solid var(--color-border);
 }
 .vis-hint__label {
-  font-weight: 500;
+  font-weight: var(--fw-semibold);
 }
 .vis-hint__item i {
-  margin-right: 6px;
+  margin-right: var(--space-2);
 }
 .vis-hint__divider {
-  color: var(--color-border, #E8E4DF);
+  color: var(--color-border);
 }
 .vis-map-counter {
   position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 15;
-  font-size: 1.1rem;
-  font-weight: 700;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: var(--z-counter);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
   color: var(--color-text-primary);
-  background: rgba(255, 255, 255, 0.85);
-  padding: 6px 12px;
-  border-radius: 6px;
+  background: var(--color-bg-overlay);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
   pointer-events: none; /* so it never blocks map clicks underneath */
 }
 /* Map container */
 #map {
   background: var(--color-bg-subtle);
+}
+.vis-label {
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+  font-size: var(--fs-xs);
 }
 .vis-load-error {
   position: absolute;
@@ -87,55 +149,42 @@ body {
   max-width: 320px;
 }
 .vis-load-error__title {
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-lg);
   color: var(--color-text-primary);
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 .vis-load-error__body {
   color: var(--color-text-muted);
-  font-size: 0.9rem;
-  margin-bottom: 12px;
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-3);
 }
 
 #map svg {
-  transition: opacity 0.3s ease;
+  transition: opacity var(--dur-base) var(--ease);
 }
 
 /* Timeline footer */
 .vis-timeline {
   height: var(--timeline-height);
   background: var(--color-bg);
-  border-top: 0.5px solid var(--color-border);
+  border-top: var(--border-w) solid var(--color-border);
   display: flex;
   flex-direction: column;
 }
-/* Legend */
-/* :root {
-  --timeline-height: 108px;
-} */
-
-.vis-timeline {
-  height: var(--timeline-height);
-  background: var(--color-bg);
-  border-top: 0.5px solid var(--color-border);
-  display: flex;
-  flex-direction: column;
-}
-
 .vis-legend {
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--color-text-muted);
 }
 .vis-legend__title {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--color-text-primary);
 }
 .vis-legend__item {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--space-1);
 }
 .vis-legend__dot {
   width: 9px;
@@ -144,18 +193,18 @@ body {
   display: inline-block;
 }
 .vis-legend__counter {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--color-text-primary);
 }
 /* -- Detail panel (country click) -- */
 .vis-panel {
-  width: 380px;
+  width: var(--panel-width);
   background: var(--color-bg);
-  border-left: 0.5px solid var(--color-border);
-  box-shadow: -4px 0 16px rgba(0,0,0,0.06);
-  z-index: 20;
+  border-left: var(--border-w) solid var(--color-border);
+  box-shadow: var(--shadow-panel);
+  z-index: var(--z-panel);
   transform: translateX(100%);
-  transition: transform 0.3s ease;
+  transition: transform var(--dur-base) var(--ease);
 }
 
 .vis-panel.open {
@@ -167,27 +216,27 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid var(--color-accent);
-  padding-bottom: 8px;
-  margin-bottom: 12px;
+  border-bottom: var(--border-w-accent) solid var(--color-accent);
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
 }
 .vis-panel__title {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
   color: var(--color-text-primary);
   display: flex;
   align-items: center;
 }
 .vis-panel__flag {
   height: 24px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
 }
 
 /* Summit list items */
 #summitList li {
-  padding: 10px 0;
-  border-bottom: 0.5px solid var(--color-border);
-  font-size: 0.85rem;
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-w) solid var(--color-border);
+  font-size: var(--fs-sm);
 }
 
 #summitList li:last-child {
@@ -195,13 +244,13 @@ body {
 }
 
 #summitList .summit-title {
-  font-weight: 500;
+  font-weight: var(--fw-semibold);
   color: var(--color-text-primary);
-  margin-bottom: 2px;
+  margin-bottom: var(--space-1);
 }
 
 #summitList .summit-city {
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   color: var(--color-text-muted);
 }
 
@@ -211,45 +260,45 @@ body {
   min-width: 260px;
   max-width: 340px;
   background: var(--color-bg);
-  border: 0.5px solid var(--color-border);
-  border-radius: 6px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-  z-index: 30;
+  border: var(--border-w) solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  z-index: var(--z-card);
 }
 
 .vis-summit-card.open {
   display: block !important;
 }
 .summit-card__year {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
   color: var(--color-text-primary);
 }
 .summit-card__country {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
   color: var(--color-text-primary);
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 .summit-card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--color-accent);
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--border-w-accent) solid var(--color-accent);
 }
 .summit-card__title {
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   color: var(--color-text-primary);
-  margin-bottom: 3px;
+  margin-bottom: var(--space-1);
 }
 .summit-card__place {
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   color: var(--color-text-muted);
 }
 .vis-summit-card .btn-close {
-  font-size: 0.65rem;
+  font-size: var(--fs-xs);
 }
 
 /* -------------- Timeline SVG elements --------------  */
@@ -257,7 +306,7 @@ body {
 
 .timeline-dot {
   cursor: pointer;
-  transition: r 0.15s ease;
+  transition: r var(--dur-fast) var(--ease);
 }
 
 .timeline-dot.active {
@@ -266,17 +315,9 @@ body {
 }
 
 .timeline-label {
-  font-size: 12px;
-  font-family: system-ui, sans-serif;
+  font-size: var(--fs-xs);
+  font-family: inherit;
   fill: var(--color-text-muted);
-  pointer-events: none;
-}
-
-/* ── Map SVG elements ── */
-.country-label {
-  font-size: 9px;
-  font-family: system-ui, sans-serif;
-  fill: var(--color-text-primary);
   pointer-events: none;
 }
 
@@ -291,8 +332,8 @@ body {
 }
 
 .modal-body p {
-  font-size: 0.9rem;
-  line-height: 1.7;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
   color: var(--color-text-primary);
 }
 
@@ -303,13 +344,7 @@ body {
 }
 #summitListContainer::-webkit-scrollbar-thumb {
   background: var(--color-border);
-  border-radius: 3px;
-}
-#summitList .calendar,
-#summitList .location {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
+  border-radius: var(--radius-sm);
 }
 .summit-content {
   flex: 1 1 auto;
@@ -319,8 +354,8 @@ body {
 .summit-meta {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 2px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
 }
 
 .summit-meta__icon {
@@ -337,14 +372,14 @@ body {
 @media (min-width: 768px) and (max-width: 1194px) and (orientation: portrait) {
   .vis-panel {
     width: 100%;
-    height: 30vh !important;
+    height: 45vh !important;
     top: auto !important;
     bottom: 0;
     right: 0;
     left: 0;
     transform: translateY(100%);
     border-left: none;
-    border-top: 0.5px solid var(--color-border);
+    border-top: var(--border-w) solid var(--color-border);
   }
   .vis-panel.open {
     transform: translateY(0);
@@ -377,7 +412,7 @@ body {
     flex-shrink: 0;
     transform: none !important;
     box-shadow: none;
-    transition: width 0.3s ease;
+    transition: width var(--dur-base) var(--ease);
   }
   .vis-panel.open {
     width: 220px;
@@ -387,7 +422,7 @@ body {
 /* ----------- Mobile ----------- */
 @media (max-width: 575px) {
   .vis-nav__title {
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
   }
   .vis-panel {
     width: 100%;
@@ -397,7 +432,7 @@ body {
     right: 0;
     transform: translateY(100%);
     border-left: none;
-    border-top: 0.5px solid var(--color-border);
+    border-top: var(--border-w) solid var(--color-border);
   }
   .vis-panel.open {
     transform: translateY(0);
@@ -406,4 +441,3 @@ body {
     height: 60px;
   }
 }
-
