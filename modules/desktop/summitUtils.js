@@ -19,7 +19,7 @@ export function renderCountryPanel(country, summitsCountry) {
   const countryIcon = document.getElementById("country-icon");
   const countryName = document.getElementById("country-name");
   if (countryIcon) {
-    countryIcon.src = `./src/img/country-flags-main/png100px/${flagCountry}`;
+    countryIcon.src = `./mg/country-flags-main/png100px/${flagCountry}`;
   } else {
     console.warn("renderCountryPanel: #country-icon not found in DOM");
   }
@@ -29,42 +29,46 @@ export function renderCountryPanel(country, summitsCountry) {
     console.warn("renderCountryPanel: #country-name not found in DOM");
   }
   const noSummits = summitsCountry.length;
-  const totalSummits = document.getElementById('total-summit');
+  const totalSummits = document.getElementById("total-summit");
   if (totalSummits) {
     totalSummits.innerHTML = `${noSummits} summit(s) hosted:`;
   } else {
-    console.warn('renderCountryPanel: #total-summit not found in DOM');
+    console.warn("renderCountryPanel: #total-summit not found in DOM");
   }
 
-  const introListSummit = document.getElementById('intro-list-summit');
+  const introListSummit = document.getElementById("intro-list-summit");
   if (introListSummit) {
     introListSummit.innerHTML = `<i>(from most to least recent)</i>`;
   } else {
-    console.warn('renderCountryPanel: #intro-list-summit not found in DOM');
+    console.warn("renderCountryPanel: #intro-list-summit not found in DOM");
   }
 
-  const summitListContainer = document.getElementById('summitList');
+  const summitListContainer = document.getElementById("summitList");
   if (!summitListContainer) {
-    console.warn('renderCountryPanel: #summitList not found in DOM — aborting list render');
+    console.warn("renderCountryPanel: #summitList not found in DOM — aborting list render");
     return;
   }
-  summitListContainer.innerHTML = '';
+  summitListContainer.innerHTML = "";
 
   const reversedSummitsCountry = summitsCountry.slice().reverse();
-  reversedSummitsCountry.forEach(summit => {
-    const listItem = document.createElement('li');
+  reversedSummitsCountry.forEach((summit) => {
+    const listItem = document.createElement("li");
 
     let titleContent = summit.title ? `${summit.title}` : `${summit.summitNo} Summit`;
-    let dateContent = summit.date ? `
+    let dateContent = summit.date
+      ? `
         <div class="summit-meta">
-            <img src="./src/img/calendar.svg" class="summit-meta__icon" alt="">
+            <img src="/src/img/calendar.svg" class="summit-meta__icon" alt="">
             <p class="mobile-font-size mb-0">${summit.date}</p>
-        </div>` : '';
-    let placeContent = summit.place ? `
+        </div>`
+      : "";
+    let placeContent = summit.place
+      ? `
         <div class="summit-meta">
-            <img src="./src/img/map-pin.svg" class="summit-meta__icon" alt="">
+            <img src="/src/img/map-pin.svg" class="summit-meta__icon" alt="">
             <p class="mobile-font-size mb-0">${summit.place}</p>
-        </div>` : '';
+        </div>`
+      : "";
 
     listItem.innerHTML = `
         <div class="d-flex align-items-start mb-0">
@@ -125,7 +129,7 @@ export function displaySummitsYear(yearData) {
     let countryListed = country
       ? `
         <div class="d-flex justify-content-start align-items-center mt-4 mb-2">
-            <img src="./src/img/country-flags-main/png100px/${flagCountry}" class="img-fluid country-flag border-dark rounded me-2" alt="Flag">
+            <img src="./src/country-flags-main/png100px/${flagCountry}" class="img-fluid country-flag border-dark rounded me-2" alt="Flag">
             <p class="mb-0 ms-1 fw-bold">${country}</p>
         </div>`
       : "";
@@ -133,14 +137,14 @@ export function displaySummitsYear(yearData) {
     let dateContent = summit.date
       ? `
         <div class="d-flex justify-content-start align-items-center mb-0">
-            <img src="./src/img/calendar.svg" class="img-fluid calendar me-2 pe-sm-2 pe-lg-2 pe-xl-2">
+            <img src="/src/img/calendar.svg" class="img-fluid calendar me-2 pe-sm-2 pe-lg-2 pe-xl-2">
             <p class="mobile-font-size mb-0">${summit.date}</p>
         </div>`
       : "";
     let placeContent = summit.place
       ? `
         <div class="d-flex justify-content-start align-items-center mb-0">
-            <img src="./src/img/map-pin.svg" class="img-fluid location me-2 pe-sm-2 pe-lg-2 pe-xl-2">
+            <img src="/src/img/map-pin.svg" class="img-fluid location me-2 pe-sm-2 pe-lg-2 pe-xl-2">
             <p class="mobile-font-size mb-0">${summit.place}</p>
         </div>`
       : "";

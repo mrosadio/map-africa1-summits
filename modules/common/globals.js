@@ -1,3 +1,6 @@
+// Layout breakpoint in px. Must match the media queries in style.css,
+// which cannot read JS variables.
+export const BREAKPOINTS = { tablet: 768 };
 // Databases
 const jsonPath = './db/summits-by-year.json';
 const geojsonUrl = "./db/world.geojson";
