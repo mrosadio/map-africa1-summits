@@ -13,6 +13,7 @@ let focusIndex = 0;
 let scrubListenersAttached = false;
 let settleTimer = null;
 let scrubAnimId = null;
+let playhead;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const SETTLE_DELAY = 300; // ms of no scrolling before we consider the user is "settled"
 const DOT_R = 6;
@@ -21,10 +22,6 @@ export function restoreScrub() {
   tick(focusIndex);
 }
 
-// -- Public: current scrub position
-export function getFocusIndex() {
-  tick(focusIndex);
-}
 // -- Public: init
 export function renderTimeline() {
   const { summitData } = appData;
@@ -60,6 +57,15 @@ export function renderTimeline() {
 
   g.append("line").attr("class", "timeline-axis").attr("x1", 0).attr("x2", innerW).attr("y1", innerH).attr("y2", innerH).attr("stroke", "#E8E4DF").attr("stroke-width", 1);
 
+  playhead = g
+    .append("line")
+    .attr("class", "timeline-playhead")
+    .attr("y1", -MARGIN.top + 4)
+    .attr("y2", innerH)
+    .style("stroke", "var(--color-text-muted)")
+    .style("stroke-width", 1)
+    .style("stroke-dasharray", "2 3");
+  movePlayhead(summitData[focusIndex].year);
   const labelYears = years.filter((y, i) => i === 0 || i === years.length - 1 || y % 10 === 0);
   g.selectAll("text.timeline-year-label")
     .data(labelYears)
@@ -182,32 +188,69 @@ export function closeYearCard() {
   card?.classList.remove("open");
 }
 
+// -- Private: wheel accumulation ----------------------------------------------------
+export function stepScrub(dir) {
+  clearInterval(scrubAnimId);
+  clearCountrySelection();
+  closeCountryPanelIfOpen();
+  const newIndex = Math.max(0, Math.min(appData.summitData.length - 1, focusIndex + dir));
+  if (newIndex === focusIndex) return;
+  const yearData = tick(newIndex);
+  clearTimeout(settleTimer);
+  settleTimer = setTimeout(() => {
+    settleTimer = null;
+    settle(yearData);
+  }, SETTLE_DELAY);
+}
+
+// -- Private: moveplayhead ---------------------------------------------------------
+function movePlayhead(year) {
+  const x = xScale(year);
+  playhead?.attr("x1", x).attr("x2", x);
+}
 // -- Private: attaches scrub listener to timeline -----------------------------------
 // after 300ms consider the current dot as settled
 function attachScrubListener() {
   if (scrubListenersAttached) return;
   scrubListenersAttached = true;
+  const WHEEL_STEP = 40; // px of travel per year; tune on your own touchpad
+  const WHEEL_IDLE_MS = 150; // forget leftover travel after a pause
+  let wheelAcc = 0;
+  let wheelIdleTimer = null;
 
   function handleWheel(event) {
     event.preventDefault();
-    clearInterval(scrubAnimId); // a click-triggered animation shouldn't fight a fresh scroll
-    clearCountrySelection(); // clear stale "selected country" state
-    closeCountryPanelIfOpen();
-    const { summitData } = appData;
-    const maxIndex = summitData.length - 1;
-    const dir = event.deltaY > 0 ? 1 : -1;
-    const newIndex = Math.max(0, Math.min(maxIndex, focusIndex + dir));
-    const yearData = tick(newIndex);
-
-    clearTimeout(settleTimer);
-    settleTimer = setTimeout(() => {
-      settleTimer = null;
-      settle(yearData);
-    }, SETTLE_DELAY);
+    wheelAcc += event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
+    clearTimeout(wheelIdleTimer);
+    wheelIdleTimer = setTimeout(() => (wheelAcc = 0), WHEEL_IDLE_MS);
+    if (Math.abs(wheelAcc) < WHEEL_STEP) return;
+    stepScrub(wheelAcc > 0 ? 1 : -1);
+    wheelAcc = 0;
   }
-
-  document.getElementById("map")?.addEventListener("wheel", handleWheel, { passive: false });
-  document.getElementById("desktop-timeline")?.addEventListener("wheel", handleWheel, { passive: false });
+  document.getElementById("desktop-timeline").addEventListener("wheel", handleWheel, { passive: false });
+  document.addEventListener("keydown", (event) => {
+    const t = event.target;
+    if (t !== document.body && t !== document.getElementById("desktop-timeline")) return;
+    switch (event.key) {
+      case "ArrowRight":
+      case "ArrowDown":
+        stepScrub(1);
+        break;
+      case "ArrowLeft":
+      case "ArrowUp":
+        stepScrub(-1);
+        break;
+      case "Home":
+        scrubToIndex(0);
+        break;
+      case "End":
+        scrubToIndex(appData.summitData.length - 1);
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+  });
 }
 
 // -- Private -------------------------------------------------------------------------
@@ -297,6 +340,7 @@ function tick(index) {
   updateDotsForScrub(yearData.year);
   updateCumulativeCounter(yearData); // ← new
   hideYearCardWhileMoving();
+  movePlayhead(yearData.year)
   return yearData;
 }
 
