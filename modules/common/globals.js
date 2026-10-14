@@ -124,7 +124,7 @@ const flagSrc = [
     {
         country: "United Kingdom",
         img: {
-            "img-src": "gb-nir.png"
+            "img-src": "gb.png"
         }
     },
     {

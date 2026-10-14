@@ -3,6 +3,8 @@
 import { getColorForCountry } from "../common/partnerColors.js";
 import { svg, mapStyle, appData } from "../common/globals.js";
 import { getSummitsByCountry, renderCountryPanel } from "./summitUtils.js";
+import { showTooltip, hideTooltip } from "./tooltip.js";
+import { displayName } from "../common/utils.js";
 
 let projection;
 let path;
@@ -30,7 +32,7 @@ export function drawMap() {
   svg.selectAll("*").remove();
   g = svg.append("g");
 
-  g.selectAll("path")
+ const paths = g.selectAll("path")
     .data(geojsonData.features)
     .enter()
     .append("path")
@@ -40,11 +42,9 @@ export function drawMap() {
       return countriesWithSummits.has(country) ? getColorForCountry(country) : mapStyle.defaultFill;
     })
     .attr("stroke", mapStyle.defaultBorder)
-    .attr("stroke-width", mapStyle.defaultBorderWidth)
-    .style("cursor", (d) => (countriesWithSummits.has(d.properties.name) ? "pointer" : "default")) // Set cursor style
-    .on("click", function (event, d) {
-      handleCountryClick(event, d, countriesWithSummits, summitsByCountryMap);
-    });
+    .attr("stroke-width", mapStyle.defaultBorderWidth);
+  bindCountryEvents(paths, countriesWithSummits)
+    
 }
 
 // -- Public: Cumulative map render for the scrubber —---------------------------
@@ -57,7 +57,7 @@ export function renderCumulativeMap(yearData) {
   const cumulative = yearInfo.cumulative;
   const currentHosts = yearData.summits.map((s) => s.country);
 
-  g.selectAll("path")
+ const sel = g.selectAll("path")
     .data(geojsonData.features)
     .join("path")
     .attr("d", path)
@@ -67,11 +67,8 @@ export function renderCumulativeMap(yearData) {
     })
     .attr("stroke", (d) => (currentHosts.includes(d.properties.name) ? mapStyle.borderHost : mapStyle.defaultBorder))
     .attr("stroke-width", (d) => (currentHosts.includes(d.properties.name) ? mapStyle.borderWidthHost : mapStyle.defaultBorderWidth))
-    .attr("opacity", 1)
-    .style("cursor", (d) => (cumulative.has(d.properties.name) ? "pointer" : "default"))
-    .on("click", function (event, d) {
-      handleCountryClick(event, d, cumulative, summitsByCountryMap);
-    });
+    .attr("opacity", 1);
+  bindCountryEvents(sel, cumulative)
 }
 function notifyCountryClick(country) {
   countryClickListeners.forEach((cb) => cb(country));
@@ -116,4 +113,14 @@ export function clearCountrySelection() {
 export function clearCountryLabels() {
   svg.selectAll(".country-label").remove();
   svg.selectAll(".country-counter").remove();
+}
+function bindCountryEvents(selection, availableCountries) {
+  selection
+    .style("cursor", (d) => (availableCountries.has(d.properties.name) ? "pointer" : "default"))
+    .on("click", (event, d) => handleCountryClick(event, d, availableCountries, appData.summitsByCountryMap))
+    .on("mousemove", (event, d) => {
+      if (availableCountries.has(d.properties.name)) showTooltip(displayName(d.properties.name), event);
+      else hideTooltip();
+    })
+    .on("mouseleave", hideTooltip);
 }
