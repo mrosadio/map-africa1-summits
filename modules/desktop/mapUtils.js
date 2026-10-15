@@ -44,9 +44,28 @@ export function drawMap() {
     .attr("stroke", mapStyle.defaultBorder)
     .attr("stroke-width", mapStyle.defaultBorderWidth);
   bindCountryEvents(paths, countriesWithSummits)
-    
+}
+// Re-fits the existing shapes to the container. Does not rebuild the map,
+// so colours, selection ring and listeners are kept.
+export function redrawMap() {
+  if (!g) return;
+  const el = document.querySelector("#map");
+  const W = el.clientWidth;
+  const H = el.clientHeight;
+  if (!W || !H) return; // hidden (for example on mobile)
+  svg.attr("viewBox", `0 0 ${W} ${H}`);
+  projection.fitSize([W, H], appData.geojsonData); // mutates the projection that `path` already uses
+  g.selectAll("path").attr("d", path);
 }
 
+export function observeMapResize() {
+  const el = document.querySelector("#map");
+  let frame;
+  new ResizeObserver(() => {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(redrawMap);
+  }).observe(el);
+}
 // -- Public: Cumulative map render for the scrubber —---------------------------
 // Called on every scroll tick.
 // Distinct from updateMapByYear (kept temporarily for the old click-to-jump flow,

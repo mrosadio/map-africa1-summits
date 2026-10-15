@@ -75,23 +75,22 @@
         click a country for its full history
       </span>
     </div>
-    <!-- ── Main: map + detail panel ── -->
-    <main class="vis-main flex-grow-1 position-relative overflow-hidden">
-      <!-- Live runing counter -->
-      <div id="cumulative-counter" class="vis-map-counter"></div>
-      <!-- tooltip -->
-       <div id="vis-tooltip" class="vis-tooltip" role="tooltip"></div>
-      <!-- World map -->
-      <div id="map" class="w-100 h-100"></div>
-
-      <div id="load-error" class="vis-load-error d-none">
-        <p class="vis-load-error__title">Something went wrong loading the data.</p>
-        <p class="vis-load-error__body">Please check your connection and try again.</p>
-        <button class="btn btn-sm btn-outline-secondary" onclick="location.reload()">Reload</button>
+    <!-- ── Main: children are map container and panel ── -->
+    <main class="vis-main flex-grow-1 d-flex overflow-hidden">
+      <!-- map area will contain now counter, tooltip, #map, #loaderror, #summitcard -->
+      <div class="vis-map-area position-relative flex-grow-1">
+        <div id="cumulative-counter" class="vis-map-counter"></div>
+        <div id="vis-tooltip" class="vis-tooltip" role="tooltip"></div>
+        <div id="map" class="w-100 h-100"></div>
+        <div id="load-error" class="vis-load-error d-none">
+          <p class="vis-load-error__title">Something went wrong loading the data.</p>
+          <p class="vis-load-error__body">Please check your connection and try again.</p>
+          <button class="btn btn-sm btn-outline-secondary" onclick="location.reload()">Reload</button>
+        </div>
       </div>
       <!-- Detail panel — slides in from right on country click -->
-      <aside id="detail-panel" class="vis-panel d-none position-absolute top-0 end-0 h-100">
-        <div id="summitListContainer" class="p-4 h-100 overflow-y-auto">
+      <aside id="detail-panel" class="vis-panel" inert>
+        <div id="summitListContainer" class="vis-panel__inner p-4">
           <div class="vis-panel__header">
             <h2 id="summitCountry" class="vis-panel__title mb-0">
               <img src="" id="country-icon" class="vis-panel__flag me-2" />

@@ -14,7 +14,7 @@ export function renderCountryPanel(country, summitsCountry) {
     country = "United Kingdom";
   }
   const filterFlag = flagSrc.filter((item) => item.country === country);
-  const flagCountry = filterFlag[0].img["img-src"];
+    const flagCountry = flagSrc.find((item) => item.country === country)?.img["img-src"];
   // Target the icon + name individually instead of overwriting the whole <h2>
   const countryIcon = document.getElementById("country-icon");
   const countryName = document.getElementById("country-name");

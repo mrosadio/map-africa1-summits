@@ -1,8 +1,9 @@
 // Fixing circular import between map and timeline utils js
 // We will define dependencies in this file - this is the only file that
 // nows about both
-import { onCountryClick } from "./mapUtils.js";
-import { highlightCountryDots, resetDots, closeYearCard, stopScrub } from "./timelineUtils.js";
+import { onCountryClick, clearCountrySelection } from "./mapUtils.js";
+import { highlightCountryDots, resetDots, closeYearCard, stopScrub, restoreScrub } from "./timelineUtils.js";
+import { openPanel, closePanel, isPanelOpen } from "./panel.js";
 
 // guardst again the opening click also triggering the close of the country panel outside eventlistener
 let justOpenedPanel = false;
@@ -12,17 +13,10 @@ export function initInteractions() {
   onCountryClick((country) => {
     stopScrub();
     closeYearCard();
-    const panel = document.getElementById("detail-panel");
-    if (panel) {
-      panel.classList.remove("d-none");
-      requestAnimationFrame(() => {
-        panel.classList.add("open");
-      });
-    }
+    openPanel();
     highlightCountryDots(country);
-    justOpenedPanel = true;
   });
-  document.getElementById("close-panel")?.addEventListener("click", closeDetailPanel);
+  document.getElementById("close-panel")?.addEventListener("click", closeCountryMode);
   // Click anywhere on the map closes the floating year-card
   // this also fires when clicking a country, which is fine -
   // it means clicking a country while a year-card is open both closes
@@ -32,21 +26,14 @@ export function initInteractions() {
   });
   // Click anywhere outside the panel closes it — same pattern as the year card.
   document.addEventListener("click", (event) => {
-    if (justOpenedPanel) {
-      justOpenedPanel = false; // this click just opened the panel — ignore it here
-      return;
-    }
-    const panel = document.getElementById("detail-panel");
-    if (!panel || panel.classList.contains("d-none")) return;
-    if (!panel.contains(event.target)) {
-      closeDetailPanel();
+    if (!isPanelOpen()) return;
+    if (!document.getElementById("detail-panel").contains(event.target)) {
+      closeCountryMode();
     }
   });
 }
-
-function closeDetailPanel() {
-  const panel = document.getElementById("detail-panel");
-  panel?.classList.remove("open");
-  setTimeout(() => panel?.classList.add("d-none"), 300);
-  resetDots();
+function closeCountryMode() {
+  closePanel();
+  clearCountrySelection();
+  restoreScrub(); // back to time mode at the year the user left
 }

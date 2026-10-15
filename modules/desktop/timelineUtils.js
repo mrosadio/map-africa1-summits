@@ -5,6 +5,7 @@
 import { renderCumulativeMap, clearCountrySelection } from "./mapUtils.js";
 import { getColorForCountry } from "../common/partnerColors.js";
 import { appData } from "../common/globals.js";
+import { closePanel } from "./panel.js";
 
 // -- Module states -------------------------------------------------------
 let svg; // timeline SVG selection
@@ -161,7 +162,6 @@ export function scrubToIndex(targetIndex) {
   clearTimeout(settleTimer);
   clearInterval(scrubAnimId);
   clearCountrySelection();
-  closeCountryPanelIfOpen();
 
   const step = targetIndex > focusIndex ? 1 : -1;
   if (targetIndex === focusIndex) {
@@ -192,7 +192,6 @@ export function closeYearCard() {
 export function stepScrub(dir) {
   clearInterval(scrubAnimId);
   clearCountrySelection();
-  closeCountryPanelIfOpen();
   const newIndex = Math.max(0, Math.min(appData.summitData.length - 1, focusIndex + dir));
   if (newIndex === focusIndex) return;
   const yearData = tick(newIndex);
@@ -253,17 +252,7 @@ function attachScrubListener() {
   });
 }
 
-// -- Private -------------------------------------------------------------------------
-// Direct DOM toggle, same pattern already used for #summit-card elsewhere in
-// this file — avoids importing interactions.js here, it would create a
-// circular import (interactions.js already imports from this file)
-function closeCountryPanelIfOpen() {
-  const panel = document.getElementById("detail-panel");
-  if (panel && !panel.classList.contains("d-none")) {
-    panel.classList.remove("open");
-    setTimeout(() => panel.classList.add("d-none"), 300);
-  }
-}
+
 
 // -- Private: floating summit card ---------------------------------------------------
 // now activates from the dom (previously it positioned itself from a mouse event)
