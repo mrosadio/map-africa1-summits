@@ -2,7 +2,7 @@
 // We will define dependencies in this file - this is the only file that
 // nows about both
 import { onCountryClick, clearCountrySelection } from "./mapUtils.js";
-import { highlightCountryDots, resetDots, closeYearCard, stopScrub } from "./timelineUtils.js";
+import { highlightCountryDots, resetDots, closeYearCard, stopScrub, restoreScrub } from "./timelineUtils.js";
 import { openPanel, closePanel, isPanelOpen } from "./panel.js";
 
 // guardst again the opening click also triggering the close of the country panel outside eventlistener
