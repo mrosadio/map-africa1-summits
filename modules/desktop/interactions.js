@@ -16,7 +16,7 @@ export function initInteractions() {
     openPanel();
     highlightCountryDots(country);
   });
-  document.getElementById("close-panel")?.addEventListener("click", closeDetailPanel);
+  document.getElementById("close-panel")?.addEventListener("click", closeCountryMode);
   // Click anywhere on the map closes the floating year-card
   // this also fires when clicking a country, which is fine -
   // it means clicking a country while a year-card is open both closes
@@ -36,10 +36,4 @@ function closeCountryMode() {
   closePanel();
   clearCountrySelection();
   restoreScrub(); // back to time mode at the year the user left
-}
-function closeDetailPanel() {
-  const panel = document.getElementById("detail-panel");
-  panel?.classList.remove("open");
-  setTimeout(() => panel?.classList.add("d-none"), 300);
-  resetDots();
 }
