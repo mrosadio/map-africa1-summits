@@ -6,10 +6,6 @@
    ============================================================ */
 
 :root {
-  /* arimo font */
-  --font-sans: "Arimo", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --bs-body-font-family: var(--font-sans);
   /* Neutrals & accent (category colours are injected from partnerColors.js) */
   --color-accent: #c1440e;
   --color-border: #e8e4df;
@@ -84,7 +80,12 @@
 /* ── Layout ── */
 body {
   background: var(--color-bg-subtle);
-  font-family: var(--font-serif);
+  font-family:
+    "Arimo",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
   color: var(--color-text-primary);
 }
 
@@ -196,20 +197,33 @@ body {
   color: var(--color-text-primary);
 }
 /* -- Detail panel (country click) -- */
-.vis-panel {
-  width: var(--panel-width);
-  background: var(--color-bg);
-  border-left: var(--border-w) solid var(--color-border);
-  box-shadow: var(--shadow-panel);
-  z-index: var(--z-panel);
-  transform: translateX(100%);
-  transition: transform var(--dur-base) var(--ease);
+.vis-map-area {
+  flex: 1 1 0;
+  min-width: 0;            /* lets the map shrink below its content width */
 }
 
-.vis-panel.open {
-  transform: translateX(0);
-  display: flex !important;
-  flex-direction: column;
+.vis-panel {
+  flex: 0 0 0;
+  width: 0;
+  overflow: hidden;
+}
+.vis-panel.is-open {
+  flex-basis: var(--panel-width);
+  width: var(--panel-width);
+  border-left: var(--border-w, 0.5px) solid rgba(26, 26, 24, 0.25); /* use your existing hairline token if you have one */
+}
+
+.vis-panel__inner {
+  width: var(--panel-width);   /* fixed, so the text never reflows while the column opens */
+  height: 100%;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateX(var(--space-3));
+  transition: opacity var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
+}
+.vis-panel.is-open .vis-panel__inner {
+  opacity: 1;
+  transform: none;
 }
 .vis-panel__header {
   display: flex;
@@ -221,7 +235,7 @@ body {
 }
 .vis-panel__title {
   font-size: var(--fs-xl);
-  font-weight: var(--fw-semibold);
+  font-weight: var(--fw-bold);
   color: var(--color-text-primary);
   display: flex;
   align-items: center;
@@ -318,7 +332,7 @@ body {
 
 .timeline-label {
   font-size: var(--fs-xs);
-  font-family: var(--font-serif);
+  font-family: inherit;
   fill: var(--color-text-muted);
   pointer-events: none;
 }
