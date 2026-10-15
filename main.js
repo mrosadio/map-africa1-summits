@@ -1,6 +1,8 @@
-import "@fontsource/arimo/400.css";
-import "@fontsource/arimo/600.css";
-import "@fontsource/arimo/700.css";
+import "@fontsource/arimo/latin-400.css";
+import "@fontsource/arimo/latin-600.css";
+import "@fontsource/arimo/latin-700.css";
+import "@fontsource/source-serif-4/latin-400.css";
+import "@fontsource/source-serif-4/latin-600.css";
 import { loadAndMergeData } from "./modules/common/dataLoader.js";
 import { jsonPath, geojsonUrl, appData, BREAKPOINTS } from "./modules/common/globals.js";
 import { debounce } from "./modules/common/utils.js";

@@ -6,6 +6,10 @@
    ============================================================ */
 
 :root {
+  /* arimo font */
+  --font-sans: "Arimo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --bs-body-font-family: var(--font-sans);
   /* Neutrals & accent (category colours are injected from partnerColors.js) */
   --color-accent: #c1440e;
   --color-border: #e8e4df;
@@ -80,12 +84,7 @@
 /* ── Layout ── */
 body {
   background: var(--color-bg-subtle);
-  font-family:
-    "Arimo",
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    sans-serif;
+  font-family: var(--font-serif);
   color: var(--color-text-primary);
 }
 
@@ -222,7 +221,7 @@ body {
 }
 .vis-panel__title {
   font-size: var(--fs-xl);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-semibold);
   color: var(--color-text-primary);
   display: flex;
   align-items: center;
@@ -319,7 +318,7 @@ body {
 
 .timeline-label {
   font-size: var(--fs-xs);
-  font-family: inherit;
+  font-family: var(--font-serif);
   fill: var(--color-text-muted);
   pointer-events: none;
 }
