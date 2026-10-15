@@ -162,7 +162,7 @@ export function scrubToIndex(targetIndex) {
   clearTimeout(settleTimer);
   clearInterval(scrubAnimId);
   clearCountrySelection();
-
+  closePanel();
   const step = targetIndex > focusIndex ? 1 : -1;
   if (targetIndex === focusIndex) {
     settle(appData.summitData[focusIndex]);
@@ -192,6 +192,7 @@ export function closeYearCard() {
 export function stepScrub(dir) {
   clearInterval(scrubAnimId);
   clearCountrySelection();
+  closePanel();
   const newIndex = Math.max(0, Math.min(appData.summitData.length - 1, focusIndex + dir));
   if (newIndex === focusIndex) return;
   const yearData = tick(newIndex);
