@@ -43,7 +43,7 @@ async function main() {
     document.activeElement?.blur();
   });
   if (!(await loadData())) {
-    showLoadError();
+    document.querySelector(".vis-hint")?.classList.add("d-none");
     return;
   }
   render();
