@@ -30,6 +30,8 @@
   --fw-bold: 700;
   --lh-tight: 1.2;
   --lh-body: 1.5;
+  --fs-numeral: clamp(4.5rem, 16vh, 9rem); /* 144px at 900px tall, shrinks on short screens */
+  --ls-display: -0.02em;
 
   /* Spacing */
   --space-1: 0.25rem; /* 4  */
@@ -89,19 +91,7 @@ body {
   font-family: var(--font-sans);
   color: var(--color-text-primary);
 }
-.vis-map-counter {
-  position: absolute;
-  top: var(--space-4);
-  left: var(--space-4);
-  z-index: var(--z-counter);
-  font-size: var(--fs-xl);
-  font-weight: var(--fw-bold);
-  color: var(--color-text-primary);
-  background: var(--color-bg-overlay);
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-sm);
-  pointer-events: none; /* so it never blocks map clicks underneath */
-}
+
 /* Header */
 .vis-header {
   display: flex;
@@ -134,10 +124,6 @@ body {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
-/* Map container */
-#map {
-  background: var(--color-bg-subtle);
-}
 .vis-label {
   text-transform: uppercase;
   letter-spacing: var(--ls-label);
@@ -167,7 +153,60 @@ body {
   transition: opacity var(--dur-base) var(--ease);
 }
 
-/* Timeline footer */
+/* Map area */
+.vis-map-area {
+  min-height: 0;
+}
+
+#map {
+  flex: 1 1 0;
+  min-height: 0;
+  margin: var(--space-6) var(--page-gutter) 0; /* margins, not padding, so clientWidth stays the true map size */
+  background: var(--color-bg-subtle);
+}
+
+/* Stage row: year numeral, counter, legend */
+.vis-stage {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-4) var(--page-gutter) var(--space-5);
+  flex-shrink: 0;
+}
+.vis-numeral {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-numeral);
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+  font-variant-numeric: lining-nums tabular-nums; /* equal-width digits, so it doesn't jitter while scrubbing */
+  color: var(--color-text-primary);
+}
+.vis-stage__counter {
+  margin-top: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.vis-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  max-width: 22rem;
+  margin: 0;
+  padding: 0 0 var(--space-2);
+  list-style: none;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+.vis-legend__item::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--dot);
+}
 .vis-timeline {
   height: var(--timeline-height);
   background: var(--color-bg);
@@ -175,29 +214,10 @@ body {
   display: flex;
   flex-direction: column;
 }
-.vis-legend {
-  flex-shrink: 0;
-  font-size: var(--fs-xs);
-  color: var(--color-text-muted);
-}
-.vis-legend__title {
-  font-weight: var(--fw-semibold);
-  color: var(--color-text-primary);
-}
 .vis-legend__item {
   display: flex;
   align-items: center;
   gap: var(--space-1);
-}
-.vis-legend__dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  display: inline-block;
-}
-.vis-legend__counter {
-  font-weight: var(--fw-semibold);
-  color: var(--color-text-primary);
 }
 /* -- Detail panel (country click) -- */
 .vis-map-area {

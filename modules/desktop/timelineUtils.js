@@ -121,7 +121,7 @@ export function renderTimeline() {
       .attr("opacity", 0);
   });
   attachScrubListener();
-  updateCumulativeCounter(summitData[0]);
+  summitData[focusIndex];
 }
 
 // -- Public: highlight dots for a given year (called from mapUtils) -------------------------
@@ -328,7 +328,7 @@ function tick(index) {
   const yearData = summitData[focusIndex];
   renderCumulativeMap(yearData);
   updateDotsForScrub(yearData.year);
-  updateCumulativeCounter(yearData); // ← new
+  updateCumulativeCounter(yearData); 
   hideYearCardWhileMoving();
   movePlayhead(yearData.year)
   return yearData;
@@ -374,10 +374,12 @@ function updateDotsForScrub(currentYear) {
 
 // -- pRIVATE: counter driven by cumulative map ---------
 function updateCumulativeCounter(yearData) {
-  const counterEl = document.getElementById("cumulative-counter");
+ const counterEl = document.getElementById("cumulative-counter");
   if (!counterEl) return;
   const { cumulativeSummits } = appData;
   const count = cumulativeSummits.get(yearData.year).cumulative.size;
   const noun = count === 1 ? "country" : "countries";
+  const numeralEl = document.getElementById("year-numeral");
+  if (numeralEl) numeralEl.textContent = yearData.year;
   counterEl.textContent = `By ${yearData.year}: ${count} ${noun} hosting`;
 }

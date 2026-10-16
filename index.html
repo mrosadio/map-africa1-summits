@@ -60,10 +60,23 @@
     <!-- ── Main: children are map container and panel ── -->
     <main class="vis-main flex-grow-1 d-flex overflow-hidden">
       <!-- map area will contain now counter, tooltip, #map, #loaderror, #summitcard -->
-      <div class="vis-map-area position-relative flex-grow-1">
-        <div id="cumulative-counter" class="vis-map-counter"></div>
+      <div class="vis-map-area position-relative flex-grow-1 d-flex flex-column">
+        <div id="map"></div>
+        <div class="vis-stage">
+          <div>
+            <div id="year-numeral" class="vis-numeral" aria-hidden="true"></div>
+            <div id="cumulative-counter" class="vis-stage__counter"></div>
+          </div>
+          <ul class="vis-legend">
+            <li class="vis-legend__item" style="--dot: var(--color-france)">France</li>
+            <li class="vis-legend__item" style="--dot: var(--color-asia)">Asia</li>
+            <li class="vis-legend__item" style="--dot: var(--color-mideast)">Turkey / Gulf</li>
+            <li class="vis-legend__item" style="--dot: var(--color-us)">United States</li>
+            <li class="vis-legend__item" style="--dot: var(--color-russia)">Russia</li>
+            <li class="vis-legend__item" style="--dot: var(--color-europe)">Italy / UK</li>
+          </ul>
+        </div>
         <div id="vis-tooltip" class="vis-tooltip" role="tooltip"></div>
-        <div id="map" class="w-100 h-100"></div>
         <div id="load-error" class="vis-load-error d-none">
           <p class="vis-load-error__title">Something went wrong loading the data.</p>
           <p class="vis-load-error__body">Please check your connection and try again.</p>
@@ -94,16 +107,6 @@
 
     <!-- ── Horizontal timeline ── -->
     <footer class="vis-timeline flex-shrink-0 px-4 py-2">
-      <div class="vis-legend d-flex align-items-center gap-3 mb-1 flex-wrap">
-        <span class="vis-legend__title">Legend</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-france)"></span>France</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-asia)"></span>Asia</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-mideast)"></span>Turkey / Gulf</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-us)"></span>United States</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-russia)"></span>Russia</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-europe)"></span>Italy / UK</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-other)"></span>Other</span>
-      </div>
       <div id="desktop-timeline" role="slider" tabindex="0" aria-label="Summit year" class="w-100 flex-grow-1"></div>
     </footer>
 
