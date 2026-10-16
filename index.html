@@ -84,19 +84,27 @@
         </div>
       </div>
       <!-- Detail panel — slides in from right on country click -->
-      <aside id="detail-panel" class="vis-panel" inert>
-        <div id="summitListContainer" class="vis-panel__inner p-4">
-          <div class="vis-panel__header">
-            <h2 id="summitCountry" class="vis-panel__title mb-0">
-              <img src="" id="country-icon" class="vis-panel__flag me-2" />
-              <span id="country-name"></span>
-            </h2>
-            <button id="close-panel" class="btn-close" aria-label="Close"></button>
+      <aside class="vis-side" aria-label="Details">
+        <section id="side-hint" class="vis-side__hint">
+          <p class="vis-label text-secondary mb-2">Explore</p>
+          <p>Scroll the timeline or use the arrow keys to move through the years. Click a country to see its summits.</p>
+        </section>
+        <section id="detail-panel" class="vis-side__country" hidden inert>
+          <div id="summitListContainer" class="vis-panel__inner p-4">
+            <div class="vis-panel__header">
+              <h2 id="summitCountry" class="vis-panel__title mb-0">
+                <img src="" id="country-icon" class="vis-panel__flag me-2" />
+                <span id="country-name"></span>
+              </h2>
+              <button id="close-panel" class="btn-close" aria-label="Close"></button>
+            </div>
+            <p id="total-summit" class="text-secondary small mb-0"></p>
+            <p id="intro-list-summit" class="text-secondary small mb-3"></p>
+            <ul id="summitList" class="list-unstyled"></ul>
           </div>
-          <p id="total-summit" class="text-secondary small mb-0"></p>
-          <p id="intro-list-summit" class="text-secondary small mb-3"></p>
-          <ul id="summitList" class="list-unstyled"></ul>
-        </div>
+        </section>
+        <p class="vis-side__credit">Data: APRI · Narrative and design: Micaela Rosadio</p>
+
       </aside>
 
       <!-- Floating summit card — shown on timeline dot click -->

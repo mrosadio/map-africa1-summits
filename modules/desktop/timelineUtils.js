@@ -6,6 +6,7 @@ import { renderCumulativeMap, clearCountrySelection } from "./mapUtils.js";
 import { getColorForCountry } from "../common/partnerColors.js";
 import { appData } from "../common/globals.js";
 import { closePanel } from "./panel.js";
+import { showCountry } from "./stage.js";
 
 // -- Module states -------------------------------------------------------
 let svg; // timeline SVG selection

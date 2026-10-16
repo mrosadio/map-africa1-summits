@@ -4,6 +4,8 @@
 import { onCountryClick, clearCountrySelection } from "./mapUtils.js";
 import { highlightCountryDots, resetDots, closeYearCard, stopScrub, restoreScrub } from "./timelineUtils.js";
 import { openPanel, closePanel, isPanelOpen } from "./panel.js";
+import { showCountry } from "./stage.js";
+import { appData } from "../common/globals.js";
 
 // guardst again the opening click also triggering the close of the country panel outside eventlistener
 let justOpenedPanel = false;
@@ -14,6 +16,7 @@ export function initInteractions() {
     stopScrub();
     closeYearCard();
     openPanel();
+    showCountry(country, appData.summitsByCountryMap.get(country)?.length ?? 0);
     highlightCountryDots(country);
   });
   document.getElementById("close-panel")?.addEventListener("click", closeCountryMode);
@@ -27,7 +30,7 @@ export function initInteractions() {
   // Click anywhere outside the panel closes it — same pattern as the year card.
   document.addEventListener("click", (event) => {
     if (!isPanelOpen()) return;
-    if (!document.getElementById("detail-panel").contains(event.target)) {
+    if (!event.target.closest(".vis-side")) {
       closeCountryMode();
     }
   });
