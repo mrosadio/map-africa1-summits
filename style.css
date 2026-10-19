@@ -10,6 +10,7 @@
   --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --bs-body-font-family: var(--font-sans);
   --z-tooltip: 40;
+  --timeline-height: 172px;
   /* Neutrals & accent (category colours are injected from partnerColors.js) */
   --color-accent: #c1440e;
   --color-border: #e8e4df;
@@ -346,7 +347,11 @@ body {
 }
 
 /* -------------- Timeline SVG elements --------------  */
-/* these are d3 rendered so bootstrap can't reach them */
+#desktop-timeline {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
 #desktop-timeline:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: -2px;
@@ -389,7 +394,25 @@ body {
   fill: var(--color-text-muted);
   pointer-events: none;
 }
-
+.timeline-chapter-tick {
+  stroke: var(--color-text-primary);
+  stroke-width: 1;
+  display: none;
+}
+.timeline-label--chapter {
+  display: none;
+}
+.show-chapters .timeline-chapter-tick,
+.show-chapters .timeline-label--chapter {
+  display: inline;
+}
+.show-chapters .timeline-label--yields {
+  display: none;
+}
+.show-chapters .timeline-label--stop {
+  font-weight: var(--fw-semibold);
+  fill: var(--color-text-primary);
+}
 /* -- Modal -- */
 .modal-header::after {
   content: "";
