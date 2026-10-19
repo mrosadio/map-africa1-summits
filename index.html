@@ -89,6 +89,17 @@
           <p class="vis-label text-secondary mb-2">Explore</p>
           <p>Scroll the timeline or use the arrow keys to move through the years. Click a country to see its summits.</p>
         </section>
+        <section id="story" class="vis-story" hidden aria-live="polite">
+          <p id="story-label" class="vis-label"></p>
+          <p id="story-text" class="vis-story__text"></p>
+          <a id="story-link" class="vis-link" href="#" target="_blank" rel="noopener" hidden></a>
+          <p id="story-note" class="vis-story__note" hidden></p>
+          <div class="vis-story__nav">
+            <button id="story-back" type="button" class="vis-link">← Back</button>
+            <button id="story-next" type="button" class="vis-link vis-link--strong">Next →</button>
+          </div>
+          <div id="story-progress" class="vis-story__progress" role="img"></div>
+        </section>
         <section id="detail-panel" class="vis-side__country" hidden inert>
           <div id="summitListContainer" class="vis-panel__inner p-4">
             <div class="vis-panel__header">

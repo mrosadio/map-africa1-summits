@@ -18,6 +18,7 @@ let scrubAnimId = null;
 let playhead;
 let axisPast;
 let knob;
+let yearCardEnabled = true;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const SETTLE_DELAY = 300; // ms of no scrolling before we consider the user is "settled"
 const DOT_R = 6;
@@ -29,6 +30,11 @@ export function restoreScrub() {
 // -- Public: story mode turns the chapter marks on, explore mode turns them off
 export function setChapterMarks(visible) {
   document.getElementById("desktop-timeline")?.classList.toggle("show-chapters", visible);
+}
+// -- Public: the floating year card is for explore mode; the story turns it off
+export function setYearCardEnabled(enabled) {
+  yearCardEnabled = enabled;
+  if (!enabled) closeYearCard();
 }
 // -- Public: init
 export function renderTimeline() {
@@ -373,8 +379,8 @@ function tick(index) {
   movePlayhead(yearData.year);
   return yearData;
 }
-
 function settle(yearData) {
+  if (!yearCardEnabled) return;
   showYearCard(yearData);
 }
 
