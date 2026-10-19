@@ -88,7 +88,7 @@ const flagSrc = [
     {
         country: "South Korea",
         img: {
-            "img-src": "kp.png"
+            "img-src": "kr.png"
         }
     },
     {
