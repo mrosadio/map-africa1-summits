@@ -23,10 +23,14 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const SETTLE_DELAY = 300; // ms of no scrolling before we consider the user is "settled"
 const DOT_R = 6;
 const MIN_LABEL_GAP = 36; // px between year labels
+
 export function restoreScrub() {
   tick(focusIndex);
 }
-
+// -- Public: choose the year shown on first render (call once, before renderTimeline)
+export function setStartIndex(index) {
+  focusIndex = index;
+}
 // -- Public: story mode turns the chapter marks on, explore mode turns them off
 export function setChapterMarks(visible) {
   document.getElementById("desktop-timeline")?.classList.toggle("show-chapters", visible);
