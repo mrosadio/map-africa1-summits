@@ -8,7 +8,7 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <!-- fonts -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23C1440E'/></svg>" />
-    
+
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -35,12 +35,8 @@
                 In the context where African states are seeking to diversify their global partnerships, this interactive map offers insights into the deepening diplomatic ties between African countries and their traditional and emerging partners. It shows, from 1973 to 2024, the growing number of countries that have hosted Africa+1 summits, also called forums or international conferences. The term “Africa+1” refers to partnerships between African and non-African countries, bringing together presidents, ministers or high-level officials at summits to discuss different areas of cooperation,
                 including trade, security, and development.
               </p>
-              <p>
-                France held the first Africa+1 summit in 1973 and was the only host through 1992. Japan joined in 1993 and China in 2000. In 2008, Turkey and India hosted their first summits, followed by the United States (2014), Indonesia (2018), Russia (2019), the United Kingdom (2020), Saudi Arabia (2023), and South Korea and Italy (2024).
-              </p>
-              <p>
-                A country “hosts” a summit when it is the partner country that convenes it. The venue can be elsewhere: according to the APRI analysis, 12 of France’s 28 summits were held in African cities.
-              </p>
+              <p>France held the first Africa+1 summit in 1973 and was the only host through 1992. Japan joined in 1993 and China in 2000. In 2008, Turkey and India hosted their first summits, followed by the United States (2014), Indonesia (2018), Russia (2019), the United Kingdom (2020), Saudi Arabia (2023), and South Korea and Italy (2024).</p>
+              <p>A country “hosts” a summit when it is the partner country that convenes it. The venue can be elsewhere: according to the APRI analysis, 12 of France’s 28 summits were held in African cities.</p>
               <p>APRI conducted an extensive online search across multiple search engines to compile information and create a database on political summits where African presidents, ministers, or high-level officials met with their foreign counterparts. Although this search identified a significant number of summits, our publicly available database is not exhaustive. For instance, at this stage, the mapping exercise does not include the so-called ‘Africa business summits’. The map will be regularly updated with new information as it becomes available.</p>
             </div>
             <div class="row mt-4">
@@ -50,38 +46,37 @@
               </div>
               <div class="col-md-6">
                 <p class="text-uppercase small mb-1 vis-label">Code</p>
-                <a href="github.com/mrosadio/map-africa1-summits" target="_blank" class="small"> github.com/mrosadio/map-climate-diplomacy </a>
+                <a href="https://github.com/mrosadio/map-africa1-summits" target="_blank" rel="noopener" class="small"> github.com/mrosadio/map-climate-diplomacy </a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Nav -->
-    <nav class="vis-nav d-flex align-items-center justify-content-between px-4 py-2 flex-shrink-0">
-      <span class="vis-nav__title">The Shifting Geography of Africa+1 Summits</span>
-      <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#aboutModal">About</button>
-    </nav>
-    <!-- User instruction hint: exploration modus ------>
-    <div class="vis-hint d-flex align-items-center gap-4 px-4 py-2 flex-shrink-0">
-      <span class="vis-hint__label">Explore by</span>
-      <span class="vis-hint__item">
-        <i class="bi bi-arrow-down-up"></i>
-        scroll the timeline to watch partnerships build up over time
-      </span>
-      <span class="vis-hint__divider">|</span>
-      <span class="vis-hint__item">
-        <i class="bi bi-geo-alt"></i>
-        click a country for its full history
-      </span>
-    </div>
+    <header class="vis-header">
+      <span class="vis-label vis-header__title">Africa+1 summits</span>
+      <button type="button" class="vis-link" data-bs-toggle="modal" data-bs-target="#aboutModal">About</button>
+    </header>
     <!-- ── Main: children are map container and panel ── -->
     <main class="vis-main flex-grow-1 d-flex overflow-hidden">
       <!-- map area will contain now counter, tooltip, #map, #loaderror, #summitcard -->
-      <div class="vis-map-area position-relative flex-grow-1">
-        <div id="cumulative-counter" class="vis-map-counter"></div>
+      <div class="vis-map-area position-relative flex-grow-1 d-flex flex-column">
+        <div id="map"></div>
+        <div class="vis-stage">
+          <div>
+            <div id="year-numeral" class="vis-numeral" aria-hidden="true"></div>
+            <div id="cumulative-counter" class="vis-stage__counter"></div>
+          </div>
+          <ul class="vis-legend">
+            <li class="vis-legend__item" style="--dot: var(--color-france)">France</li>
+            <li class="vis-legend__item" style="--dot: var(--color-asia)">Asia</li>
+            <li class="vis-legend__item" style="--dot: var(--color-mideast)">Turkey / Gulf</li>
+            <li class="vis-legend__item" style="--dot: var(--color-us)">United States</li>
+            <li class="vis-legend__item" style="--dot: var(--color-russia)">Russia</li>
+            <li class="vis-legend__item" style="--dot: var(--color-europe)">Italy / UK</li>
+          </ul>
+        </div>
         <div id="vis-tooltip" class="vis-tooltip" role="tooltip"></div>
-        <div id="map" class="w-100 h-100"></div>
         <div id="load-error" class="vis-load-error d-none">
           <p class="vis-load-error__title">Something went wrong loading the data.</p>
           <p class="vis-load-error__body">Please check your connection and try again.</p>
@@ -89,19 +84,26 @@
         </div>
       </div>
       <!-- Detail panel — slides in from right on country click -->
-      <aside id="detail-panel" class="vis-panel" inert>
-        <div id="summitListContainer" class="vis-panel__inner p-4">
-          <div class="vis-panel__header">
-            <h2 id="summitCountry" class="vis-panel__title mb-0">
-              <img src="" id="country-icon" class="vis-panel__flag me-2" />
-              <span id="country-name"></span>
-            </h2>
-            <button id="close-panel" class="btn-close" aria-label="Close"></button>
+      <aside class="vis-side" aria-label="Details">
+        <section id="side-hint" class="vis-side__hint">
+          <p class="vis-label text-secondary mb-2">Explore</p>
+          <p>Scroll the timeline or use the arrow keys to move through the years. Click a country to see its summits.</p>
+        </section>
+        <section id="detail-panel" class="vis-side__country" hidden inert>
+          <div id="summitListContainer" class="vis-panel__inner p-4">
+            <div class="vis-panel__header">
+              <h2 id="summitCountry" class="vis-panel__title mb-0">
+                <img src="" id="country-icon" class="vis-panel__flag me-2" />
+                <span id="country-name"></span>
+              </h2>
+              <button id="close-panel" class="btn-close" aria-label="Close"></button>
+            </div>
+            <p id="total-summit" class="text-secondary small mb-0"></p>
+            <p id="intro-list-summit" class="text-secondary small mb-3"></p>
+            <ul id="summitList" class="list-unstyled"></ul>
           </div>
-          <p id="total-summit" class="text-secondary small mb-0"></p>
-          <p id="intro-list-summit" class="text-secondary small mb-3"></p>
-          <ul id="summitList" class="list-unstyled"></ul>
-        </div>
+        </section>
+        <p class="vis-side__credit">Data: APRI · Narrative and design: Micaela Rosadio</p>
       </aside>
 
       <!-- Floating summit card — shown on timeline dot click -->
@@ -109,20 +111,8 @@
         <div id="summit-card-content" class="p-2"></div>
       </div>
     </main>
-
-    <!-- ── Horizontal timeline ── -->
-    <footer class="vis-timeline flex-shrink-0 px-4 py-2">
-      <div class="vis-legend d-flex align-items-center gap-3 mb-1 flex-wrap">
-        <span class="vis-legend__title">Legend</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-france)"></span>France</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-asia)"></span>Asia</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-mideast)"></span>Turkey / Gulf</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-us)"></span>United States</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-russia)"></span>Russia</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-europe)"></span>Italy / UK</span>
-        <span class="vis-legend__item"><span class="vis-legend__dot" style="background: var(--color-other)"></span>Other</span>
-      </div>
-      <div id="desktop-timeline" role="slider" tabindex="0" aria-label="Summit year" class="w-100 flex-grow-1"></div>
+    <footer class="vis-timeline flex-shrink-0">
+      <div id="desktop-timeline" role="slider" tabindex="0" aria-label="Summit year"></div>
     </footer>
 
     <!-- ── Mobile picker (hidden on desktop) ── -->

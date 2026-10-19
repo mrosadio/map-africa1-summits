@@ -6,6 +6,7 @@ import { renderCumulativeMap, clearCountrySelection } from "./mapUtils.js";
 import { getColorForCountry } from "../common/partnerColors.js";
 import { appData } from "../common/globals.js";
 import { closePanel } from "./panel.js";
+import { showCountry } from "./stage.js";
 
 // -- Module states -------------------------------------------------------
 let svg; // timeline SVG selection
@@ -15,6 +16,8 @@ let scrubListenersAttached = false;
 let settleTimer = null;
 let scrubAnimId = null;
 let playhead;
+let axisPast;
+let knob;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const SETTLE_DELAY = 300; // ms of no scrolling before we consider the user is "settled"
 const DOT_R = 6;
@@ -39,10 +42,10 @@ export function renderTimeline() {
   // so multi-summit years never get clipped by the SVG's own bounds.
   const maxStack = d3.max(summitData, (d) => d.summits.length) || 1;
   const DOT_SPACING = 10;
+  const FOCUS_RING_BUFFER = 12;
+  const AXIS_GAP = 8; // air between the axis (and its knob) and the lowest dot
   const stackHeight = maxStack * (DOT_R * 2 + DOT_SPACING);
-  const FOCUS_RING_BUFFER = 12; // extra room for the enlarged/stroked focus dot
-
-  const MARGIN = { left: 12, right: 20, top: stackHeight + FOCUS_RING_BUFFER, bottom: 20 };
+  const MARGIN = { left: 12, right: 20, top: stackHeight + FOCUS_RING_BUFFER + AXIS_GAP, bottom: 20 };
   const innerW = W - MARGIN.left - MARGIN.right;
   const innerH = H - MARGIN.top - MARGIN.bottom;
 
@@ -56,17 +59,16 @@ export function renderTimeline() {
     .domain([d3.min(years), d3.max(years)])
     .range([0, innerW]);
 
-  g.append("line").attr("class", "timeline-axis").attr("x1", 0).attr("x2", innerW).attr("y1", innerH).attr("y2", innerH).attr("stroke", "#E8E4DF").attr("stroke-width", 1);
-
+  g.append("line").attr("class", "timeline-axis").attr("x1", 0).attr("x2", innerW).attr("y1", innerH).attr("y2", innerH);
+  axisPast = g.append("line").attr("class", "timeline-axis-past").attr("x1", 0).attr("y1", innerH).attr("y2", innerH);
   playhead = g
     .append("line")
     .attr("class", "timeline-playhead")
     .attr("y1", -MARGIN.top + 4)
-    .attr("y2", innerH)
-    .style("stroke", "var(--color-text-muted)")
-    .style("stroke-width", 1)
-    .style("stroke-dasharray", "2 3");
+    .attr("y2", innerH);
+  knob = g.append("circle").attr("class", "timeline-knob").attr("cy", innerH).attr("r", 5);
   movePlayhead(summitData[focusIndex].year);
+
   const labelYears = years.filter((y, i) => i === 0 || i === years.length - 1 || y % 10 === 0);
   g.selectAll("text.timeline-year-label")
     .data(labelYears)
@@ -80,10 +82,9 @@ export function renderTimeline() {
 
   summitData.forEach((yearData, yearIndex) => {
     const x = xScale(yearData.year);
-    const count = yearData.summits.length;
 
     yearData.summits.forEach((summit, i) => {
-      const y = innerH - DOT_R - i * (DOT_R * 2 + DOT_SPACING);
+      const y = innerH - AXIS_GAP - DOT_R - i * (DOT_R * 2 + DOT_SPACING);
       const color = getColorForCountry(summit.country);
 
       g.append("circle")
@@ -110,18 +111,10 @@ export function renderTimeline() {
           scrubToIndex(yearIndex);
         });
     });
-
-    g.append("text")
-      .attr("class", "timeline-label")
-      .attr("x", x)
-      .attr("y", innerH - count * (DOT_R * 2 + DOT_SPACING) - DOT_R - 4)
-      .attr("text-anchor", "middle")
-      .attr("font-size", "12px")
-      .text(yearData.summits.map((s) => (s.country === "England" ? "UK" : s.country)).join(", "))
-      .attr("opacity", 0);
   });
+
   attachScrubListener();
-  updateCumulativeCounter(summitData[0]);
+  updateCumulativeCounter(summitData[focusIndex]);
 }
 
 // -- Public: highlight dots for a given year (called from mapUtils) -------------------------
@@ -140,7 +133,9 @@ export function resetDots() {
 export function highlightCountryDots(country) {
   if (!svg) return;
   resetDots();
-  svg.selectAll(`circle.timeline-dot[data-country="${country}"]`).classed("active", true).attr("r", 9).attr("stroke", "#1C1C1A").attr("stroke-width", 2);
+  svg.selectAll("circle.timeline-dot").attr("opacity", 0.15);
+  svg.selectAll(`circle.timeline-dot[data-country="${country}"]`).classed("active", true).attr("r", 9).attr("opacity", 1).attr("stroke", "#1C1C1A").attr("stroke-width", 2);
+  setPlayheadVisible(false);
 }
 
 // -- Public: stop scrubs when user clicks on a country --------------------------
@@ -162,7 +157,7 @@ export function scrubToIndex(targetIndex) {
   clearTimeout(settleTimer);
   clearInterval(scrubAnimId);
   clearCountrySelection();
-
+  closePanel();
   const step = targetIndex > focusIndex ? 1 : -1;
   if (targetIndex === focusIndex) {
     settle(appData.summitData[focusIndex]);
@@ -192,6 +187,7 @@ export function closeYearCard() {
 export function stepScrub(dir) {
   clearInterval(scrubAnimId);
   clearCountrySelection();
+  closePanel();
   const newIndex = Math.max(0, Math.min(appData.summitData.length - 1, focusIndex + dir));
   if (newIndex === focusIndex) return;
   const yearData = tick(newIndex);
@@ -206,6 +202,12 @@ export function stepScrub(dir) {
 function movePlayhead(year) {
   const x = xScale(year);
   playhead?.attr("x1", x).attr("x2", x);
+  axisPast?.attr("x2", x);
+  knob?.attr("cx", x);
+  setPlayheadVisible(true);
+}
+function setPlayheadVisible(visible) {
+  [playhead, axisPast, knob].forEach((el) => el?.style("display", visible ? null : "none"));
 }
 // -- Private: attaches scrub listener to timeline -----------------------------------
 // after 300ms consider the current dot as settled
@@ -251,8 +253,6 @@ function attachScrubListener() {
     event.preventDefault();
   });
 }
-
-
 
 // -- Private: floating summit card ---------------------------------------------------
 // now activates from the dom (previously it positioned itself from a mouse event)
@@ -327,9 +327,9 @@ function tick(index) {
   const yearData = summitData[focusIndex];
   renderCumulativeMap(yearData);
   updateDotsForScrub(yearData.year);
-  updateCumulativeCounter(yearData); // ← new
+  updateCumulativeCounter(yearData);
   hideYearCardWhileMoving();
-  movePlayhead(yearData.year)
+  movePlayhead(yearData.year);
   return yearData;
 }
 
@@ -378,5 +378,7 @@ function updateCumulativeCounter(yearData) {
   const { cumulativeSummits } = appData;
   const count = cumulativeSummits.get(yearData.year).cumulative.size;
   const noun = count === 1 ? "country" : "countries";
+  const numeralEl = document.getElementById("year-numeral");
+  if (numeralEl) numeralEl.textContent = yearData.year;
   counterEl.textContent = `By ${yearData.year}: ${count} ${noun} hosting`;
 }
