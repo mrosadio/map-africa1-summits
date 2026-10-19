@@ -10,7 +10,6 @@
   --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --bs-body-font-family: var(--font-sans);
   --z-tooltip: 40;
-  --timeline-height: 172px;
   /* Neutrals & accent (category colours are injected from partnerColors.js) */
   --color-accent: #c1440e;
   --color-border: #e8e4df;
@@ -62,7 +61,6 @@
 
   /* Layout */
   --timeline-height: 140px;
-  --nav-height: 48px;
   --panel-width: 400px;
   --nav-height: 56px;
   --page-gutter: 2.5rem; /* 40px: header, map zone and timeline share it */
@@ -260,6 +258,7 @@ body {
   padding: var(--space-6) var(--page-gutter);
   border-left: var(--border-w) solid var(--color-border);
   overflow-y: auto;
+  padding-block: var(--space-5);
 }
 .vis-side__hint p {
   margin: 0;
@@ -276,7 +275,10 @@ body {
   animation: side-in var(--dur-base) var(--ease);
 }
 @keyframes side-in {
-  from { opacity: 0; transform: translateX(var(--space-3)); }
+  from {
+    opacity: 0;
+    transform: translateX(var(--space-3));
+  }
 }
 /* Summit list items */
 #summitList li {
@@ -415,7 +417,7 @@ body {
   fill: var(--color-text-primary);
 }
 /* -- Visual story -- */
-.vis-story:not([hidden]) {
+.vis-story {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
@@ -430,7 +432,7 @@ body {
 .vis-story__note {
   margin: 0;
   font-size: var(--fs-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
 }
 .vis-story__nav {
   display: flex;
@@ -455,10 +457,72 @@ body {
 .vis-story__segment.is-done {
   background: var(--color-text-primary);
 }
-
-/* While the story runs the map is read-only: no country clicks or tooltips */
-.is-story #map svg {
+/* -- Modes: body[data-mode] is "loading", "intro", "story" or "explore" -- */
+body:not([data-mode="intro"]) [data-mode-only="intro"],
+body:not([data-mode="story"]) [data-mode-only="story"],
+body:not([data-mode="explore"]) [data-mode-only="explore"] {
+  display: none;
+}
+/* Intro and story are read-only: no country clicks, tooltips or dot clicks */
+body:not([data-mode="explore"]) #map svg,
+body:not([data-mode="explore"]) .timeline-dot {
   pointer-events: none;
+}
+
+.vis-header__actions {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+}
+.vis-side .vis-label {
+  margin: 0;
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-muted);
+}
+
+/* -- Intro -- */
+.vis-intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.vis-intro__headline {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xl);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+}
+.vis-intro__deck {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
+  line-height: 1.6;
+}
+.vis-intro__context {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-4);
+  border-top: var(--border-w) solid var(--color-border);
+}
+.vis-intro__context-text {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+.vis-intro__actions {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+  margin-top: var(--space-2);
+}
+.vis-story__nav.is-last {
+  padding-top: var(--space-4);
+  border-top: var(--border-w) solid var(--color-border);
 }
 /* -- Modal -- */
 .modal-header::after {

@@ -18,7 +18,7 @@ let scrubAnimId = null;
 let playhead;
 let axisPast;
 let knob;
-let yearCardEnabled = true;
+let scrubLocked = false;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const SETTLE_DELAY = 300; // ms of no scrolling before we consider the user is "settled"
 const DOT_R = 6;
@@ -31,15 +31,15 @@ export function restoreScrub() {
 export function setStartIndex(index) {
   focusIndex = index;
 }
+// -- Public: intro and story lock wheel and keyboard scrubbing
+export function setScrubLocked(locked) {
+  scrubLocked = locked;
+}
 // -- Public: story mode turns the chapter marks on, explore mode turns them off
 export function setChapterMarks(visible) {
   document.getElementById("desktop-timeline")?.classList.toggle("show-chapters", visible);
 }
-// -- Public: the floating year card is for explore mode; the story turns it off
-export function setYearCardEnabled(enabled) {
-  yearCardEnabled = enabled;
-  if (!enabled) closeYearCard();
-}
+
 // -- Public: init
 export function renderTimeline() {
   const { summitData } = appData;
@@ -204,18 +204,21 @@ export function stopScrub() {
 // -- Public: called when a dot is clicked directly -------------------------
 // animates the scrub
 // position to that year instead of jumping, then settles as normal
-export function scrubToIndex(targetIndex) {
+export function scrubToIndex(targetIndex, { silent = false } = {}) {
   clearTimeout(settleTimer);
   clearInterval(scrubAnimId);
   clearCountrySelection();
   closePanel();
   const step = targetIndex > focusIndex ? 1 : -1;
+  const done = (yearData) => {
+    if (!silent) settle(yearData);
+  };
   if (targetIndex === focusIndex) {
-    settle(appData.summitData[focusIndex]);
+    done(appData.summitData[focusIndex]);
     return;
   }
   if (reduceMotion.matches) {
-    settle(tick(targetIndex)); // jump straight to the year, no step animation
+    done(tick(targetIndex)); // jump straight to the year, no step animation
     return;
   }
   scrubAnimId = setInterval(() => {
@@ -223,7 +226,7 @@ export function scrubToIndex(targetIndex) {
     tick(next);
     if (next === targetIndex) {
       clearInterval(scrubAnimId);
-      settle(appData.summitData[targetIndex]);
+      done(appData.summitData[targetIndex]);
     }
   }, 25);
 }
@@ -272,6 +275,7 @@ function attachScrubListener() {
 
   function handleWheel(event) {
     event.preventDefault();
+    if (scrubLocked) return;
     wheelAcc += event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
     clearTimeout(wheelIdleTimer);
     wheelIdleTimer = setTimeout(() => (wheelAcc = 0), WHEEL_IDLE_MS);
@@ -283,6 +287,7 @@ function attachScrubListener() {
   document.addEventListener("keydown", (event) => {
     const t = event.target;
     if (t !== document.body && t !== document.getElementById("desktop-timeline")) return;
+    if (scrubLocked) return;
     switch (event.key) {
       case "ArrowRight":
       case "ArrowDown":
@@ -384,7 +389,6 @@ function tick(index) {
   return yearData;
 }
 function settle(yearData) {
-  if (!yearCardEnabled) return;
   showYearCard(yearData);
 }
 

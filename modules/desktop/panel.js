@@ -13,8 +13,7 @@ export function closePanel() {
   if (!d) return;
   d.hidden = true;
   d.setAttribute("inert", "");
-  const storyOpen = document.getElementById("story")?.hidden === false;
-  hint().hidden = storyOpen;
+  hint().hidden = false;
 }
 
 export function isPanelOpen() {
