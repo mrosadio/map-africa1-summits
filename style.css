@@ -18,7 +18,7 @@
   --color-text-primary: #1c1c1a;
   --color-text-muted: #4a4a47;
   --bs-secondary-rgb: 74, 74, 71; /* same as --color-text-muted */
-
+  --color-axis: rgba(28, 28, 26, 0.35);
   /* Type scale (rem so it respects the user's browser font size) */
   --fs-xs: 0.75rem; /* 12px */
   --fs-sm: 0.875rem; /* 14px */
@@ -209,7 +209,8 @@ body {
 }
 .vis-timeline {
   height: var(--timeline-height);
-  background: var(--color-bg);
+  padding: var(--space-1) var(--page-gutter) var(--space-4);
+  background: var(--color-bg-subtle);
   border-top: var(--border-w) solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -349,6 +350,28 @@ body {
 #desktop-timeline:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: -2px;
+}
+.timeline-axis {
+  stroke: var(--color-axis);
+  stroke-width: 1;
+}
+.timeline-axis-past {
+  stroke: var(--color-text-primary);
+  stroke-width: 2;
+}
+.timeline-playhead {
+  stroke: var(--color-text-primary);
+  stroke-width: 1;
+}
+.timeline-knob {
+  fill: var(--color-bg-subtle);
+  stroke: var(--color-text-primary);
+  stroke-width: 2;
+}
+.timeline-axis-past,
+.timeline-playhead,
+.timeline-knob {
+  pointer-events: none; /* never block clicks on the dots */
 }
 .timeline-dot {
   cursor: pointer;
