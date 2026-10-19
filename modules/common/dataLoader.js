@@ -1,3 +1,40 @@
+const CHAPTER_TYPES = new Set(["data", "context"]);
+
+export async function loadChapters(chaptersUrl, summitData) {
+  try {
+    const response = await fetch(chaptersUrl);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const story = await response.json();
+
+    if (!story.intro || !Array.isArray(story.chapters)) {
+      throw new Error("chapters.json needs an 'intro' object and a 'chapters' array");
+    }
+
+    const years = new Set(summitData.map((d) => d.year));
+    const ids = new Set();
+
+    story.chapters.forEach((chapter) => {
+      if (!CHAPTER_TYPES.has(chapter.type)) {
+        throw new Error(`Chapter "${chapter.id}": unknown type "${chapter.type}"`);
+      }
+      if (ids.has(chapter.id)) {
+        throw new Error(`Duplicate chapter id "${chapter.id}"`);
+      }
+      ids.add(chapter.id);
+      if (!years.has(chapter.year)) {
+        throw new Error(`Chapter "${chapter.id}": year ${chapter.year} is not in the summit data`);
+      }
+      if (chapter.link?.href.startsWith("REPLACE")) {
+        console.warn(`Chapter "${chapter.id}": link still has its placeholder URL`);
+      }
+    });
+    return story;
+  } catch (error) {
+    console.error("Error loading chapters:", error);
+    return null;
+  }
+}
+
 export async function loadAndMergeData(geojsonUrl, jsonFilePath) {
     try {
         const geojsonResponse = await fetch(geojsonUrl);
