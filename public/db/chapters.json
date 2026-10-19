@@ -1,0 +1,67 @@
+{
+  "intro": {
+    "eyebrow": "Africa+1 summits · 1973–2024",
+    "headline": "France was once the only host of Africa+1 summits",
+    "deck": "Since 1993, eleven other countries have joined. By 2024, twelve countries had hosted at least one summit, and France hosted one of the twelve held since 2020.",
+    "context": {
+      "label": "Context · APRI analysis",
+      "text": "An Africa+1 summit brings African leaders together with a single external partner. A country “hosts” a summit when it is the partner country that convenes it. APRI’s mapping covers leader-level summits and ministerials from 1973 to 2024. France held the first in 1973. The APRI analysis links the format’s spread to two forces: outside powers competing for influence in Africa, and African states diversifying their partnerships."
+    }
+  },
+  "chapters": [
+    {
+      "id": "france-1973",
+      "type": "data",
+      "year": 1973,
+      "caption": "France convenes the first Africa+1 summit in Paris in 1973, at the request of three African heads of state, as it redefines its post-colonial relations. Through 1992 it is the only host, with 17 summits."
+    },
+    {
+      "id": "japan-1993",
+      "type": "data",
+      "year": 1993,
+      "caption": "Japan launches the Tokyo International Conference on African Development (TICAD), the first summit hosted by a country other than France. A second edition follows in 1998. France still hosts 20 of the 22 summits held through 1999."
+    },
+    {
+      "id": "china-2000",
+      "type": "data",
+      "year": 2000,
+      "caption": "China launches the Forum on China-Africa Cooperation (FOCAC). Three countries have now hosted, and France accounts for 20 of the 23 summits so far."
+    },
+    {
+      "id": "second-generation-2008",
+      "type": "data",
+      "year": 2008,
+      "caption": "India and Turkey host their first summits, the India-Africa Forum Summit and the Turkey-Africa Summit, alongside Japan’s fourth TICAD. Five countries have now hosted. APRI’s analysis marks 2008 as the start of a second generation of summits. Its 31 summits through 2024 nearly match the 30 of the first generation’s 35 years."
+    },
+    {
+      "id": "new-hosts-2019",
+      "type": "data",
+      "year": 2019,
+      "caption": "The United States (2014), Indonesia (2018) and Russia (2019) host their first summits. With Russia’s, every BRICS country except Brazil has convened an Africa+1 summit. Eight countries have now hosted."
+    },
+    {
+      "id": "uk-saudi-2023",
+      "type": "data",
+      "year": 2023,
+      "caption": "The United Kingdom (2020) and Saudi Arabia (2023) host their first summits. APRI’s analysis describes the Saudi Arabia-Africa Summit as a turning point, with Gulf countries emerging as alternative partners to the West and China. Ten countries have now hosted."
+    },
+    {
+      "id": "summit-season-2024",
+      "type": "data",
+      "year": 2024,
+      "caption": "Four summits are held in 2024, the most in any year, including the first by South Korea and by Italy. Twelve countries have now hosted. France has hosted 28 of the 61 summits since 1973, and one of the 12 since 2020."
+    },
+    {
+      "id": "imbalances",
+      "type": "context",
+      "year": 2024,
+      "label": "Context · APRI analysis",
+      "text": "The APRI analysis describes structural imbalances in the format: agenda-setting power concentrated among external actors, and limited mechanisms to ensure implementation and accountability.",
+      "link": {
+        "text": "Read the APRI analysis →",
+        "href": "https://afripoli.org/africa1-summits-a-closer-look-at-the-geometry-of-global-diplomacy"
+      },
+      "note": "Data covers 1973–2024."
+    }
+  ]
+}

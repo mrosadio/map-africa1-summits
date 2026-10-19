@@ -18,14 +18,28 @@ let scrubAnimId = null;
 let playhead;
 let axisPast;
 let knob;
+let yearCardEnabled = true;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const SETTLE_DELAY = 300; // ms of no scrolling before we consider the user is "settled"
 const DOT_R = 6;
+const MIN_LABEL_GAP = 36; // px between year labels
 
 export function restoreScrub() {
   tick(focusIndex);
 }
-
+// -- Public: choose the year shown on first render (call once, before renderTimeline)
+export function setStartIndex(index) {
+  focusIndex = index;
+}
+// -- Public: story mode turns the chapter marks on, explore mode turns them off
+export function setChapterMarks(visible) {
+  document.getElementById("desktop-timeline")?.classList.toggle("show-chapters", visible);
+}
+// -- Public: the floating year card is for explore mode; the story turns it off
+export function setYearCardEnabled(enabled) {
+  yearCardEnabled = enabled;
+  if (!enabled) closeYearCard();
+}
 // -- Public: init
 export function renderTimeline() {
   const { summitData } = appData;
@@ -45,7 +59,7 @@ export function renderTimeline() {
   const FOCUS_RING_BUFFER = 12;
   const AXIS_GAP = 8; // air between the axis (and its knob) and the lowest dot
   const stackHeight = maxStack * (DOT_R * 2 + DOT_SPACING);
-  const MARGIN = { left: 12, right: 20, top: stackHeight + FOCUS_RING_BUFFER + AXIS_GAP, bottom: 20 };
+  const MARGIN = { left: 20, right: 20, top: stackHeight + FOCUS_RING_BUFFER + AXIS_GAP, bottom: 28 };
   const innerW = W - MARGIN.left - MARGIN.right;
   const innerH = H - MARGIN.top - MARGIN.bottom;
 
@@ -69,16 +83,53 @@ export function renderTimeline() {
   knob = g.append("circle").attr("class", "timeline-knob").attr("cy", innerH).attr("r", 5);
   movePlayhead(summitData[focusIndex].year);
 
-  const labelYears = years.filter((y, i) => i === 0 || i === years.length - 1 || y % 10 === 0);
-  g.selectAll("text.timeline-year-label")
-    .data(labelYears)
+  const chapterYears = [...new Set((appData.chapters?.chapters ?? []).map((c) => c.year))];
+  const endYears = [years[0], years[years.length - 1]];
+  const farFrom = (year, others) => others.every((o) => Math.abs(xScale(year) - xScale(o)) >= MIN_LABEL_GAP);
+
+  // Ticks for the story stops, just below the axis
+  g.selectAll("line.timeline-chapter-tick")
+    .data(chapterYears)
+    .enter()
+    .append("line")
+    .attr("class", "timeline-chapter-tick")
+    .attr("x1", (d) => xScale(d))
+    .attr("x2", (d) => xScale(d))
+    .attr("y1", innerH + 2)
+    .attr("y2", innerH + 8);
+
+  // Year labels: the ends and the decades always; chapter years without a label
+  // are added (shown in story mode only); a decade label that would collide
+  // with a chapter label steps aside in story mode.
+  const baseYears = years.filter((y, i) => i === 0 || i === years.length - 1 || y % 10 === 0);
+  const chapterOnlyYears = chapterYears.filter((y) => !baseYears.includes(y) && farFrom(y, endYears));
+  const labelData = [
+    ...baseYears.map((y) => ({
+      year: y,
+      chapterOnly: false,
+      yields: !endYears.includes(y) && !farFrom(y, chapterOnlyYears),
+    })),
+    ...chapterOnlyYears.map((y) => ({ year: y, chapterOnly: true, yields: false })),
+  ];
+
+  g.selectAll("text.timeline-label")
+    .data(labelData)
     .enter()
     .append("text")
-    .attr("class", "timeline-label")
-    .attr("x", (d) => xScale(d))
-    .attr("y", innerH + 16)
+    .attr("class", (d) =>
+      [
+        "timeline-label",
+        chapterYears.includes(d.year) && "timeline-label--stop",
+        d.chapterOnly && "timeline-label--chapter",
+        d.yields && "timeline-label--yields",
+      ]
+        .filter(Boolean)
+        .join(" "),
+    )
+    .attr("x", (d) => xScale(d.year))
+    .attr("y", innerH + 22)
     .attr("text-anchor", "middle")
-    .text((d) => d);
+    .text((d) => d.year);
 
   summitData.forEach((yearData, yearIndex) => {
     const x = xScale(yearData.year);
@@ -332,8 +383,8 @@ function tick(index) {
   movePlayhead(yearData.year);
   return yearData;
 }
-
 function settle(yearData) {
+  if (!yearCardEnabled) return;
   showYearCard(yearData);
 }
 

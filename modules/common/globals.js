@@ -11,13 +11,9 @@ export const appData = {
   summitsByCountryMap: null,
   countriesWithSummits: null,
   cumulativeSummits: null,
+  chapters: null,
 };
-// Map
-// const width = 500;
-// const height = 350;
-//const scale = width / 2 / Math.PI;
-// const center = [0, 0];
-// const translation = [width / 2, height / 2];
+const chaptersUrl = "./db/chapters.json";
 let hostCountry = [];
 const maxYearsToShow = 4;
 const mapStyle = {
@@ -140,4 +136,4 @@ let svg = d3.select("#map")
     .append("svg")
     .attr("preserveAspectRatio", "xMidYMid meet");
 
-export { jsonPath, geojsonUrl, svg, maxYearsToShow, hostCountry, flagSrc, mapStyle, timelineStyle, /*mapMobileWidth,*/ summitStyle, timelineHorizontalAlign }
+export { jsonPath, geojsonUrl, svg, maxYearsToShow, hostCountry, flagSrc, mapStyle, timelineStyle, summitStyle, timelineHorizontalAlign, chaptersUrl }

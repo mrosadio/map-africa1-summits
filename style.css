@@ -10,6 +10,7 @@
   --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --bs-body-font-family: var(--font-sans);
   --z-tooltip: 40;
+  --timeline-height: 172px;
   /* Neutrals & accent (category colours are injected from partnerColors.js) */
   --color-accent: #c1440e;
   --color-border: #e8e4df;
@@ -19,6 +20,7 @@
   --color-text-muted: #4a4a47;
   --bs-secondary-rgb: 74, 74, 71; /* same as --color-text-muted */
   --color-axis: rgba(28, 28, 26, 0.35);
+  --color-track: rgba(28, 28, 26, 0.2); /* unfinished progress segments */
   /* Type scale (rem so it respects the user's browser font size) */
   --fs-xs: 0.75rem; /* 12px */
   --fs-sm: 0.875rem; /* 14px */
@@ -346,7 +348,11 @@ body {
 }
 
 /* -------------- Timeline SVG elements --------------  */
-/* these are d3 rendered so bootstrap can't reach them */
+#desktop-timeline {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
 #desktop-timeline:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: -2px;
@@ -389,7 +395,71 @@ body {
   fill: var(--color-text-muted);
   pointer-events: none;
 }
+.timeline-chapter-tick {
+  stroke: var(--color-text-primary);
+  stroke-width: 1;
+  display: none;
+}
+.timeline-label--chapter {
+  display: none;
+}
+.show-chapters .timeline-chapter-tick,
+.show-chapters .timeline-label--chapter {
+  display: inline;
+}
+.show-chapters .timeline-label--yields {
+  display: none;
+}
+.show-chapters .timeline-label--stop {
+  font-weight: var(--fw-semibold);
+  fill: var(--color-text-primary);
+}
+/* -- Visual story -- */
+.vis-story:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.vis-story__text {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--fs-lg);
+  line-height: 1.5;
+}
+.vis-story__note {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+}
+.vis-story__nav {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: var(--space-2);
+}
+.vis-link--strong {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-primary);
+}
+.vis-story__progress {
+  display: flex;
+  gap: var(--space-1);
+}
+.vis-story__segment {
+  flex: 1;
+  height: 2px;
+  background: var(--color-track);
+}
+.vis-story__segment.is-done {
+  background: var(--color-text-primary);
+}
 
+/* While the story runs the map is read-only: no country clicks or tooltips */
+.is-story #map svg {
+  pointer-events: none;
+}
 /* -- Modal -- */
 .modal-header::after {
   content: "";
