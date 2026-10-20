@@ -118,17 +118,17 @@
           <div id="story-progress" class="vis-story__progress" role="img"></div>
         </section>
         <section id="detail-panel" class="vis-side__country" hidden inert>
-          <div id="summitListContainer" class="vis-panel__inner p-4">
+          <div id="summitListContainer" class="vis-panel__inner">
             <div class="vis-panel__header">
-              <h2 id="summitCountry" class="vis-panel__title mb-0">
-                <img src="" id="country-icon" class="vis-panel__flag me-2" />
+              <h2 id="summitCountry" class="vis-panel__title">
+                <img src="" id="country-icon" class="vis-panel__flag" alt="" />
                 <span id="country-name"></span>
               </h2>
-              <button id="close-panel" class="btn-close" aria-label="Close"></button>
+              <button id="close-panel" type="button" class="vis-link">Close</button>
             </div>
-            <p id="total-summit" class="text-secondary small mb-0"></p>
-            <p id="intro-list-summit" class="text-secondary small mb-3"></p>
-            <ul id="summitList" class="list-unstyled"></ul>
+            <p id="total-summit" class="vis-panel__meta"></p>
+            <p id="intro-list-summit" hidden></p>
+            <ol id="summitList" class="vis-summits"></ol>
           </div>
         </section>
         <p class="vis-side__credit">Data: APRI · Narrative and design: Micaela Rosadio</p>
@@ -136,7 +136,7 @@
 
       <!-- Floating summit card — shown on timeline dot click -->
       <div id="summit-card" class="vis-summit-card d-none">
-        <div id="summit-card-content" class="p-2"></div>
+        <div id="summit-card-content"></div>
       </div>
     </main>
     <footer class="vis-timeline flex-shrink-0">

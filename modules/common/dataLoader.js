@@ -72,6 +72,7 @@ export async function loadAndMergeData(geojsonUrl, jsonFilePath) {
             yearData.summits.forEach(summit => {
                 const country = summit.country;
                 const summitDetails = {
+                    year: yearData.year,
                     date: summit.date,
                     place: summit.place,
                     summitNo: summit.summitNo,

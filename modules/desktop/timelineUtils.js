@@ -318,32 +318,22 @@ function showYearCard(yearData) {
 
   if (!card || !content) return;
 
-  const summitsHTML = yearData.summits
-    .map(
-      (summit) => `
-    <div class="mb-2">
-      <p class="summit-card__country mb-1">
-        ${summit.country === "England" ? "United Kingdom" : summit.country}
-      </p>
-      ${summit.title ? `<p class="summit-card__title">${summit.title}</p>` : ""}
-      ${
-        summit.place
-          ? `
-        <div class="summit-meta">
-          <img src="./src/img/map-pin.svg" class="summit-meta__icon" alt="">
-          <p class="summit-card__place mb-0">${summit.place}</p>
-        </div>`
-          : ""
-      }
-    </div>
-  `,
-    )
+    const summitsHTML = yearData.summits
+    .map((summit) => {
+      const name = summit.country === "England" ? "United Kingdom" : summit.country;
+      return `
+        <div class="summit-card__item" style="--dot: ${getColorForCountry(summit.country)}">
+          <p class="summit-card__country">${name}</p>
+          ${summit.title ? `<p class="summit-card__title">${summit.title}</p>` : ""}
+          ${summit.place ? `<p class="summit-card__place">${summit.place}</p>` : ""}
+        </div>`;
+    })
     .join("");
 
   content.innerHTML = `
     <div class="summit-card__header">
       <span class="summit-card__year">${yearData.year}</span>
-      <button id="close-card" class="btn-close" aria-label="Close"></button>
+      <button id="close-card" type="button" class="vis-link">Close</button>
     </div>
     ${summitsHTML}
   `;
