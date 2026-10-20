@@ -10,10 +10,9 @@
   --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --bs-body-font-family: var(--font-sans);
   --z-tooltip: 40;
-  --timeline-height: 172px;
   /* Neutrals & accent (category colours are injected from partnerColors.js) */
   --color-accent: #c1440e;
-  --color-border: #e8e4df;
+--color-border: rgba(28, 28, 26, 0.25);
   --color-bg: #ffffff;
   --color-bg-subtle: #fafaf8;
   --color-text-primary: #1c1c1a;
@@ -62,7 +61,6 @@
 
   /* Layout */
   --timeline-height: 140px;
-  --nav-height: 48px;
   --panel-width: 400px;
   --nav-height: 56px;
   --page-gutter: 2.5rem; /* 40px: header, map zone and timeline share it */
@@ -228,25 +226,12 @@ body {
   min-width: 0; /* lets the map shrink below its content width */
 }
 
-.vis-panel__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: var(--border-w-accent) solid var(--color-accent);
-  padding-bottom: var(--space-2);
-  margin-bottom: var(--space-3);
-}
 .vis-panel__title,
 .modal-body h1 {
   font-family: var(--font-serif);
   font-weight: var(--fw-semibold);
 }
-.vis-panel__title {
-  font-size: var(--fs-xl);
-  color: var(--color-text-primary);
-  display: flex;
-  align-items: center;
-}
+
 .vis-panel__flag {
   height: 24px;
   border-radius: var(--radius-sm);
@@ -260,6 +245,7 @@ body {
   padding: var(--space-6) var(--page-gutter);
   border-left: var(--border-w) solid var(--color-border);
   overflow-y: auto;
+  padding-block: var(--space-5);
 }
 .vis-side__hint p {
   margin: 0;
@@ -276,24 +262,14 @@ body {
   animation: side-in var(--dur-base) var(--ease);
 }
 @keyframes side-in {
-  from { opacity: 0; transform: translateX(var(--space-3)); }
+  from {
+    opacity: 0;
+    transform: translateX(var(--space-3));
+  }
 }
 /* Summit list items */
-#summitList li {
-  padding: var(--space-3) 0;
-  border-bottom: var(--border-w) solid var(--color-border);
-  font-size: var(--fs-sm);
-}
 
-#summitList li:last-child {
-  border-bottom: none;
-}
 
-#summitList .summit-title {
-  font-weight: var(--fw-semibold);
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-1);
-}
 
 #summitList .summit-city {
   font-size: var(--fs-xs);
@@ -301,50 +277,127 @@ body {
 }
 
 /* - Floating summit card (timeline dot click) - */
+/* -- Year card (floating, opens on a dot click) -- */
 .vis-summit-card {
   position: fixed;
   min-width: 260px;
   max-width: 340px;
-  background: var(--color-bg);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-bg-subtle);
   border: var(--border-w) solid var(--color-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 6px 24px rgba(28, 28, 26, 0.08); /* only to lift it off the map */
   z-index: var(--z-card);
 }
-
-.vis-summit-card.open {
-  display: block !important;
+.summit-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
 }
 .summit-card__year {
-  font-size: var(--fs-md);
-  font-weight: var(--fw-bold);
-  color: var(--color-text-primary);
+  font-family: var(--font-serif);
+  font-size: var(--fs-xl);
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+}
+.summit-card__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.summit-card__item + .summit-card__item {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: var(--border-w) solid var(--color-border);
 }
 .summit-card__country {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
   font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-1);
 }
-.summit-card__header {
+.summit-card__country::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dot);
+}
+.summit-card__title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+}
+.summit-card__place {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+
+/* -- Country panel -- */
+.vis-panel__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--space-2);
-  padding-bottom: var(--space-2);
-  border-bottom: var(--border-w-accent) solid var(--color-accent);
 }
-.summit-card__title {
+.vis-panel__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xl);
+  line-height: var(--lh-tight);
+}
+.vis-panel__flag {
+  width: 36px;
+  height: 24px;
+  object-fit: cover;
+  border: var(--border-w) solid var(--color-border);
+}
+.vis-panel__meta {
+  margin: 0 0 var(--space-3);
   font-size: var(--fs-sm);
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-1);
-}
-.summit-card__place {
-  font-size: var(--fs-xs);
   color: var(--color-text-muted);
 }
-.vis-summit-card .btn-close {
+.vis-summits {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--border-w) solid var(--color-border);
+}
+.vis-summits__item {
+  display: grid;
+  grid-template-columns: 2.75rem 1fr auto;
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+  align-items: baseline;
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-w) solid var(--color-border);
+  font-size: var(--fs-sm);
+}
+.vis-summits__year {
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+}
+.vis-summits__place {
+  color: var(--color-text-muted);
+  text-align: right;
+}
+.vis-summits__title {
+  grid-column: 2 / -1;
+  font-family: var(--font-serif);
+  line-height: var(--lh-body);
+}
+.vis-summits__date {
+  grid-column: 2 / -1;
   font-size: var(--fs-xs);
+  color: var(--color-text-muted);
 }
 
 /* -------------- Timeline SVG elements --------------  */
@@ -415,7 +468,7 @@ body {
   fill: var(--color-text-primary);
 }
 /* -- Visual story -- */
-.vis-story:not([hidden]) {
+.vis-story {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
@@ -430,7 +483,7 @@ body {
 .vis-story__note {
   margin: 0;
   font-size: var(--fs-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
 }
 .vis-story__nav {
   display: flex;
@@ -455,10 +508,72 @@ body {
 .vis-story__segment.is-done {
   background: var(--color-text-primary);
 }
-
-/* While the story runs the map is read-only: no country clicks or tooltips */
-.is-story #map svg {
+/* -- Modes: body[data-mode] is "loading", "intro", "story" or "explore" -- */
+body:not([data-mode="intro"]) [data-mode-only="intro"],
+body:not([data-mode="story"]) [data-mode-only="story"],
+body:not([data-mode="explore"]) [data-mode-only="explore"] {
+  display: none;
+}
+/* Intro and story are read-only: no country clicks, tooltips or dot clicks */
+body:not([data-mode="explore"]) #map svg,
+body:not([data-mode="explore"]) .timeline-dot {
   pointer-events: none;
+}
+
+.vis-header__actions {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+}
+.vis-side .vis-label {
+  margin: 0;
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-muted);
+}
+
+/* -- Intro -- */
+.vis-intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.vis-intro__headline {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xl);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+}
+.vis-intro__deck {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
+  line-height: 1.6;
+}
+.vis-intro__context {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-4);
+  border-top: var(--border-w) solid var(--color-border);
+}
+.vis-intro__context-text {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+.vis-intro__actions {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+  margin-top: var(--space-2);
+}
+.vis-story__nav.is-last {
+  padding-top: var(--space-4);
+  border-top: var(--border-w) solid var(--color-border);
 }
 /* -- Modal -- */
 .modal-header::after {
@@ -475,12 +590,11 @@ body {
   line-height: var(--lh-relaxed);
   color: var(--color-text-primary);
 }
-
-/* -- Scrollbar -- */
-#summitListContainer::-webkit-scrollbar {
-  width: 3px;
-  text-align: justify;
+.modal-title {
+  font-weight: var(--fw-semibold);
 }
+/* -- Scrollbar -- */
+
 #summitListContainer::-webkit-scrollbar-thumb {
   background: var(--color-border);
   border-radius: var(--radius-sm);

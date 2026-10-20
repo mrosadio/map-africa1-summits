@@ -28,60 +28,41 @@ export function renderCountryPanel(country, summitsCountry) {
   } else {
     console.warn("renderCountryPanel: #country-name not found in DOM");
   }
-  const noSummits = summitsCountry.length;
+    const cell = (className, text) => {
+    const span = document.createElement("span");
+    span.className = className;
+    span.textContent = text;
+    return span;
+  };
+
+  const count = summitsCountry.length;
+  const years = summitsCountry.map((s) => s.year);
+  const range = count > 1 ? `${Math.min(...years)}–${Math.max(...years)}` : `${years[0]}`;
   const totalSummits = document.getElementById("total-summit");
-  if (totalSummits) {
-    totalSummits.innerHTML = `${noSummits} summit(s) hosted:`;
-  } else {
-    console.warn("renderCountryPanel: #total-summit not found in DOM");
-  }
+  if (totalSummits) totalSummits.textContent = `${count} ${count === 1 ? "summit" : "summits"} · ${range}`;
 
   const introListSummit = document.getElementById("intro-list-summit");
-  if (introListSummit) {
-    introListSummit.innerHTML = `<i>(from most to least recent)</i>`;
-  } else {
-    console.warn("renderCountryPanel: #intro-list-summit not found in DOM");
-  }
+  if (introListSummit) introListSummit.textContent = ""; // legacy, used again in the phone layout
 
-  const summitListContainer = document.getElementById("summitList");
-  if (!summitListContainer) {
+  const list = document.getElementById("summitList");
+  if (!list) {
     console.warn("renderCountryPanel: #summitList not found in DOM — aborting list render");
     return;
   }
-  summitListContainer.innerHTML = "";
-
-  const reversedSummitsCountry = summitsCountry.slice().reverse();
-  reversedSummitsCountry.forEach((summit) => {
-    const listItem = document.createElement("li");
-
-    let titleContent = summit.title ? `${summit.title}` : `${summit.summitNo} Summit`;
-    let dateContent = summit.date
-      ? `
-        <div class="summit-meta">
-            <img src="./src/img/calendar.svg" class="summit-meta__icon" alt="">
-            <p class="mobile-font-size mb-0">${summit.date}</p>
-        </div>`
-      : "";
-    let placeContent = summit.place
-      ? `
-        <div class="summit-meta">
-            <img src="./src/img/map-pin.svg" class="summit-meta__icon" alt="">
-            <p class="mobile-font-size mb-0">${summit.place}</p>
-        </div>`
-      : "";
-
-    listItem.innerHTML = `
-        <div class="d-flex align-items-start mb-0">
-            <span class="summit-number badge bg-dark me-2 mobile-font-size badge-normal">${summit.summitNo}</span>
-            <div class="summit-content">
-                <p class="mb-1 mobile-font-size summit-title">${titleContent}</p>
-                ${dateContent}
-                ${placeContent}
-            </div>
-        </div>
-    `;
-    summitListContainer.appendChild(listItem);
-  });
+  // Newest first
+  list.replaceChildren(
+    ...summitsCountry
+      .slice()
+      .reverse()
+      .map((summit) => {
+        const item = document.createElement("li");
+        item.className = "vis-summits__item";
+        item.append(cell("vis-summits__year", summit.year), cell("vis-summits__no", `${summit.summitNo} summit`), cell("vis-summits__place", summit.place ?? ""));
+        if (summit.title) item.append(cell("vis-summits__title", summit.title));
+        if (summit.date) item.append(cell("vis-summits__date", summit.date));
+        return item;
+      }),
+  );
 }
 
 export function displaySummitsYear(yearData) {

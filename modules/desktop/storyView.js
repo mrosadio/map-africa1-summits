@@ -1,21 +1,22 @@
-// Right-column story block. Pure DOM: no imports from the map or the timeline.
-import { closePanel } from "./panel.js";
-
+// Right-column story views. Pure DOM: no imports from the map or the timeline.
 const $ = (id) => document.getElementById(id);
 
-export function showStoryPanel() {
-  closePanel(); // make sure no country panel stays open
-  $("side-hint").hidden = true;
-  $("story").hidden = false;
+// The mode lives on <body>; CSS shows and hides the right blocks.
+export function setMode(mode) {
+  document.body.dataset.mode = mode;
 }
 
-export function hideStoryPanel() {
-  $("story").hidden = true;
-  $("side-hint").hidden = false;
+export function renderIntro(intro) {
+  $("intro-eyebrow").textContent = intro.eyebrow;
+  $("intro-headline").textContent = intro.headline;
+  $("intro-deck").textContent = intro.deck;
+  $("intro-context-label").textContent = intro.context.label;
+  $("intro-context-text").textContent = intro.context.text;
 }
 
 export function renderChapter(chapter, index, chapters) {
   const isContext = chapter.type === "context";
+  const isLast = index === chapters.length - 1;
   const dataCount = chapters.filter((c) => c.type === "data").length;
 
   $("story-label").textContent = isContext ? chapter.label : `Chapter ${index + 1} of ${dataCount}`;
@@ -32,9 +33,8 @@ export function renderChapter(chapter, index, chapters) {
   note.hidden = !chapter.note;
   note.textContent = chapter.note ?? "";
 
-  // Back is invisible, not removed, so Next stays on the right
-  $("story-back").style.visibility = index === 0 ? "hidden" : "visible";
-  $("story-next").hidden = index === chapters.length - 1;
+  $("story-next").textContent = isLast ? "Explore the map →" : "Next →";
+  document.querySelector(".vis-story__nav").classList.toggle("is-last", isLast);
 
   const progress = $("story-progress");
   progress.replaceChildren(

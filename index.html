@@ -17,7 +17,7 @@
     <!-- Custom css -->
     <link rel="stylesheet" href="./style.css" />
   </head>
-  <body class="d-flex flex-column vh-100 overflow-hidden">
+  <body class="d-flex flex-column vh-100 overflow-hidden" data-mode="loading">
     <!-- Modal -->
     <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
@@ -46,7 +46,7 @@
               </div>
               <div class="col-md-6">
                 <p class="text-uppercase small mb-1 vis-label">Code</p>
-                <a href="https://github.com/mrosadio/map-africa1-summits" target="_blank" rel="noopener" class="small"> github.com/mrosadio/map-climate-diplomacy </a>
+                <a href="https://github.com/mrosadio/map-africa1-summits" target="_blank" rel="noopener" class="small"> github.com/mrosadio/map-africa1-summits </a>
               </div>
             </div>
           </div>
@@ -55,7 +55,11 @@
     </div>
     <header class="vis-header">
       <span class="vis-label vis-header__title">Africa+1 summits</span>
-      <button type="button" class="vis-link" data-bs-toggle="modal" data-bs-target="#aboutModal">About</button>
+      <div class="vis-header__actions">
+        <button id="header-skip" type="button" class="vis-link" data-mode-only="story">Skip to explore</button>
+        <button id="header-replay" type="button" class="vis-link" data-mode-only="explore">Replay the story</button>
+        <button type="button" class="vis-link" data-bs-toggle="modal" data-bs-target="#aboutModal">About</button>
+      </div>
     </header>
     <!-- ── Main: children are map container and panel ── -->
     <main class="vis-main flex-grow-1 d-flex overflow-hidden">
@@ -85,14 +89,27 @@
       </div>
       <!-- Detail panel — slides in from right on country click -->
       <aside class="vis-side" aria-label="Details">
-        <section id="side-hint" class="vis-side__hint">
+        <section id="side-hint" data-mode-only="explore" class="vis-side__hint">
           <p class="vis-label text-secondary mb-2">Explore</p>
           <p>Scroll the timeline or use the arrow keys to move through the years. Click a country to see its summits.</p>
         </section>
-        <section id="story" class="vis-story" hidden aria-live="polite">
+        <section id="intro" class="vis-intro" data-mode-only="intro">
+          <p id="intro-eyebrow" class="vis-label"></p>
+          <h1 id="intro-headline" class="vis-intro__headline"></h1>
+          <p id="intro-deck" class="vis-intro__deck"></p>
+          <div class="vis-intro__context">
+            <p id="intro-context-label" class="vis-label"></p>
+            <p id="intro-context-text" class="vis-intro__context-text"></p>
+          </div>
+          <div class="vis-intro__actions">
+            <button id="intro-start" type="button" class="vis-link vis-link--strong">Start the story →</button>
+            <button id="intro-skip" type="button" class="vis-link">Skip to explore</button>
+          </div>
+        </section>
+        <section id="story" class="vis-story" aria-live="polite" data-mode-only="story">
           <p id="story-label" class="vis-label"></p>
           <p id="story-text" class="vis-story__text"></p>
-          <a id="story-link" class="vis-link" href="#" target="_blank" rel="noopener" hidden></a>
+          <a id="story-link" class="vis-link vis-link--strong" href="#" target="_blank" rel="noopener" hidden></a>
           <p id="story-note" class="vis-story__note" hidden></p>
           <div class="vis-story__nav">
             <button id="story-back" type="button" class="vis-link">← Back</button>
@@ -101,17 +118,17 @@
           <div id="story-progress" class="vis-story__progress" role="img"></div>
         </section>
         <section id="detail-panel" class="vis-side__country" hidden inert>
-          <div id="summitListContainer" class="vis-panel__inner p-4">
+          <div id="summitListContainer" class="vis-panel__inner">
             <div class="vis-panel__header">
-              <h2 id="summitCountry" class="vis-panel__title mb-0">
-                <img src="" id="country-icon" class="vis-panel__flag me-2" />
+              <h2 id="summitCountry" class="vis-panel__title">
+                <img src="" id="country-icon" class="vis-panel__flag" alt="" />
                 <span id="country-name"></span>
               </h2>
-              <button id="close-panel" class="btn-close" aria-label="Close"></button>
+              <button id="close-panel" type="button" class="vis-link">Close</button>
             </div>
-            <p id="total-summit" class="text-secondary small mb-0"></p>
-            <p id="intro-list-summit" class="text-secondary small mb-3"></p>
-            <ul id="summitList" class="list-unstyled"></ul>
+            <p id="total-summit" class="vis-panel__meta"></p>
+            <p id="intro-list-summit" hidden></p>
+            <ol id="summitList" class="vis-summits"></ol>
           </div>
         </section>
         <p class="vis-side__credit">Data: APRI · Narrative and design: Micaela Rosadio</p>
@@ -119,7 +136,7 @@
 
       <!-- Floating summit card — shown on timeline dot click -->
       <div id="summit-card" class="vis-summit-card d-none">
-        <div id="summit-card-content" class="p-2"></div>
+        <div id="summit-card-content"></div>
       </div>
     </main>
     <footer class="vis-timeline flex-shrink-0">
