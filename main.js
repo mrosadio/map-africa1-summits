@@ -9,7 +9,6 @@ import { debounce } from "./modules/common/utils.js";
 import { initDesktopTimeline } from "./modules/desktop/initDesktop.js";
 import { applyCategoryColors } from "./modules/common/partnerColors.js";
 
-
 function showLoadError() {
   document.getElementById("load-error")?.classList.remove("d-none");
   document.getElementById("map")?.classList.add("d-none");
@@ -37,7 +36,7 @@ async function main() {
     document.activeElement?.blur();
   });
   if (!(await loadData())) {
-    document.querySelector(".vis-hint")?.classList.add("d-none");
+    showLoadError();
     return;
   }
   render();
