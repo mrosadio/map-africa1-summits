@@ -59,7 +59,7 @@ export function renderTimeline() {
   const FOCUS_RING_BUFFER = 12;
   const AXIS_GAP = 8; // air between the axis (and its knob) and the lowest dot
   const stackHeight = maxStack * (DOT_R * 2 + DOT_SPACING);
-  const MARGIN = { left: 20, right: 20, top: stackHeight + FOCUS_RING_BUFFER + AXIS_GAP, bottom: 28 };
+  const MARGIN = { left: DOT_R, right: DOT_R, top: stackHeight + FOCUS_RING_BUFFER + AXIS_GAP, bottom: 28 };
   const innerW = W - MARGIN.left - MARGIN.right;
   const innerH = H - MARGIN.top - MARGIN.bottom;
 
@@ -73,8 +73,13 @@ export function renderTimeline() {
     .domain([d3.min(years), d3.max(years)])
     .range([0, innerW]);
 
-  g.append("line").attr("class", "timeline-axis").attr("x1", 0).attr("x2", innerW).attr("y1", innerH).attr("y2", innerH);
-  axisPast = g.append("line").attr("class", "timeline-axis-past").attr("x1", 0).attr("y1", innerH).attr("y2", innerH);
+  g.append("line")
+    .attr("class", "timeline-axis")
+    .attr("x1", -DOT_R)
+    .attr("x2", innerW + DOT_R)
+    .attr("y1", innerH)
+    .attr("y2", innerH);
+  axisPast = g.append("line").attr("class", "timeline-axis-past").attr("x1", -DOT_R).attr("y1", innerH).attr("y2", innerH);
   playhead = g
     .append("line")
     .attr("class", "timeline-playhead")
@@ -111,24 +116,16 @@ export function renderTimeline() {
     })),
     ...chapterOnlyYears.map((y) => ({ year: y, chapterOnly: true, yields: false })),
   ];
-
+  const isStart = (d) => d.year === years[0];
+  const isEnd = (d) => d.year === years[years.length - 1];
   g.selectAll("text.timeline-label")
     .data(labelData)
     .enter()
     .append("text")
-    .attr("class", (d) =>
-      [
-        "timeline-label",
-        chapterYears.includes(d.year) && "timeline-label--stop",
-        d.chapterOnly && "timeline-label--chapter",
-        d.yields && "timeline-label--yields",
-      ]
-        .filter(Boolean)
-        .join(" "),
-    )
-    .attr("x", (d) => xScale(d.year))
+    .attr("class", (d) => ["timeline-label", chapterYears.includes(d.year) && "timeline-label--stop", d.chapterOnly && "timeline-label--chapter", d.yields && "timeline-label--yields"].filter(Boolean).join(" "))
+    .attr("x", (d) => xScale(d.year) + (isStart(d) ? -DOT_R : isEnd(d) ? DOT_R : 0))
     .attr("y", innerH + 22)
-    .attr("text-anchor", "middle")
+    .attr("text-anchor", (d) => (isStart(d) ? "start" : isEnd(d) ? "end" : "middle"))
     .text((d) => d.year);
 
   summitData.forEach((yearData, yearIndex) => {
@@ -318,7 +315,7 @@ function showYearCard(yearData) {
 
   if (!card || !content) return;
 
-    const summitsHTML = yearData.summits
+  const summitsHTML = yearData.summits
     .map((summit) => {
       const name = summit.country === "England" ? "United Kingdom" : summit.country;
       return `
