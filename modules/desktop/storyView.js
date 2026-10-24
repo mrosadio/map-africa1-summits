@@ -4,6 +4,7 @@ const $ = (id) => document.getElementById(id);
 // The mode lives on <body>; CSS shows and hides the right blocks.
 export function setMode(mode) {
   document.body.dataset.mode = mode;
+  document.getElementById("map")?.toggleAttribute("inert", mode !== "explore");
 }
 
 export function renderIntro(intro) {

@@ -154,7 +154,13 @@ body {
 #map svg {
   transition: opacity var(--dur-base) var(--ease);
 }
-
+#map path:focus {
+  outline: none;
+}
+#map path:focus-visible {
+  stroke: var(--color-accent);
+  stroke-width: 2.5;
+}
 /* Map area */
 .vis-map-area {
   min-height: 0;

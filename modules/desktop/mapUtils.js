@@ -31,8 +31,16 @@ export function drawMap() {
   // in the DOM and a new one stacks on top of it.
   svg.selectAll("*").remove();
   g = svg.append("g");
-
- const paths = g.selectAll("path")
+  // One listener on the group, not on each path: a focus listener on an SVG
+  // element makes Chrome treat it as focusable, which tabbed through every country.
+  g.on("focusin", (event) => {
+    const d = d3.select(event.target).datum();
+    if (!d?.properties) return;
+    const r = event.target.getBoundingClientRect();
+    showTooltip(displayName(d.properties.name), { clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 });
+  }).on("focusout", hideTooltip);
+  const paths = g
+    .selectAll("path")
     .data(geojsonData.features)
     .enter()
     .append("path")
@@ -43,7 +51,7 @@ export function drawMap() {
     })
     .attr("stroke", mapStyle.defaultBorder)
     .attr("stroke-width", mapStyle.defaultBorderWidth);
-  bindCountryEvents(paths, countriesWithSummits)
+  bindCountryEvents(paths, countriesWithSummits);
 }
 // Re-fits the existing shapes to the container. Does not rebuild the map,
 // so colours, selection ring and listeners are kept.
@@ -76,7 +84,8 @@ export function renderCumulativeMap(yearData) {
   const cumulative = yearInfo.cumulative;
   const currentHosts = yearData.summits.map((s) => s.country);
 
- const sel = g.selectAll("path")
+  const sel = g
+    .selectAll("path")
     .data(geojsonData.features)
     .join("path")
     .attr("d", path)
@@ -87,7 +96,7 @@ export function renderCumulativeMap(yearData) {
     .attr("stroke", (d) => (currentHosts.includes(d.properties.name) ? mapStyle.borderHost : mapStyle.defaultBorder))
     .attr("stroke-width", (d) => (currentHosts.includes(d.properties.name) ? mapStyle.borderWidthHost : mapStyle.defaultBorderWidth))
     .attr("opacity", 1);
-  bindCountryEvents(sel, cumulative)
+  bindCountryEvents(sel, cumulative);
 }
 function notifyCountryClick(country) {
   countryClickListeners.forEach((cb) => cb(country));
@@ -102,7 +111,7 @@ function handleCountryClick(event, d, availableCountries, summitsByCountryMap) {
   const country = d.properties.name;
   if (availableCountries.has(country)) {
     event.stopPropagation(); // prevent bubbling to #map's click-to-close-card listener,
-                              // which would otherwise wipe the highlight we're about to set
+    // which would otherwise wipe the highlight we're about to set
     clickedCountry = country;
     const summits = getSummitsByCountry(summitsByCountryMap, country);
     renderCountryPanel(country, summits);
@@ -114,12 +123,12 @@ function handleCountryClick(event, d, availableCountries, summitsByCountryMap) {
 }
 function applyCountrySelectionStyle(availableCountries) {
   g.selectAll("path")
-  .attr("fill", (d) => {
-    const country = d.properties.name;
-    return availableCountries.has(country) ? getColorForCountry(country) : mapStyle.defaultFill;
-  })
-  .attr("stroke", (d) => (d.properties.name === clickedCountry ? mapStyle.borderHost : mapStyle.defaultBorder))
-  .attr("stroke-width", (d) => (d.properties.name === clickedCountry ? mapStyle.borderWidthHost : mapStyle.defaultBorderWidth));
+    .attr("fill", (d) => {
+      const country = d.properties.name;
+      return availableCountries.has(country) ? getColorForCountry(country) : mapStyle.defaultFill;
+    })
+    .attr("stroke", (d) => (d.properties.name === clickedCountry ? mapStyle.borderHost : mapStyle.defaultBorder))
+    .attr("stroke-width", (d) => (d.properties.name === clickedCountry ? mapStyle.borderWidthHost : mapStyle.defaultBorderWidth));
 }
 
 // -- Public: enables user resumed scrubbing after selecting a country ----------------
@@ -128,17 +137,25 @@ function applyCountrySelectionStyle(availableCountries) {
 export function clearCountrySelection() {
   clickedCountry = null;
 }
-
 export function clearCountryLabels() {
   svg.selectAll(".country-label").remove();
   svg.selectAll(".country-counter").remove();
 }
 function bindCountryEvents(selection, availableCountries) {
+  const isAvailable = (d) => availableCountries.has(d.properties.name);
   selection
-    .style("cursor", (d) => (availableCountries.has(d.properties.name) ? "pointer" : "default"))
+    .style("cursor", (d) => (isAvailable(d) ? "pointer" : "default"))
+    .attr("tabindex", (d) => (isAvailable(d) ? 0 : null))
+    .attr("role", (d) => (isAvailable(d) ? "button" : null))
+    .attr("aria-label", (d) => (isAvailable(d) ? `${displayName(d.properties.name)}, show its summits` : null))
     .on("click", (event, d) => handleCountryClick(event, d, availableCountries, appData.summitsByCountryMap))
+    .on("keydown", (event, d) => {
+      if (!isAvailable(d) || (event.key !== "Enter" && event.key !== " ")) return;
+      event.preventDefault(); // Space would otherwise scroll the page
+      handleCountryClick(event, d, availableCountries, appData.summitsByCountryMap);
+    })
     .on("mousemove", (event, d) => {
-      if (availableCountries.has(d.properties.name)) showTooltip(displayName(d.properties.name), event);
+      if (isAvailable(d)) showTooltip(displayName(d.properties.name), event);
       else hideTooltip();
     })
     .on("mouseleave", hideTooltip);
