@@ -64,7 +64,6 @@ export async function loadAndMergeData(geojsonUrl, jsonFilePath) {
         jsonData.forEach(yearData => {
             yearData.summits.forEach(summit => {
                 countriesWithSummits.add(summit.country);
-                //console.log('countries with summits', countriesWithSummits)
             });
         });
 
@@ -88,12 +87,10 @@ export async function loadAndMergeData(geojsonUrl, jsonFilePath) {
         });
 
         countriesWithSummits.forEach(country => {
-            //console.log('Country in countrieswithsummits', countriesWithSummits)
             summitCounter[country] = (summitCounter[country] || 0) + 1;
         });
 
         // Remove antarctica from geojson
-
         geojsonData.features = geojsonData.features.filter(feature => feature.properties.name !== "Antarctica");
         geojsonData.features.forEach(feature => {
             const countryName = feature.properties.name;
