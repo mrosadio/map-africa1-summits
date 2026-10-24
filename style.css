@@ -157,7 +157,12 @@ body {
 .vis-map-area {
   min-height: 0;
 }
-
+.vis-main {
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
 #map {
   flex: 1 1 0;
   min-height: 0;
@@ -268,9 +273,6 @@ body {
   }
 }
 /* Summit list items */
-
-
-
 #summitList .summit-city {
   font-size: var(--fs-xs);
   color: var(--color-text-muted);
@@ -651,5 +653,38 @@ body:not([data-mode="explore"]) .timeline-dot {
   }
   .vis-timeline {
     height: 60px;
+  }
+}
+/* -- Tablet portrait (e.g iPad 768 × 1024): the side column moves under the timeline -- */
+@media (min-width: 768px) and (orientation: portrait) {
+  :root {
+    --nav-height: 48px;
+    --page-gutter: 1.5rem; /* 24px */
+    --fs-numeral: 4.5rem; /* 72px */
+    --sheet-height: clamp(280px, 38vh, 400px);
+  }
+  /* <main> drops out; its children join <body>'s column and are reordered */
+  .vis-main {
+    display: contents;
+  }
+  .vis-map-area {
+    order: 1;
+  }
+  .vis-timeline {
+    order: 2;
+  }
+  .vis-side {
+    order: 3;
+    flex: 0 0 var(--sheet-height);
+    width: auto;
+    padding: var(--space-4) var(--page-gutter);
+    border-left: 0;
+    border-top: var(--border-w) solid var(--color-border);
+  }
+  .vis-side > section {
+    max-width: 40rem; /* keeps serif lines at a readable length on a wide screen */
+  }
+  #map {
+    margin-top: var(--space-4);
   }
 }
