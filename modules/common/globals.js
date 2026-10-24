@@ -6,15 +6,12 @@ const geojsonUrl = "./db/world.geojson";
 export const appData = {
   geojsonData: null,
   summitData: null,
-  summitMap: null,
   summitsByCountryMap: null,
   countriesWithSummits: null,
   cumulativeSummits: null,
   chapters: null,
 };
 const chaptersUrl = "./db/chapters.json";
-let hostCountry = [];
-const maxYearsToShow = 4;
 const mapStyle = {
     "onloadFill": "#ffdc94",
     "defaultFill": "#f2f2f2",
@@ -30,29 +27,6 @@ const mapStyle = {
     "textAnchor": "middle",
     "alignmentBaseline": "middle"
 };
-// Timeline 
-const timelineStyle = {
-    "defaultItem": "#000000",
-    "highlightItem": "#ffbf3b",
-    "borderItem": "#000000",
-    "borderWidthItem": 2,
-    "clickedYearCountry": "#d87b00",
-    "fontItem": "15pt",
-    "fontWeight": "normal",
-    "fontWeightHighlight": "bold",
-    "arrowActive": "#fec03c",
-    "arrowLineColor": "#d7d7d7",
-    "arrowLineWeight": 1,
-    "notActiveNode": "#d7d7d7",
-    "activeNode": "#fec03c",
-    "marginYearLeft": 20,
-}
-const timelineHorizontalAlign = 7.5;
-
-// Summit container 
-const summitStyle = {
-    "fontItem": "11pt",
-}
 
 // Country flags
 const flagSrc = [
@@ -135,4 +109,4 @@ let svg = d3.select("#map")
     .append("svg")
     .attr("preserveAspectRatio", "xMidYMid meet");
 
-export { jsonPath, geojsonUrl, svg, maxYearsToShow, hostCountry, flagSrc, mapStyle, timelineStyle, summitStyle, timelineHorizontalAlign, chaptersUrl }
+export { jsonPath, geojsonUrl, svg, flagSrc, mapStyle, chaptersUrl }
