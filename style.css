@@ -158,6 +158,8 @@ body {
 /* Map area */
 .vis-map-area {
   min-height: 0;
+  flex: 1 1 0;
+  min-width: 0;
 }
 .vis-main {
   display: flex;
@@ -228,20 +230,9 @@ body {
   gap: var(--space-1);
 }
 /* -- Detail panel (country click) -- */
-.vis-map-area {
-  flex: 1 1 0;
-  min-width: 0; /* lets the map shrink below its content width */
-}
-
-.vis-panel__title,
 .modal-body h1 {
   font-family: var(--font-serif);
   font-weight: var(--fw-semibold);
-}
-
-.vis-panel__flag {
-  height: 24px;
-  border-radius: var(--radius-sm);
 }
 .vis-side {
   flex: 0 0 var(--panel-width);
@@ -249,10 +240,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  padding: var(--space-6) var(--page-gutter);
+  padding: var(--space-5) var(--page-gutter);
   border-left: var(--border-w) solid var(--color-border);
   overflow-y: auto;
-  padding-block: var(--space-5);
 }
 .vis-side__hint p {
   margin: 0;
@@ -273,11 +263,6 @@ body {
     opacity: 0;
     transform: translateX(var(--space-3));
   }
-}
-/* Summit list items */
-#summitList .summit-city {
-  font-size: var(--fs-xs);
-  color: var(--color-text-muted);
 }
 
 /* - Floating summit card (timeline dot click) - */
@@ -583,15 +568,6 @@ body:not([data-mode="explore"]) .timeline-dot {
   border-top: var(--border-w) solid var(--color-border);
 }
 /* -- Modal -- */
-.modal-header::after {
-  content: "";
-  display: block;
-  width: 40px;
-  height: 3px;
-  /* background: var(--color-accent); */
-  margin-top: 10px;
-}
-
 .modal-body p {
   font-size: var(--fs-sm);
   line-height: var(--lh-relaxed);
@@ -600,29 +576,7 @@ body:not([data-mode="explore"]) .timeline-dot {
 .modal-title {
   font-weight: var(--fw-semibold);
 }
-/* -- Scrollbar -- */
 
-#summitListContainer::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: var(--radius-sm);
-}
-.summit-content {
-  flex: 1 1 auto;
-  min-width: 0; /* allows long titles to wrap instead of overflowing the panel */
-}
-
-.summit-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-bottom: var(--space-1);
-}
-
-.summit-meta__icon {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-}
 .vis-tooltip {
   position: fixed;
   z-index: var(--z-tooltip);

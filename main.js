@@ -19,7 +19,6 @@ async function loadData() {
   if (!result) return false;
   appData.geojsonData = result.geojsonData;
   appData.summitData = result.jsonData;
-  appData.summitMap = result.summitMap;
   appData.summitsByCountryMap = result.summitsByCountryMap;
   appData.countriesWithSummits = result.countriesWithSummits;
   appData.cumulativeSummits = result.cumulativeSummits;

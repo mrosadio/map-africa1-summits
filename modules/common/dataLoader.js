@@ -43,28 +43,14 @@ export async function loadAndMergeData(geojsonUrl, jsonFilePath) {
         const jsonResponse = await fetch(jsonFilePath);
         const jsonData = await jsonResponse.json();
 
-        const summitMap = new Map();
         const countriesWithSummits = new Set();
-        const summitCounter = new Map();
         const summitsByCountryMap = new Map();
         const cumulative = new Map();
         const cumulativeSummits = new Map();
 
-        jsonData.forEach(entry => {
-            const { year, summits } = entry;
-            if (!summitMap[year]) {
-                summitMap[year] = [];
-            }
-            summits.forEach(summit => {
-                summitMap[year].push(summit.country);
-                countriesWithSummits.add(summit.country);
-            });
-        });
-
         jsonData.forEach(yearData => {
             yearData.summits.forEach(summit => {
                 countriesWithSummits.add(summit.country);
-                //console.log('countries with summits', countriesWithSummits)
             });
         });
 
@@ -87,24 +73,9 @@ export async function loadAndMergeData(geojsonUrl, jsonFilePath) {
             });
         });
 
-        countriesWithSummits.forEach(country => {
-            //console.log('Country in countrieswithsummits', countriesWithSummits)
-            summitCounter[country] = (summitCounter[country] || 0) + 1;
-        });
-
         // Remove antarctica from geojson
-
         geojsonData.features = geojsonData.features.filter(feature => feature.properties.name !== "Antarctica");
-        geojsonData.features.forEach(feature => {
-            const countryName = feature.properties.name;
-            if (countryName === "Antarctica") {
-                return; // Skip Antarctica
-            }
-            if (summitMap.has(countryName)) {
-                feature.properties.summit = summitMap.get(countryName);
-            }
-        });
-
+        
         jsonData.forEach(entry => {
             const year = entry.year;
             const newCountries = new Map();
@@ -137,7 +108,6 @@ export async function loadAndMergeData(geojsonUrl, jsonFilePath) {
         return {
             geojsonData,
             jsonData,
-            summitMap,
             countriesWithSummits,
             summitsByCountryMap,
             cumulativeSummits
