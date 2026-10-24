@@ -21,7 +21,10 @@ let knob;
 let scrubLocked = false;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const SETTLE_DELAY = 300; // ms of no scrolling before we consider the user is "settled"
-const DOT_R = 6;
+const phoneQuery = window.matchMedia("(max-width: 767.98px)");
+let DOT_R = 6; // idle dot radius
+let ACTIVE_R = 9; // radius of the dots for the current year
+let DOT_SPACING = 10; // gap between stacked dots
 const MIN_LABEL_GAP = 36; // px between year labels
 
 export function restoreScrub() {
@@ -49,17 +52,19 @@ export function renderTimeline() {
     console.error("renderTimeline: #desktop-timeline not found");
     return;
   }
-
+  const phone = phoneQuery.matches;
+  DOT_R = phone ? 4.5 : 6;
+  ACTIVE_R = phone ? 7 : 9;
+  DOT_SPACING = phone ? 3 : 10;
   const W = container.clientWidth;
   const H = container.clientHeight;
   // Reserve enough top space for the tallest stack of same-year dots,
   // so multi-summit years never get clipped by the SVG's own bounds.
   const maxStack = d3.max(summitData, (d) => d.summits.length) || 1;
-  const DOT_SPACING = 10;
   const FOCUS_RING_BUFFER = 12;
   const AXIS_GAP = 8; // air between the axis (and its knob) and the lowest dot
   const stackHeight = maxStack * (DOT_R * 2 + DOT_SPACING);
-  const MARGIN = { left: 20, right: 20, top: stackHeight + FOCUS_RING_BUFFER + AXIS_GAP, bottom: 28 };
+  const MARGIN = { left: DOT_R, right: DOT_R, top: stackHeight + FOCUS_RING_BUFFER + AXIS_GAP, bottom: 28 };
   const innerW = W - MARGIN.left - MARGIN.right;
   const innerH = H - MARGIN.top - MARGIN.bottom;
 
@@ -73,8 +78,13 @@ export function renderTimeline() {
     .domain([d3.min(years), d3.max(years)])
     .range([0, innerW]);
 
-  g.append("line").attr("class", "timeline-axis").attr("x1", 0).attr("x2", innerW).attr("y1", innerH).attr("y2", innerH);
-  axisPast = g.append("line").attr("class", "timeline-axis-past").attr("x1", 0).attr("y1", innerH).attr("y2", innerH);
+  g.append("line")
+    .attr("class", "timeline-axis")
+    .attr("x1", -DOT_R)
+    .attr("x2", innerW + DOT_R)
+    .attr("y1", innerH)
+    .attr("y2", innerH);
+  axisPast = g.append("line").attr("class", "timeline-axis-past").attr("x1", -DOT_R).attr("y1", innerH).attr("y2", innerH);
   playhead = g
     .append("line")
     .attr("class", "timeline-playhead")
@@ -100,8 +110,8 @@ export function renderTimeline() {
 
   // Year labels: the ends and the decades always; chapter years without a label
   // are added (shown in story mode only); a decade label that would collide
-  // with a chapter label steps aside in story mode.
-  const baseYears = years.filter((y, i) => i === 0 || i === years.length - 1 || y % 10 === 0);
+  // with a chapter label steps aside in story mode
+  const baseYears = years.filter((y, i) => i === 0 || i === years.length - 1 || (y % 10 === 0 && farFrom(y, endYears)));
   const chapterOnlyYears = chapterYears.filter((y) => !baseYears.includes(y) && farFrom(y, endYears));
   const labelData = [
     ...baseYears.map((y) => ({
@@ -111,24 +121,16 @@ export function renderTimeline() {
     })),
     ...chapterOnlyYears.map((y) => ({ year: y, chapterOnly: true, yields: false })),
   ];
-
+  const isStart = (d) => d.year === years[0];
+  const isEnd = (d) => d.year === years[years.length - 1];
   g.selectAll("text.timeline-label")
     .data(labelData)
     .enter()
     .append("text")
-    .attr("class", (d) =>
-      [
-        "timeline-label",
-        chapterYears.includes(d.year) && "timeline-label--stop",
-        d.chapterOnly && "timeline-label--chapter",
-        d.yields && "timeline-label--yields",
-      ]
-        .filter(Boolean)
-        .join(" "),
-    )
-    .attr("x", (d) => xScale(d.year))
+    .attr("class", (d) => ["timeline-label", chapterYears.includes(d.year) && "timeline-label--stop", d.chapterOnly && "timeline-label--chapter", d.yields && "timeline-label--yields"].filter(Boolean).join(" "))
+    .attr("x", (d) => xScale(d.year) + (isStart(d) ? -DOT_R : isEnd(d) ? DOT_R : 0))
     .attr("y", innerH + 22)
-    .attr("text-anchor", "middle")
+    .attr("text-anchor", (d) => (isStart(d) ? "start" : isEnd(d) ? "end" : "middle"))
     .text((d) => d.year);
 
   summitData.forEach((yearData, yearIndex) => {
@@ -172,7 +174,7 @@ export function renderTimeline() {
 export function highlightYearDots(year) {
   if (!svg) return;
   resetDots();
-  svg.selectAll(`circle.timeline-dot[data-year="${year}"]`).classed("active", true).attr("r", 9).attr("opacity", 1).attr("stroke", "#1C1C1A").attr("stroke-width", 2);
+  svg.selectAll(`circle.timeline-dot[data-year="${year}"]`).classed("active", true).attr("r", ACTIVE_R).attr("opacity", 1).attr("stroke", "#1C1C1A").attr("stroke-width", 2);
 }
 
 export function resetDots() {
@@ -185,7 +187,7 @@ export function highlightCountryDots(country) {
   if (!svg) return;
   resetDots();
   svg.selectAll("circle.timeline-dot").attr("opacity", 0.15);
-  svg.selectAll(`circle.timeline-dot[data-country="${country}"]`).classed("active", true).attr("r", 9).attr("opacity", 1).attr("stroke", "#1C1C1A").attr("stroke-width", 2);
+  svg.selectAll(`circle.timeline-dot[data-country="${country}"]`).classed("active", true).attr("r", ACTIVE_R).attr("opacity", 1).attr("stroke", "#1C1C1A").attr("stroke-width", 2);
   setPlayheadVisible(false);
 }
 
@@ -318,7 +320,7 @@ function showYearCard(yearData) {
 
   if (!card || !content) return;
 
-    const summitsHTML = yearData.summits
+  const summitsHTML = yearData.summits
     .map((summit) => {
       const name = summit.country === "England" ? "United Kingdom" : summit.country;
       return `
@@ -400,7 +402,7 @@ function updateDotsForScrub(currentYear) {
       return +d3.select(this).attr("data-year") === currentYear;
     })
     .attr("r", function () {
-      return +d3.select(this).attr("data-year") === currentYear ? 9 : DOT_R;
+      return +d3.select(this).attr("data-year") === currentYear ? ACTIVE_R : DOT_R;
     })
     .attr("opacity", function () {
       const y = +d3.select(this).attr("data-year");

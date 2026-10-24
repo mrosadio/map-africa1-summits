@@ -12,7 +12,7 @@
   --z-tooltip: 40;
   /* Neutrals & accent (category colours are injected from partnerColors.js) */
   --color-accent: #c1440e;
---color-border: rgba(28, 28, 26, 0.25);
+  --color-border: rgba(28, 28, 26, 0.25);
   --color-bg: #ffffff;
   --color-bg-subtle: #fafaf8;
   --color-text-primary: #1c1c1a;
@@ -87,6 +87,8 @@
 
 /* ── Layout ── */
 body {
+  height: 100vh;
+  height: 100dvh;
   background: var(--color-bg-subtle);
   font-family: var(--font-sans);
   color: var(--color-text-primary);
@@ -408,6 +410,9 @@ body {
   min-height: 0;
   width: 100%;
 }
+#desktop-timeline svg {
+  overflow: visible;
+}
 #desktop-timeline:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: -2px;
@@ -636,27 +641,8 @@ body:not([data-mode="explore"]) .timeline-dot {
   opacity: 1;
 }
 
-/* ----------- Mobile ----------- */
-@media (max-width: 767.98px) {
-  .vis-panel {
-    width: 100%;
-    height: 50vh;
-    top: auto !important;
-    bottom: 0;
-    right: 0;
-    transform: translateY(100%);
-    border-left: none;
-    border-top: var(--border-w) solid var(--color-border);
-  }
-  .vis-panel.open {
-    transform: translateY(0);
-  }
-  .vis-timeline {
-    height: 60px;
-  }
-}
 /* -- Tablet portrait (e.g iPad 768 × 1024): the side column moves under the timeline -- */
-@media (min-width: 768px) and (orientation: portrait) {
+@media (orientation: portrait) {
   :root {
     --nav-height: 48px;
     --page-gutter: 1.5rem; /* 24px */
@@ -686,5 +672,50 @@ body:not([data-mode="explore"]) .timeline-dot {
   }
   #map {
     margin-top: var(--space-4);
+  }
+}
+/* -- Phone (up to 767px, e.g. iPhone 11 at 414 × 896) -- */
+@media (max-width: 767.98px) {
+  :root {
+    --page-gutter: 1rem; /* 16px */
+    --fs-numeral: 3.5rem; /* 56px */
+    --sheet-height: clamp(220px, 36dvh, 300px);
+    --timeline-height: 118px;
+  }
+  .vis-header__actions {
+    gap: var(--space-4);
+  }
+  #map {
+    margin-top: var(--space-2);
+  }
+  .show-chapters .timeline-label:not(.timeline-label--stop) {
+    display: none;
+  }
+  /* numeral on the left, legend wrapping on the right */
+  .vis-stage {
+    gap: var(--space-3);
+    padding: var(--space-3) var(--page-gutter);
+  }
+  .vis-legend {
+    flex: 1;
+    justify-content: flex-end;
+    max-width: none;
+    gap: var(--space-1) var(--space-3);
+    padding-bottom: 0;
+  }
+  /* the sheet scrolls, so the buttons that move the story must stay visible */
+  .vis-intro__actions,
+  .vis-story__nav {
+    position: sticky;
+    bottom: calc(-1 * var(--space-4));
+    padding-block: var(--space-3);
+    background: var(--color-bg-subtle);
+    border-top: var(--border-w) solid var(--color-border);
+  }
+  .vis-story {
+    gap: var(--space-3);
+  }
+  .vis-story__text {
+    font-size: var(--fs-md);
   }
 }

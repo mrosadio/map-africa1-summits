@@ -4,12 +4,10 @@ import "@fontsource/arimo/latin-700.css";
 import "@fontsource/source-serif-4/latin-400.css";
 import "@fontsource/source-serif-4/latin-600.css";
 import { loadAndMergeData, loadChapters } from "./modules/common/dataLoader.js";
-import { jsonPath, geojsonUrl,chaptersUrl, appData, BREAKPOINTS } from "./modules/common/globals.js";
+import { jsonPath, geojsonUrl,chaptersUrl, appData } from "./modules/common/globals.js";
 import { debounce } from "./modules/common/utils.js";
-import { initMobileTimeline } from "./modules/mobile/initMobile.js";
 import { initDesktopTimeline } from "./modules/desktop/initDesktop.js";
 import { applyCategoryColors } from "./modules/common/partnerColors.js";
-
 
 function showLoadError() {
   document.getElementById("load-error")?.classList.remove("d-none");
@@ -29,12 +27,7 @@ async function loadData() {
   return true;
 }
 function render() {
-  if (window.innerWidth >= BREAKPOINTS.tablet) {
     initDesktopTimeline();
-  } else {
-    const { geojsonData, summitData, cumulativeSummits, summitsByCountryMap } = appData;
-    initMobileTimeline(geojsonData, summitData, cumulativeSummits, summitsByCountryMap);
-  }
 }
 
 async function main() {
@@ -43,7 +36,7 @@ async function main() {
     document.activeElement?.blur();
   });
   if (!(await loadData())) {
-    document.querySelector(".vis-hint")?.classList.add("d-none");
+    showLoadError();
     return;
   }
   render();
