@@ -680,6 +680,7 @@ body:not([data-mode="explore"]) .timeline-dot {
     --page-gutter: 1rem; /* 16px */
     --fs-numeral: 3.5rem; /* 56px */
     --sheet-height: clamp(220px, 36dvh, 300px);
+    --timeline-height: 118px;
   }
   .vis-header__actions {
     gap: var(--space-4);
