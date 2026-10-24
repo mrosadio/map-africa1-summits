@@ -36,6 +36,7 @@ export function setStartIndex(index) {
 }
 // -- Public: intro and story lock wheel and keyboard scrubbing
 export function setScrubLocked(locked) {
+  document.getElementById("desktop-timeline")?.setAttribute("aria-readonly", locked);
   scrubLocked = locked;
 }
 // -- Public: story mode turns the chapter marks on, explore mode turns them off
@@ -46,12 +47,14 @@ export function setChapterMarks(visible) {
 // -- Public: init
 export function renderTimeline() {
   const { summitData } = appData;
-
   const container = document.getElementById("desktop-timeline");
+
   if (!container) {
     console.error("renderTimeline: #desktop-timeline not found");
     return;
   }
+  container.setAttribute("aria-valuemin", summitData[0].year);
+  container.setAttribute("aria-valuemax", summitData[summitData.length - 1].year);
   const phone = phoneQuery.matches;
   DOT_R = phone ? 4.5 : 6;
   ACTIVE_R = phone ? 7 : 9;
@@ -261,6 +264,7 @@ function movePlayhead(year) {
   axisPast?.attr("x2", x);
   knob?.attr("cx", x);
   setPlayheadVisible(true);
+  document.getElementById("desktop-timeline")?.setAttribute("aria-valuenow", year);
 }
 function setPlayheadVisible(visible) {
   [playhead, axisPast, knob].forEach((el) => el?.style("display", visible ? null : "none"));
