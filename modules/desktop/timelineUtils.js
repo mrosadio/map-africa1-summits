@@ -110,8 +110,8 @@ export function renderTimeline() {
 
   // Year labels: the ends and the decades always; chapter years without a label
   // are added (shown in story mode only); a decade label that would collide
-  // with a chapter label steps aside in story mode.
-  const baseYears = years.filter((y, i) => i === 0 || i === years.length - 1 || y % 10 === 0);
+  // with a chapter label steps aside in story mode
+  const baseYears = years.filter((y, i) => i === 0 || i === years.length - 1 || (y % 10 === 0 && farFrom(y, endYears)));
   const chapterOnlyYears = chapterYears.filter((y) => !baseYears.includes(y) && farFrom(y, endYears));
   const labelData = [
     ...baseYears.map((y) => ({
@@ -174,8 +174,7 @@ export function renderTimeline() {
 export function highlightYearDots(year) {
   if (!svg) return;
   resetDots();
-  svg.selectAll(`circle.timeline-dot[data-year="${year}"]`)
-  .classed("active", true).attr("r", ACTIVE_R).attr("opacity", 1).attr("stroke", "#1C1C1A").attr("stroke-width", 2);
+  svg.selectAll(`circle.timeline-dot[data-year="${year}"]`).classed("active", true).attr("r", ACTIVE_R).attr("opacity", 1).attr("stroke", "#1C1C1A").attr("stroke-width", 2);
 }
 
 export function resetDots() {
@@ -188,8 +187,7 @@ export function highlightCountryDots(country) {
   if (!svg) return;
   resetDots();
   svg.selectAll("circle.timeline-dot").attr("opacity", 0.15);
-  svg.selectAll(`circle.timeline-dot[data-country="${country}"]`)
-  .classed("active", true).attr("r", ACTIVE_R).attr("opacity", 1).attr("stroke", "#1C1C1A").attr("stroke-width", 2);
+  svg.selectAll(`circle.timeline-dot[data-country="${country}"]`).classed("active", true).attr("r", ACTIVE_R).attr("opacity", 1).attr("stroke", "#1C1C1A").attr("stroke-width", 2);
   setPlayheadVisible(false);
 }
 

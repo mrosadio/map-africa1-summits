@@ -12,7 +12,7 @@
   --z-tooltip: 40;
   /* Neutrals & accent (category colours are injected from partnerColors.js) */
   --color-accent: #c1440e;
---color-border: rgba(28, 28, 26, 0.25);
+  --color-border: rgba(28, 28, 26, 0.25);
   --color-bg: #ffffff;
   --color-bg-subtle: #fafaf8;
   --color-text-primary: #1c1c1a;
@@ -687,6 +687,9 @@ body:not([data-mode="explore"]) .timeline-dot {
   }
   #map {
     margin-top: var(--space-2);
+  }
+  .show-chapters .timeline-label:not(.timeline-label--stop) {
+    display: none;
   }
   /* numeral on the left, legend wrapping on the right */
   .vis-stage {
