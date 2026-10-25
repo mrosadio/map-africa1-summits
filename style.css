@@ -675,7 +675,7 @@ body:not([data-mode="explore"]) .timeline-dot {
   .vis-story__nav {
     position: sticky;
     bottom: calc(-1 * var(--space-4));
-    padding-block: var(--space-3);
+    padding-block: 0;
     background: var(--color-bg-subtle);
     border-top: var(--border-w) solid var(--color-border);
   }
@@ -684,5 +684,23 @@ body:not([data-mode="explore"]) .timeline-dot {
   }
   .vis-story__text {
     font-size: var(--fs-md);
+  }
+}
+/* -- Touch devices: 44px minimum target size -- */
+@media (pointer: coarse) {
+  .vis-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: 0;
+  }
+  .vis-header__actions {
+    align-items: center;
+  }
+  .btn-close {
+    box-sizing: border-box;
+    width: 44px;
+    height: 44px;
+    padding: 0;
   }
 }
