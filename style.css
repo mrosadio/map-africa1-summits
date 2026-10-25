@@ -407,6 +407,7 @@ body {
   flex: 1;
   min-height: 0;
   width: 100%;
+  touch-action: none;
 }
 #desktop-timeline svg {
   overflow: visible;
