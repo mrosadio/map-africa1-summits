@@ -19,6 +19,7 @@ let playhead;
 let axisPast;
 let knob;
 let scrubLocked = false;
+let marginLeft = 0; // left margin of the timeline drawing, needed to turn a pointer x into a year
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const SETTLE_DELAY = 300; // ms of no scrolling before we consider the user is "settled"
 const phoneQuery = window.matchMedia("(max-width: 767.98px)");
@@ -36,6 +37,7 @@ export function setStartIndex(index) {
 }
 // -- Public: intro and story lock wheel and keyboard scrubbing
 export function setScrubLocked(locked) {
+  document.getElementById("desktop-timeline")?.setAttribute("aria-readonly", locked);
   scrubLocked = locked;
 }
 // -- Public: story mode turns the chapter marks on, explore mode turns them off
@@ -46,12 +48,14 @@ export function setChapterMarks(visible) {
 // -- Public: init
 export function renderTimeline() {
   const { summitData } = appData;
-
   const container = document.getElementById("desktop-timeline");
+
   if (!container) {
     console.error("renderTimeline: #desktop-timeline not found");
     return;
   }
+  container.setAttribute("aria-valuemin", summitData[0].year);
+  container.setAttribute("aria-valuemax", summitData[summitData.length - 1].year);
   const phone = phoneQuery.matches;
   DOT_R = phone ? 4.5 : 6;
   ACTIVE_R = phone ? 7 : 9;
@@ -65,6 +69,7 @@ export function renderTimeline() {
   const AXIS_GAP = 8; // air between the axis (and its knob) and the lowest dot
   const stackHeight = maxStack * (DOT_R * 2 + DOT_SPACING);
   const MARGIN = { left: DOT_R, right: DOT_R, top: stackHeight + FOCUS_RING_BUFFER + AXIS_GAP, bottom: 28 };
+  marginLeft = MARGIN.left;
   const innerW = W - MARGIN.left - MARGIN.right;
   const innerH = H - MARGIN.top - MARGIN.bottom;
 
@@ -253,7 +258,14 @@ export function stepScrub(dir) {
     settle(yearData);
   }, SETTLE_DELAY);
 }
-
+// -- Private: jumps to a given index and does not start the settle timer -----------
+function dragToIndex(index) {
+  if (index === focusIndex) return;
+  clearInterval(scrubAnimId);
+  clearCountrySelection();
+  closePanel();
+  tick(index);
+}
 // -- Private: moveplayhead ---------------------------------------------------------
 function movePlayhead(year) {
   const x = xScale(year);
@@ -261,6 +273,7 @@ function movePlayhead(year) {
   axisPast?.attr("x2", x);
   knob?.attr("cx", x);
   setPlayheadVisible(true);
+  document.getElementById("desktop-timeline")?.setAttribute("aria-valuenow", year);
 }
 function setPlayheadVisible(visible) {
   [playhead, axisPast, knob].forEach((el) => el?.style("display", visible ? null : "none"));
@@ -310,6 +323,46 @@ function attachScrubListener() {
     }
     event.preventDefault();
   });
+    // Drag (touch or mouse) along the timeline to scrub; a tap on empty space jumps to the nearest year
+  const DRAG_THRESHOLD = 6; // px of movement before a press counts as a drag
+  const timelineEl = document.getElementById("desktop-timeline");
+  let pressX = null;
+  let dragging = false;
+
+  const indexAt = (clientX) => {
+    const x = clientX - timelineEl.getBoundingClientRect().left - marginLeft;
+    return d3.bisector((d) => d.year).center(appData.summitData, xScale.invert(x));
+  };
+
+  timelineEl.addEventListener("pointerdown", (event) => {
+    if (scrubLocked || !event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+    pressX = event.clientX;
+    dragging = false;
+  });
+  timelineEl.addEventListener("pointermove", (event) => {
+    if (pressX === null) return;
+    if (!dragging) {
+      if (Math.abs(event.clientX - pressX) < DRAG_THRESHOLD) return;
+      dragging = true;
+      timelineEl.setPointerCapture(event.pointerId); // keep receiving moves if the finger leaves the strip
+      clearTimeout(settleTimer);
+      clearInterval(scrubAnimId);
+    }
+    dragToIndex(indexAt(event.clientX));
+  });
+  const endPress = (event) => {
+    if (pressX === null) return;
+    const wasDragging = dragging;
+    pressX = null;
+    dragging = false;
+    if (wasDragging) {
+      settle(appData.summitData[focusIndex]);
+    } else if (event.type === "pointerup" && !event.target.classList?.contains("timeline-dot")) {
+      scrubToIndex(indexAt(event.clientX)); // dots keep their own click handler
+    }
+  };
+  timelineEl.addEventListener("pointerup", endPress);
+  timelineEl.addEventListener("pointercancel", endPress);
 }
 
 // -- Private: floating summit card ---------------------------------------------------

@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Interactive map of Africa+1 summits, 1973–2024: how the countries hosting them grew from France alone to twelve. Data: APRI." />
     <title>The Shifting Geography of Africa+1 Summits</title>
     <!-- D3 -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -80,7 +81,7 @@
             <li class="vis-legend__item" style="--dot: var(--color-europe)">Italy / UK</li>
           </ul>
         </div>
-        <div id="vis-tooltip" class="vis-tooltip" role="tooltip"></div>
+        <div id="vis-tooltip" class="vis-tooltip" aria-hidden="true"></div>
         <div id="load-error" class="vis-load-error d-none">
           <p class="vis-load-error__title">Something went wrong loading the data.</p>
           <p class="vis-load-error__body">Please check your connection and try again.</p>
@@ -120,7 +121,7 @@
         <section id="detail-panel" class="vis-side__country" hidden inert>
           <div id="summitListContainer" class="vis-panel__inner">
             <div class="vis-panel__header">
-              <h2 id="summitCountry" class="vis-panel__title">
+              <h2 id="summitCountry" class="vis-panel__title" tabindex="-1">
                 <img src="" id="country-icon" class="vis-panel__flag" alt="" />
                 <span id="country-name"></span>
               </h2>
