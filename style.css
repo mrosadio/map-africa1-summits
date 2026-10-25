@@ -360,6 +360,13 @@ body {
   font-size: var(--fs-sm);
   color: var(--color-text-muted);
 }
+.vis-panel__title:focus {
+  outline: none;
+}
+.vis-panel__title:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
 .vis-summits {
   margin: 0;
   padding: 0;

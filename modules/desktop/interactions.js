@@ -1,7 +1,7 @@
 // Fixing circular import between map and timeline utils js
 // We will define dependencies in this file - this is the only file that
 // nows about both
-import { onCountryClick, clearCountrySelection } from "./mapUtils.js";
+import { onCountryClick, clearCountrySelection, focusCountry } from "./mapUtils.js";
 import { highlightCountryDots, resetDots, closeYearCard, stopScrub, restoreScrub } from "./timelineUtils.js";
 import { openPanel, closePanel, isPanelOpen } from "./panel.js";
 import { showCountry } from "./stage.js";
@@ -9,15 +9,17 @@ import { appData } from "../common/globals.js";
 
 // guardst again the opening click also triggering the close of the country panel outside eventlistener
 let justOpenedPanel = false;
-
+let keyboardOpener = null; // the country that opened the panel from the keyboard
 export function initInteractions() {
   // Country clicked on map → open detail panel + highlight its dots on the timeline
-  onCountryClick((country) => {
+  onCountryClick((country, viaKeyboard) => {
     stopScrub();
     closeYearCard();
     openPanel();
     showCountry(country, appData.summitsByCountryMap.get(country)?.length ?? 0);
     highlightCountryDots(country);
+    keyboardOpener = viaKeyboard ? country : null;
+    if (viaKeyboard) document.getElementById("summitCountry")?.focus();
   });
   document.getElementById("close-panel")?.addEventListener("click", closeCountryMode);
   // Click anywhere on the map closes the floating year-card
@@ -34,9 +36,18 @@ export function initInteractions() {
       closeCountryMode();
     }
   });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !isPanelOpen()) return;
+    if (document.body.classList.contains("modal-open")) return; // About modal closes first
+    closeCountryMode();
+  });
 }
 function closeCountryMode() {
   closePanel();
   clearCountrySelection();
   restoreScrub(); // back to time mode at the year the user left
+  if (keyboardOpener) {
+    focusCountry(keyboardOpener);
+    keyboardOpener = null;
+  }
 }

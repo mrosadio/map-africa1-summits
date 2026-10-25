@@ -98,8 +98,8 @@ export function renderCumulativeMap(yearData) {
     .attr("opacity", 1);
   bindCountryEvents(sel, cumulative);
 }
-function notifyCountryClick(country) {
-  countryClickListeners.forEach((cb) => cb(country));
+function notifyCountryClick(country, viaKeyboard) {
+  countryClickListeners.forEach((cb) => cb(country, viaKeyboard));
 }
 // -- Private: click handler for both maps -------------------------------------------
 // Shared click handler for BOTH the initial map (drawMap) and the scrub-driven
@@ -116,7 +116,7 @@ function handleCountryClick(event, d, availableCountries, summitsByCountryMap) {
     const summits = getSummitsByCountry(summitsByCountryMap, country);
     renderCountryPanel(country, summits);
     applyCountrySelectionStyle(availableCountries);
-    notifyCountryClick(country);
+    notifyCountryClick(country, event.type === "keydown");
   } else {
     event.stopPropagation();
   }
@@ -136,6 +136,12 @@ function applyCountrySelectionStyle(availableCountries) {
 // next renderCumulativeMap tick doesn't carry stale "selected" state
 export function clearCountrySelection() {
   clickedCountry = null;
+}
+export function focusCountry(country) {
+  g?.selectAll("path")
+    .filter((d) => d.properties.name === country)
+    .node()
+    ?.focus({ preventScroll: true });
 }
 export function clearCountryLabels() {
   svg.selectAll(".country-label").remove();
