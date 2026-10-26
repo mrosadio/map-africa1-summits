@@ -1,6 +1,7 @@
 // Layout breakpoint in px. Must match the media queries in style.css,
 // which cannot read JS variables.
 // Databases
+import * as d3 from "d3";
 const jsonPath = './db/summits-by-year.json';
 const geojsonUrl = "./db/world.geojson";
 export const appData = {

@@ -1,7 +1,7 @@
 // Draw horizonntal timeline. Dot rendering and click interactions
 // Public functions:
 //   highlightYearDots(year)   — called from mapUtils when country clicked
-
+import * as d3 from "d3";
 import { renderCumulativeMap, clearCountrySelection } from "./mapUtils.js";
 import { getColorForCountry } from "../common/partnerColors.js";
 import { appData } from "../common/globals.js";
