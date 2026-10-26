@@ -1,5 +1,6 @@
 // Fix circular import by creating a file that avoids this
 // Remove zoom function from maputils
+import * as d3 from "d3";
 import { getColorForCountry } from "../common/partnerColors.js";
 import { svg, mapStyle, appData } from "../common/globals.js";
 import { getSummitsByCountry, renderCountryPanel } from "./summitUtils.js";

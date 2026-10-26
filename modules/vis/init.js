@@ -5,7 +5,7 @@ import { initStory, getOpeningMode, openInitialMode } from "./story.js";
 import { appData } from "../common/globals.js";
 let initialised = false;
 
-export function initDesktopTimeline() {
+export function initVis() {
   const firstRun = !initialised;
   let openingMode;
   if (firstRun) {
