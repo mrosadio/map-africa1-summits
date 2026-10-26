@@ -37,21 +37,21 @@ export function setStartIndex(index) {
 }
 // -- Public: intro and story lock wheel and keyboard scrubbing
 export function setScrubLocked(locked) {
-  document.getElementById("desktop-timeline")?.setAttribute("aria-readonly", locked);
+  document.getElementById("timeline")?.setAttribute("aria-readonly", locked);
   scrubLocked = locked;
 }
 // -- Public: story mode turns the chapter marks on, explore mode turns them off
 export function setChapterMarks(visible) {
-  document.getElementById("desktop-timeline")?.classList.toggle("show-chapters", visible);
+  document.getElementById("timeline")?.classList.toggle("show-chapters", visible);
 }
 
 // -- Public: init
 export function renderTimeline() {
   const { summitData } = appData;
-  const container = document.getElementById("desktop-timeline");
+  const container = document.getElementById("timeline");
 
   if (!container) {
-    console.error("renderTimeline: #desktop-timeline not found");
+    console.error("renderTimeline: #timeline not found");
     return;
   }
   container.setAttribute("aria-valuemin", summitData[0].year);
@@ -73,8 +73,8 @@ export function renderTimeline() {
   const innerW = W - MARGIN.left - MARGIN.right;
   const innerH = H - MARGIN.top - MARGIN.bottom;
 
-  d3.select("#desktop-timeline").selectAll("*").remove();
-  svg = d3.select("#desktop-timeline").append("svg").attr("width", "100%").attr("height", "100%");
+  d3.select("#timeline").selectAll("*").remove();
+  svg = d3.select("#timeline").append("svg").attr("width", "100%").attr("height", "100%");
 
   const g = svg.append("g").attr("transform", `translate(${MARGIN.left},${MARGIN.top})`);
   const years = summitData.map((d) => d.year);
@@ -273,7 +273,7 @@ function movePlayhead(year) {
   axisPast?.attr("x2", x);
   knob?.attr("cx", x);
   setPlayheadVisible(true);
-  document.getElementById("desktop-timeline")?.setAttribute("aria-valuenow", year);
+  document.getElementById("timeline")?.setAttribute("aria-valuenow", year);
 }
 function setPlayheadVisible(visible) {
   [playhead, axisPast, knob].forEach((el) => el?.style("display", visible ? null : "none"));
@@ -298,10 +298,10 @@ function attachScrubListener() {
     stepScrub(wheelAcc > 0 ? 1 : -1);
     wheelAcc = 0;
   }
-  document.getElementById("desktop-timeline").addEventListener("wheel", handleWheel, { passive: false });
+  document.getElementById("timeline").addEventListener("wheel", handleWheel, { passive: false });
   document.addEventListener("keydown", (event) => {
     const t = event.target;
-    if (t !== document.body && t !== document.getElementById("desktop-timeline")) return;
+    if (t !== document.body && t !== document.getElementById("timeline")) return;
     if (scrubLocked) return;
     switch (event.key) {
       case "ArrowRight":
@@ -323,9 +323,9 @@ function attachScrubListener() {
     }
     event.preventDefault();
   });
-    // Drag (touch or mouse) along the timeline to scrub; a tap on empty space jumps to the nearest year
+  // Drag (touch or mouse) along the timeline to scrub; a tap on empty space jumps to the nearest year
   const DRAG_THRESHOLD = 6; // px of movement before a press counts as a drag
-  const timelineEl = document.getElementById("desktop-timeline");
+  const timelineEl = document.getElementById("timeline");
   let pressX = null;
   let dragging = false;
 
