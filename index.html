@@ -74,6 +74,8 @@
     <main class="vis-main">
       <!-- map area will contain now counter, tooltip, #map, #loaderror, #summitcard -->
       <div class="vis-map-area position-relative flex-grow-1 d-flex flex-column">
+        <p class="vis-load-status" data-mode-only="loading" role="status">Loading the summits…</p>
+        <noscript><p class="vis-load-status">This visualization needs JavaScript to run.</p></noscript>
         <div id="map"></div>
         <div class="vis-stage">
           <div>

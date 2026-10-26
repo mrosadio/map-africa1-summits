@@ -10,6 +10,7 @@ import { initDesktopTimeline } from "./modules/desktop/initDesktop.js";
 import { applyCategoryColors } from "./modules/common/partnerColors.js";
 
 function showLoadError() {
+  document.body.dataset.mode = "error";
   document.getElementById("load-error")?.classList.remove("d-none");
   document.getElementById("map")?.classList.add("d-none");
   document.querySelector(".vis-timeline")?.classList.add("d-none");

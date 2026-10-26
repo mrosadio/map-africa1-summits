@@ -93,7 +93,31 @@ body {
   font-family: var(--font-sans);
   color: var(--color-text-primary);
 }
-
+body:not([data-mode="loading"]) [data-mode-only="loading"],
+body:not([data-mode="intro"]) [data-mode-only="intro"],
+body:not([data-mode="story"]) [data-mode-only="story"],
+body:not([data-mode="explore"]) [data-mode-only="explore"] {
+  display: none;
+}
+/* -- Loading: appears only if the data takes longer than 300ms -- */
+.vis-load-status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
+  color: var(--color-text-muted);
+  pointer-events: none;
+  opacity: 0;
+  animation: fade-in var(--dur-base) var(--ease) 300ms forwards;
+}
+@keyframes fade-in {
+  to {
+    opacity: 1;
+  }
+}
 /* Header */
 .vis-header {
   display: flex;
